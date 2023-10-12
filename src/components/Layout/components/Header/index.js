@@ -8,6 +8,7 @@ import {
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 
+import Button from '~/components/Button';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import styles from './Header.module.scss';
 import images from '~/components/GlobalStyles/index';
@@ -56,7 +57,10 @@ function Header() {
           </div>
         </Tippy>
 
-        <div className={cx('actions')}>{/* action */}</div>
+        <div className={cx('actions')}>
+          <Button text>Upload</Button>
+          <Button primary>Log in</Button>
+        </div>
       </div>
     </header>
   );
