@@ -25,6 +25,21 @@ const MENU_ITEMS = [
   {
     icon: <FontAwesomeIcon icon={faEarthAsia} />,
     title: 'English',
+    children: {
+      title: 'Language',
+      data: [
+        {
+          type: 'language',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'language',
+          code: 'vi',
+          title: 'Tieng Viet',
+        },
+      ],
+    },
   },
   {
     icon: <FontAwesomeIcon icon={faCircleQuestion} />,
@@ -42,9 +57,18 @@ function Header() {
   useEffect(() => {
     setTimeout(() => {
       setSearchResult([]);
-    }, 3000);
-  });
+    }, 0);
+  }, []);
 
+  //Handle logic
+  const handleMenuChange = (menuItem) => {
+    switch (menuItem.type) {
+      case 'language':
+        //Handle'
+        break;
+      default:
+    }
+  };
   return (
     <header className={cx('wrapper')}>
       <div className={cx('inner')}>
@@ -53,6 +77,7 @@ function Header() {
         <Tippy
           interactive
           visible={searchResult.length > 0}
+          placement="bottom-end"
           render={(attrs) => (
             <div className={cx('search-result')} tabIndex="-1" {...attrs}>
               <PopperWrapper>
@@ -82,7 +107,7 @@ function Header() {
           <Button text>Upload</Button>
           <Button primary>Log in</Button>
 
-          <Menu items={MENU_ITEMS}>
+          <Menu items={MENU_ITEMS} onChange={handleMenuChange}>
             <button className={cx('more-btn')}>
               <FontAwesomeIcon icon={faEllipsisVertical} />
             </button>

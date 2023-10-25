@@ -18,11 +18,11 @@ function Button({
   leftIcon,
   className,
   onClick,
-  ...passsProps
+  ...passProps
 }) {
   let Comp = 'button';
 
-  const props = { onClick, ...passsProps };
+  const props = { onClick, ...passProps };
 
   //remove event
   if (disabled) {
