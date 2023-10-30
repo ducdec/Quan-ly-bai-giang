@@ -1,5 +1,4 @@
 @import 'normalize.css';
-@import url(https://fullstack.edu.vn/external-url?continue=https%3A%2F%2Ffonts.googleapis.com%2Fcss2%3Ffamily%3DIBM%2BPlex%2BSans%3Aital%2Cwght%400%2C100%3B0%2C400%3B0%2C500%3B0%2C600%3B0%2C700%3B1%2C300%3B1%2C400%26display%3Dswap);
 
 :root {
   --primary: #fe2c55;
@@ -24,7 +23,7 @@ html {
 }
 
 body {
-  font-family: 'roboto', 'sans-san-serif';
+  font-family: 'TikTokFont', 'sans-san-serif';
   font-size: 1.6em;
   line-height: 1.5;
   text-rendering: optimizeSpeed; //hien thi nhanh nha't
@@ -41,6 +40,27 @@ input,
 a[href] {
   color: var(--text-color);
   text-decoration: none;
+}
+//Fonts embedded
+@font-face {
+  font-family: TikTokDisplayFont;
+  src: url('/assets/fonts/TikTokDisplayFont-Bold.woff2');
+  font-weight: 700;
+}
+@font-face {
+  font-family: TikTokFont;
+  src: url('/assets/fonts/TikTokFont-Bold.woff2');
+  font-weight: 700;
+}
+@font-face {
+  font-family: TikTokFont;
+  src: url('/assets/fonts/TikTokFont-Semibold.woff2');
+  font-weight: 600;
+}
+@font-face {
+  font-family: TikTokFont;
+  src: url('/assets/fonts/TikTokFont-Regular.woff2');
+  font-weight: 400;
 }
 
 //custom tippy tooltip

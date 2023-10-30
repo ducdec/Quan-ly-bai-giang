@@ -26,7 +26,8 @@ import images from '~/components/GlobalStyles/index';
 import AccountItem from '~/components/AccountItem';
 import Menu from '~/components/Popper/Menu';
 import 'tippy.js/dist/tippy.css';
-
+import { MessageIcon } from '~/components/Icons';
+import Image from '~/components/Image';
 const cx = classNames.bind(styles);
 
 const MENU_ITEMS = [
@@ -147,6 +148,11 @@ function Header() {
                   <FontAwesomeIcon icon={faCloudUpload} />
                 </button>
               </Tippy>
+              <Tippy delay={[0, 200]} content="Message" placement="bottom">
+                <button className={cx('action-btn')}>
+                  <MessageIcon />
+                </button>
+              </Tippy>
             </>
           ) : (
             <>
@@ -159,9 +165,9 @@ function Header() {
             onChange={handleMenuChange}
           >
             {currentUser ? (
-              <img
+              <Image
                 className={cx('user-avatar')}
-                src="https://yt3.ggpht.com/ytc/APkrFKbTHsTRm03JnixzzqJeW1YZRzaIg-Gu5hsZEOSH=s88-c-k-c0x00ffffff-no-rj"
+                src="https://yt.ggpht.com/ytc/APkrFKbTHsTRm03JnixzzqJeW1YZRzaIg-Gu5hsZEOSH=s88-c-k-c0x00ffffff-no-rj"
                 alt="Nguyen Van Duc"
               />
             ) : (
