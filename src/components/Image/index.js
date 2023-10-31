@@ -8,7 +8,7 @@ function Image(
   ref,
 ) {
   const [fallback, setFallback] = useState('');
-  const handlleError = () => {
+  const handleError = () => {
     setFallback(customFallback);
   };
 
@@ -19,7 +19,7 @@ function Image(
       src={fallback || src}
       alt={alt}
       {...props}
-      onError={handlleError}
+      onError={handleError}
     />
   );
 }
