@@ -63,6 +63,8 @@
 
 .loading {
   animation: spinner 0.8s linear infinite;
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 @keyframes spinner {
