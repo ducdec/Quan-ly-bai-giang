@@ -13,6 +13,7 @@ function Menu({
   items = [],
   hideOnClick = false,
   onChange = defaulFn,
+  ...passProps
 }) {
   const [history, setHistory] = useState([{ data: items }]);
   const current = history[history.length - 1];
@@ -38,6 +39,7 @@ function Menu({
   };
   return (
     <Tippy
+      {...passProps}
       interactive
       delay={[0, 700]}
       offset={[12, 8]}
@@ -54,7 +56,7 @@ function Menu({
                 }}
               />
             )}
-            {renderItems()}
+            <div className={cx('menu-body')}>{renderItems()}</div>
           </PopperWrapper>
         </div>
       )}
