@@ -7,7 +7,7 @@
   min-width: 100px;
   padding: 9px 16px;
   border-radius: 4px;
-  font-family: 'TikTokFont', 'sans-san-serif'; //font tt
+  font-family: var(--font-family); //font tt
   cursor: pointer;
   background-color: var(--white);
   border: 1px solid transparent;

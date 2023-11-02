@@ -19,6 +19,7 @@
     color: var(--black);
     caret-color: var(--primary);
     background-color: rgba(22, 24, 35, 0);
+    font-family: var(--font-family);
 
     &:focus {
       border-color: rgba(22, 24, 35, 0.2);

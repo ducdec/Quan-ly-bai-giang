@@ -56,10 +56,14 @@ function Search() {
   };
 
   const handleInput = (e) => {
-    e.target.value = e.target.value.trimStart();
-    setSearchValue(e.target.value);
+    let searchValue = e.target.value;
+    searchValue = searchValue.trimStart();
+    setSearchValue(searchValue);
   };
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  // };
   return (
     <HeadlessTippy
       interactive
@@ -94,7 +98,10 @@ function Search() {
         {loading && (
           <FontAwesomeIcon className={cx('loading')} icon={faCircleNotch} />
         )}
-        <button className={cx('search-btn')}>
+        <button
+          className={cx('search-btn')}
+          onMouseDown={(e) => e.preventDefault()}
+        >
           <SearchIcon />
         </button>
       </div>

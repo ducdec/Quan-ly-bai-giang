@@ -6,6 +6,7 @@
   --white: #fff;
   --text-color: #161823;
 
+  --font-family: 'TikTokFont', 'sans-san-serif';
   //Default layout
   --default-layout-header-height: 60px;
   --default-layout-width: 1150px;
@@ -23,7 +24,7 @@ html {
 }
 
 body {
-  font-family: 'TikTokFont', 'sans-san-serif';
+  font-family: var(--font-family);
   font-size: 1.6em;
   line-height: 1.5;
   text-rendering: optimizeSpeed; //hien thi nhanh nha't
