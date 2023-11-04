@@ -1,9 +1,9 @@
-import * as request from '~/routes/utils/request';
+import * as httpRequest from '~/routes/utils/httpRequest';
 
 //API
 export const search = async (q, type = 'less') => {
   try {
-    const res = await request.get(`users/search`, {
+    const res = await httpRequest.get(`users/search`, {
       params: {
         q,
         type,

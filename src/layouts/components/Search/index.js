@@ -7,7 +7,7 @@ import {
   faCircleXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
-import * as searchServices from '~/apiServices/searchServices';
+import * as searchServices from '~/services/searchServices';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import { SearchIcon } from '~/components/Icons';
 import HeadlessTippy from '@tippyjs/react/headless';
