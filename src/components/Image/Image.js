@@ -9,6 +9,7 @@ function Image(
   ref,
 ) {
   const [fallback, setFallback] = useState('');
+
   const handleError = () => {
     setFallback(customFallback);
   };
