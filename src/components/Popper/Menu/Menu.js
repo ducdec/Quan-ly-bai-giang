@@ -75,7 +75,7 @@ function Menu({
 
 Menu.propTypes = {
   children: PropTypes.node.isRequired,
-  items: PropTypes.string,
+  items: PropTypes.array,
   hideOnClick: PropTypes.bool,
   onChange: PropTypes.func,
 };

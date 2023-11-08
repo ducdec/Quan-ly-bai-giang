@@ -16,7 +16,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import 'tippy.js/dist/tippy.css';
-import config from '~/config';
+//import config from '~/config';
 
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
@@ -100,9 +100,10 @@ function Header() {
   return (
     <header className={cx('wrapper')}>
       <div className={cx('inner')}>
-        <Link to={config.home} className={cx('logo-link')}>
-          <img src={images.logo} alt="Tiktok" />
+        <Link to="/" className={cx('logo-link')}>
+          <Image src={images.logo} alt="#" />
         </Link>
+
         <Search />
 
         <div className={cx('actions')}>
@@ -133,7 +134,7 @@ function Header() {
             {currentUser ? (
               <Image
                 className={cx('user-avatar')}
-                src={images.MeoMatTo}
+                src={images.MoMatTo}
                 alt="Nguyen Van Duc"
               />
             ) : (
