@@ -3,6 +3,7 @@ import styles from './Sidebar.module.scss';
 import Menu, { MenuItem } from './Menu';
 import config from '~/config';
 import { HomeIcon, UserIcon, AnphaIcon } from '~/components/Icons';
+import SuggestedAccounts from '../SuggestedAccounts';
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +19,8 @@ function Sidebar() {
           icon={<UserIcon />}
         />
       </Menu>
+      <SuggestedAccounts label="Suggested accounts" />
+      <SuggestedAccounts label="Following accounts" />
     </aside>
   );
 }
