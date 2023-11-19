@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-//import mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 import courses from '../server/routers/courses.js';
@@ -21,15 +21,15 @@ app.use('/courses', courses);
 
 //data http://localhost:5000/
 
-const URI = process.env.MONGODB_URI;
+const URI =
+  'mongodb+srv://nareku12:<Ducdec123>@cluster0.ckeesmj.mongodb.net/?retryWrites=true&w=majority';
 
-// mongoose
-//   .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
-//   .then(() => {
-//     console.log('Connected to DB');
-//   })
-//   .catch((err) => console.log('err', err));
-
-app.listen(PORT, () => {
-  console.log('listening on port', PORT);
-});
+mongoose
+  .connect(URI)
+  .then(() => {
+    console.log('Connected to DB');
+    app.listen(PORT, () => {
+      console.log('listening on port', PORT);
+    });
+  })
+  .catch((err) => console.log('err', err));
