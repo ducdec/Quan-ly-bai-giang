@@ -1,11 +1,11 @@
 {
-  "name": "server",
+  "name": "QLBG",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node index.js"
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +18,10 @@
     "mongoose": "^8.0.1",
     "mongoose-slug-updater": "^3.3.0",
     "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^15.1.0",
+    "prettier": "^3.1.0"
   }
 }

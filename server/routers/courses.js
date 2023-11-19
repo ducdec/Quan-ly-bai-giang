@@ -1,10 +1,8 @@
 import express from 'express';
-import CourseController from './controllers/CourseController';
-
+import { getCourses } from '../controllers/CourseController.js';
 
 const router = express.Router();
 
-router.get('/create', CourseController.create)
-router.get('/:slug', CourseController.show)
+router.get('/', getCourses);
 
 export default router;
