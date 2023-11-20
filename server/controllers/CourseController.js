@@ -1,17 +1,33 @@
+import { CourseModel } from '../models/CourseModel.js';
+
 class CourseController {
   constructor() {}
 
-  show(req, res) {
-    res.send('oke');
+  test(req, res) {
+    try {
+      const course = new CourseModel({
+        name: 'test',
+        description: 'test',
+        image: 'test',
+        slug: 'test',
+        videoID: 'test',
+      });
+      course.save();
+      const courses = CourseModel.find();
+      res.status(200).json(course);
+
+      console.log('Test', courses);
+    } catch (err) {}
   }
-  // // [GET] /course/:slug
-  // show(req, res, next) {
-  //   Course.findOne({ slug: req.params.slug })
-  //     .then((course) => {
-  //       res.render('courses/show', { course: mongooseToObject(course) });
-  //     })
-  //     .catch(next);
-  // }
+
+  // [GET] /course/:slug
+  show(req, res, next) {
+    Course.findOne({ slug: req.params.slug })
+      .then((course) => {
+        res.render('courses/show', { course: mongooseToObject(course) });
+      })
+      .catch(next);
+  }
 
   // // [GET] /course/create
   // create(req, res) {
@@ -33,7 +49,7 @@ class CourseController {
   //       console.error(err);
   //       res.status(500).send('An error occurred while saving the course.');
   //     });
-  // }
+  //}
 }
 
 export default new CourseController();

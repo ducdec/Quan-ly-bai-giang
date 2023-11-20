@@ -21,8 +21,7 @@ app.use('/courses', courses);
 
 //data http://localhost:5000/
 
-const URI =
-  'mongodb+srv://nareku12:<Ducdec123>@cluster0.ckeesmj.mongodb.net/?retryWrites=true&w=majority';
+const URI = 'mongodb://127.0.0.1:27017/Duc_education_dev';
 
 mongoose
   .connect(URI)
