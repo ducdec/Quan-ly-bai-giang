@@ -32,6 +32,11 @@ body {
   overflow-y: overlay;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 // scrobar css
 html *::-webkit-scrollbar {
   border-radius: 0;

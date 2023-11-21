@@ -1,38 +1,47 @@
-import { CourseModel } from '../models/CourseModel.js';
+import { Course } from '../models/CourseModel.js';
 
 class CourseController {
   constructor() {}
 
-  test(req, res) {
+  getCourse(req, res) {
     try {
-      const course = new CourseModel({
-        name: 'test',
-        description: 'test',
-        image: 'test',
-        slug: 'test',
-        videoID: 'test',
-      });
-      course.save();
-      const courses = CourseModel.find();
-      res.status(200).json(course);
-
+      const courses = Course.find();
       console.log('Test', courses);
-    } catch (err) {}
+      res.status(200).json(Course);
+    } catch (err) {
+      res.status(500).json(err);
+    }
   }
 
-  // [GET] /course/:slug
+  // [GET] /courses/:slug
   show(req, res, next) {
-    Course.findOne({ slug: req.params.slug })
-      .then((course) => {
-        res.render('courses/show', { course: mongooseToObject(course) });
-      })
-      .catch(next);
+    res.json(Course);
   }
 
-  // // [GET] /course/create
-  // create(req, res) {
-  //   res.render('courses/create');
-  // }
+  // [POST] /courses/create
+  create(req, res) {
+    const newCourse = req.body;
+
+    // Kiểm tra xem dữ liệu có đầy đủ hay không
+    if (!newCourse || Object.keys(newCourse).length === 0) {
+      return res
+        .status(400)
+        .json({ error: 'Invalid data. Course data is required.' });
+    }
+
+    const course = new Course(newCourse);
+
+    course
+      .save()
+      .then((savedCourse) => {
+        res.status(201).json(savedCourse); // Trạng thái 201: Created
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
+  }
+
   // // [POST] /course/store
   // store(req, res, next) {
   //   //res.json(req.body)
