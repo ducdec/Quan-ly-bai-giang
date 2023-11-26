@@ -5,12 +5,18 @@ mongoose.plugin(slug);
 
 const schema = new mongoose.Schema(
   {
-    usename: {
+    courseID: {
       type: String,
       required: true,
     },
-    password: {
+    lectureID: {
       type: String,
+      required: true,
+    },
+    slug: {
+      type: String,
+      slug: 'name',
+      unique: true,
     },
   },
   {
@@ -18,4 +24,4 @@ const schema = new mongoose.Schema(
   },
 );
 
-export const Account = mongoose.model('Account', schema);
+export const Course = mongoose.model('Course', schema);
