@@ -5,9 +5,9 @@ import { dirname } from 'path';
 import methodOverride from 'method-override';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
+import connectDB from '../server/config/db/index.js';
 import courses from '../server/routers/courses.js';
 
 import customRenderer from './util/customRenderer.js';
@@ -40,14 +40,19 @@ app.use('/courses', courses);
 
 //data http://localhost:5000/
 
-const URI = process.env.MONGODB_URI;
+connectDB();
+app.listen(PORT, () => {
+  console.log(`http://localhost:${PORT}`);
+});
 
-mongoose
-  .connect(URI)
-  .then(() => {
-    console.log('Connected to DB');
-    app.listen(PORT, () => {
-      console.log('listening on port', PORT);
-    });
-  })
-  .catch((err) => console.log('err', err));
+// const URI = process.env.MONGODB_URI;
+
+// mongoose
+//   .connect(URI)
+//   .then(() => {
+//     console.log('Connected to DB');
+//     app.listen(PORT, () => {
+//       console.log('listening on port', PORT);
+//     });
+//   })
+//   .catch((err) => console.log('err', err));

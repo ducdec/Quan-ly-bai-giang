@@ -1,10 +1,20 @@
-import { Course } from '../models/CourseModel.js';
+import { Course } from '../models/Course.js';
 
 class CourseController {
   constructor() {}
 
   getCourse(req, res) {
     try {
+      const a = new Course({
+        name: 'anpha',
+        title: 'Course',
+        description: 'dau het ca dau',
+        image: 'http://123',
+        slug: 'anpha',
+        videoID: 'anpha',
+      });
+      a.save();
+
       const courses = Course.find();
       console.log('Test', courses);
       res.status(200).json(Course);
@@ -15,7 +25,8 @@ class CourseController {
 
   // [GET] /courses/:slug
   show(req, res, next) {
-    res.json(Course);
+    const courses = Course.find();
+    res.json(courses);
   }
 
   // [POST] /courses/create
