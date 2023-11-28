@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 
 import connectDB from '../server/config/db/index.js';
 import courses from '../server/routers/courses.js';
+import users from '../server/routers/users.js';
 
 import customRenderer from './util/customRenderer.js';
 
@@ -37,6 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }));
 app.use('/', cors());
 
 app.use('/courses', courses);
+app.use('/users', users);
 
 //data http://localhost:5000/
 
