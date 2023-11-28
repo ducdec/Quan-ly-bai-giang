@@ -5,10 +5,12 @@ import { dirname } from 'path';
 import methodOverride from 'method-override';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import mongoose from 'mongoose';
+//import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
+import connectDB from './config/db.js';
 import courses from '../server/routers/courses.js';
+import users from '../server/routers/users.js';
 
 import customRenderer from './util/customRenderer.js';
 
@@ -37,17 +39,19 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }));
 app.use('/', cors());
 
 app.use('/courses', courses);
-
+app.use('/users', users);
 //data http://localhost:5000/
+connectDB();
+app.listen(PORT, () => console.log(`Server http://localhost:${PORT}`));
 
-const URI = process.env.MONGODB_URI;
+// const URI = process.env.MONGODB_URI;
 
-mongoose
-  .connect(URI)
-  .then(() => {
-    console.log('Connected to DB');
-    app.listen(PORT, () => {
-      console.log('listening on port', PORT);
-    });
-  })
-  .catch((err) => console.log('err', err));
+// mongoose
+//   .connect(URI)
+//   .then(() => {
+//     console.log('Connected to DB');
+//     app.listen(PORT, () => {
+//       console.log('listening on port', PORT);
+//     });
+//   })
+//   .catch((err) => console.log('err', err));

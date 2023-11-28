@@ -15,7 +15,7 @@ const schema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required,
+      required: true,
     },
   },
   {
@@ -23,4 +23,4 @@ const schema = new mongoose.Schema(
   },
 );
 
-export const Account = mongoose.model('Account', schema);
+export const User = mongoose.model('User', schema);

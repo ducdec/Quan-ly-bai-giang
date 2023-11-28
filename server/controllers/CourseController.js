@@ -1,10 +1,20 @@
-import { Course } from '../models/CourseModel.js';
+import { Course } from '../models/Course.js';
 
 class CourseController {
   constructor() {}
 
   getCourse(req, res) {
     try {
+      const a = new Course({
+        name: 'anpha',
+        title: 'abc',
+        description: 'bbbbb',
+        image: 'http://asdasdad',
+        slug: 'name',
+        videoID: '123123',
+      });
+      a.save();
+
       const courses = Course.find();
       console.log('Test', courses);
       res.status(200).json(Course);
@@ -15,7 +25,8 @@ class CourseController {
 
   // [GET] /courses/:slug
   show(req, res, next) {
-    res.json(Course);
+    const courses = Course.find();
+    res.json(courses);
   }
 
   // [POST] /courses/create
@@ -42,23 +53,18 @@ class CourseController {
       });
   }
 
-  // // [POST] /course/store
-  // store(req, res, next) {
-  //   //res.json(req.body)
-  //   const formData = req.body;
-  //   formData.image = `https://i.ytimg.com/vi/${req.body.videoID}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBB2M7IXJ2Vy5vqYWTIN6R-qvBPjg`;
-  //   const course = new Course(formData);
+  //   async postCourse(req, res) {
+  //     try {
+  //       // Assuming Course is a Mongoose model
+  //       const newCourse = new Course(req.body); // Assuming the request body contains the course data
+  //       const savedCourse = await newCourse.save();
 
-  //   course
-  //     .save()
-  //     .then(() => {
-  //       res.redirect('/');
-  //     })
-  //     .catch((err) => {
+  //       res.status(201).json(savedCourse);
+  //     } catch (err) {
   //       console.error(err);
-  //       res.status(500).send('An error occurred while saving the course.');
-  //     });
-  //}
+  //       res.status(500).json({ error: 'Internal Server Error' });
+  //     }
+  //   }
 }
 
 export default new CourseController();
