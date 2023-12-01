@@ -6,7 +6,7 @@ const cx = classNames.bind(styles);
 
 function Lecture() {
   return (
-    <div>
+    <div className={cx('wrapper')}>
       <ListLecture />
     </div>
   );

@@ -1,6 +1,6 @@
 const routers = {
   home: '/',
-  following: '/following',
+  lecture: '/lecture',
   profile: '/:nickname',
   search: '/search',
   upload: '/upload',
