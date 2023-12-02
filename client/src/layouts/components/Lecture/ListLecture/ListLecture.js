@@ -2,6 +2,7 @@ import images from '~/assets/images';
 import styles from './ListLecture.module.scss';
 import classNames from 'classnames/bind';
 
+import LecturePanel from '~/components/Lecture/LecturePanel';
 const cx = classNames.bind(styles);
 
 function ListLecture() {
@@ -29,10 +30,10 @@ function ListLecture() {
                 </div>
                 <div className={cx('CurriculumOfCourse_subWrapper')}>
                   <ul>
-                    <li className={cx('CurriculumOfCourse_hidden')}>
+                    {/* <li className={cx('CurriculumOfCourse_hidden')}>
                       <strong>11 </strong> chương
                     </li>
-                    <li className={cx('dot')}>•</li>
+                    <li className={cx('dot')}>•</li> */}
                     <li>
                       <strong>138 </strong> bài học
                     </li>
@@ -43,10 +44,14 @@ function ListLecture() {
                       </span>
                     </li>
                   </ul>
-                  <div className={cx('CurriculumOfCourse_toggleBtn')}>
+                  {/* <div className={cx('CurriculumOfCourse_toggleBtn')}>
                     Mở rộng tất cả
-                  </div>
+                  </div> */}
                 </div>
+              </div>
+
+              <div className={cx('CurriculumOfCourse_panel')}>
+                <LecturePanel />
               </div>
             </div>
           </section>

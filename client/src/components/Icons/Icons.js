@@ -4,7 +4,7 @@ export const SearchIcon = ({
   className,
 }) => (
   <svg
-    className={className}
+    className={`icon ${className}`}
     width={width}
     data-e2e=""
     height={height}
@@ -26,7 +26,7 @@ export const MessageIcon = ({
   className,
 }) => (
   <svg
-    className={className}
+    className={`icon ${className}`}
     width={width}
     data-e2e={height}
     height="1em"
@@ -44,7 +44,7 @@ export const MessageIcon = ({
 
 export const HomeIcon = (width = '3.2rem', height = '32', className) => (
   <svg
-    className={className}
+    className={`icon ${className}`}
     width={32}
     data-e2e=""
     height={32}
@@ -62,7 +62,7 @@ export const HomeIcon = (width = '3.2rem', height = '32', className) => (
 
 export const AnphaIcon = (width = '3.2rem', height = '3.2rem', className) => (
   <svg
-    className={className}
+    className={`icon ${className}`}
     width={32}
     data-e2e=""
     height={32}
@@ -90,10 +90,10 @@ export const AnphaIcon = (width = '3.2rem', height = '3.2rem', className) => (
 
 export const UserIcon = (width = '2.4rem', height = '2.4rem', className) => (
   <svg
-    className={className}
+    className={`icon ${className}`}
     width={32}
-    data-e2e=""
     height={32}
+    data-e2e=""
     viewBox="0 0 48 48"
     fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
@@ -102,6 +102,30 @@ export const UserIcon = (width = '2.4rem', height = '2.4rem', className) => (
       fillRule="evenodd"
       clipRule="evenodd"
       d="M24.0003 7C20.1343 7 17.0003 10.134 17.0003 14C17.0003 17.866 20.1343 21 24.0003 21C27.8663 21 31.0003 17.866 31.0003 14C31.0003 10.134 27.8663 7 24.0003 7ZM13.0003 14C13.0003 7.92487 17.9252 3 24.0003 3C30.0755 3 35.0003 7.92487 35.0003 14C35.0003 20.0751 30.0755 25 24.0003 25C17.9252 25 13.0003 20.0751 13.0003 14ZM24.0003 33C18.0615 33 13.0493 36.9841 11.4972 42.4262C11.3457 42.9573 10.8217 43.3088 10.2804 43.1989L8.32038 42.8011C7.77914 42.6912 7.4266 42.1618 7.5683 41.628C9.49821 34.358 16.1215 29 24.0003 29C31.8792 29 38.5025 34.358 40.4324 41.628C40.5741 42.1618 40.2215 42.6912 39.6803 42.8011L37.7203 43.1989C37.179 43.3088 36.6549 42.9573 36.5035 42.4262C34.9514 36.9841 29.9391 33 24.0003 33Z"
+    ></path>
+  </svg>
+);
+
+export const StartIcon = ({
+  width = '1.4rem',
+  height = '1.4rem',
+  className,
+}) => (
+  <svg
+    className={`icon ${className}`}
+    width={width}
+    height={height}
+    aria-hidden="true"
+    focusable="false"
+    data-prefix="fas"
+    data-icon="circle-play"
+    role="img"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+  >
+    <path
+      fill="currentColor"
+      d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM176 168V344C176 352.7 180.7 360.7 188.3 364.9C195.8 369.2 205.1 369 212.5 364.5L356.5 276.5C363.6 272.1 368 264.4 368 256C368 247.6 363.6 239.9 356.5 235.5L212.5 147.5C205.1 142.1 195.8 142.8 188.3 147.1C180.7 151.3 176 159.3 176 168V168z"
     ></path>
   </svg>
 );

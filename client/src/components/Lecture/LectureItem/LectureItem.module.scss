@@ -1,0 +1,45 @@
+.lessonItem {
+    border-bottom: 1px solid rgba(0,0,0,.03);
+    color: #333;
+    font-size: 1.4rem;
+    line-height: 48px;
+    overflow: hidden;
+    padding: 0 30px 0 48px;
+    position: relative;
+
+    &:hover {
+        background-color: #f8f9fa;
+      }
+}
+
+.floatLeft {
+    float: left;
+}
+
+.icon {
+    color: rgba(240,81,35,.4);
+    margin-right: 4px;
+    left: 24px;
+    top:17px;
+    position: absolute;
+    overflow: visible;
+    box-sizing: content-box;
+    display: var(--fa-display, inline-block);
+    height: 1em;
+    vertical-align: -0.125em;
+  }
+
+.iconLink {
+    transition: all .3s ease-in-out;
+}
+
+.lectureName {
+    padding-left: 6px;
+}
+
+.floatRight {
+    margin-left: 58px;
+    min-width: 69px;
+    text-align: right;
+    float: right;
+}
