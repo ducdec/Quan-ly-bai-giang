@@ -1,56 +1,79 @@
+import React from 'react';
+import classNames from 'classnames/bind';
+import styles from './MyCourses.module.scss';
+
+const cx = classNames.bind(styles);
+
 function StoredCourse() {
   return (
-    <div>
+    <div className={cx('form-container')}>
       <form
-        class="mt-4"
+        className={cx('mt-5')}
         name="container-form"
         method="POST"
         action="/courses/handle-form-actions"
       >
         <h3>Danh Sách</h3>
-        <div class="row">
-          <div class="mt-4 d-flex align-items-center .col-md-4">
-            <div class="form-check">
+        <div className={cx('row')}>
+          <div
+            className={cx('mt-4', 'd-flex', 'align-items-center', 'col-md-4')}
+          >
+            <div className="form-check">
               <input
-                class="form-check-input"
+                className="form-check-input"
                 type="checkbox"
                 value=""
                 id="checkbox-all"
               />
-              <label class="form-check-label select-all" for="checkbox-all">
+              <label
+                className={cx('form-check-label', 'select-all')}
+                htmlFor="checkbox-all"
+              >
                 Chọn tất cả
               </label>
             </div>
 
             <select
-              class="form-control form-control-sm checkbox-select-all"
+              className={cx(
+                'form-select',
+                'form-select-lg',
+                'checkbox-select-all',
+              )}
+              aria-label="Default select example"
               name="action"
               required
             >
-              <option value="">-- Hành động --</option>
+              <option disabled selected>
+                -- Hành động --
+              </option>
               <option value="delete">Xóa</option>
             </select>
 
             <button
-              class="btn btn-primary btn-sm check-all-submit-btn"
+              className={cx(
+                'btn',
+                'btn-primary',
+                'btn-lg',
+                'check-all-submit-btn',
+              )}
               disabled
             >
               Thực hiện
             </button>
           </div>
 
-          <a class="col-md-3 ml-md-auto" href="/me/trash/courses">
+          <a className={cx('col-md-3', 'ms-md-auto')} href="/me/trash/courses">
             Thùng Rác
           </a>
         </div>
-        <table class="table mt-4">
+        <table className={cx('table', 'mt-4')}>
           <thead>
             <tr>
               <th scope="col">#</th>
               <th scope="col">Stt</th>
               <th scope="col">Tên</th>
               <th scope="col">Người Hướng Dẫn</th>
-              <th scope="col" colspan="2">
+              <th scope="col" colSpan="2">
                 Thời gian tạo
               </th>
             </tr>
@@ -59,9 +82,9 @@ function StoredCourse() {
           <tbody>
             <tr>
               <td>
-                <div class="form-check">
+                <div className="form-check">
                   <input
-                    class="form-check-input"
+                    className="form-check-input"
                     type="checkbox"
                     name="courseId[]"
                     value="{{this._id}}"
@@ -73,12 +96,15 @@ function StoredCourse() {
               <td>1</td>
               <td></td>
               <td>
-                <a href="/courses/{{this._id}}/edit" class="btn btn-link">
+                <a
+                  href="/courses/{{this._id}}/edit"
+                  className="btn btn-lg btn-link"
+                >
                   Sửa
                 </a>
                 <a
-                  href=""
-                  class="btn btn-link"
+                  href="123"
+                  className="btn btn-lg btn-link"
                   data-id="{{this._id}}"
                   data-toggle="modal"
                   data-target="#delete-course-model"
@@ -89,9 +115,9 @@ function StoredCourse() {
             </tr>
           </tbody>
           <tr>
-            <td colspan="5" class="text-center">
-              Bạn chưa đăng cm gì cả!!!!
-              <a href="/courses/create">Đăng now</a>
+            <td colSpan="5" className="text-center">
+              Bạn chưa đăng gì cả!
+              <a href="/courses/create">Đăng ngay</a>
             </td>
           </tr>
         </table>
@@ -99,34 +125,37 @@ function StoredCourse() {
 
       {/* {{!-- confim --}}  */}
 
-      <div id="delete-course-model" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Xóa hả?</h5>
+      <div
+        className={cx('modal')}
+        id="delete-course-model"
+        tabIndex="-1"
+        role="dialog"
+      >
+        <div className={cx('modal-dialog')} role="document">
+          <div className={cx('modal-content')}>
+            <div className={cx('modal-header')}>
+              <h5 className={cx('modal-title')}>Xóa hả?</h5>
               <button
                 type="button"
-                class="close"
+                className={cx('btn-close')}
                 data-dismiss="modal"
                 aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
+              ></button>
             </div>
-            <div class="modal-body">
-              <p>Bạn chắc chắn muón xóa?</p>
+            <div className={cx('modal-body')}>
+              <p>Bạn chắc chắn muốn xóa?</p>
             </div>
-            <div class="modal-footer">
+            <div className={cx('modal-footer')}>
               <button
                 type="button"
                 id="btn-delete-course"
-                class="btn btn-danger"
+                className={cx('btn', 'btn-danger')}
               >
                 Xóa bỏ
               </button>
               <button
                 type="button"
-                class="btn btn-secondary"
+                className={cx('btn', 'btn-secondary')}
                 data-dismiss="modal"
               >
                 Hủy

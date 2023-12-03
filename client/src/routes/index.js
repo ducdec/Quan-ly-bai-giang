@@ -6,6 +6,7 @@ import { HeaderOnly } from '~/layouts';
 import Home from '~/pages/Home';
 import CreateCourse from '~/pages/Course/create';
 import UpdateCourse from '~/pages/Course/edit';
+import StoredCourse from '~/pages/Course/MyCourses/storedCourses';
 
 import Lecture from '~/pages/Lecture';
 import Profile from '~/pages/Profile';
@@ -25,6 +26,11 @@ const publicRoutes = [
   {
     path: config.routes.editCourse,
     component: UpdateCourse,
+    layout: HeaderOnly,
+  },
+  {
+    path: config.routes.storedCourse,
+    component: StoredCourse,
     layout: HeaderOnly,
   },
 

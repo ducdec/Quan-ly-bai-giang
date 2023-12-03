@@ -1,0 +1,53 @@
+.form-container {
+    max-width: 1140px;
+    width: 1000px;
+    margin: 20px auto;
+  }
+
+thead {
+    height: 50px;
+}
+
+tbody {
+    height: 60px;
+}
+
+.mt-5 h3 {
+    font-size: 1.75em;
+    font-weight: 600;
+    padding-bottom: 12px;
+}
+
+.card-text{
+    height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+  
+  .select-all {
+    min-width: 90px;
+  }
+  
+  .checkbox-select-all {
+    width: 140px;
+    margin: 0 8px;
+  }
+  
+  .c-item img {
+    max-width: 100%;
+    height: auto;
+  }
+    
+  @media screen and (max-width: 768px) {
+    .form-container {
+      max-width: 100%;
+    }
+  }
+  
