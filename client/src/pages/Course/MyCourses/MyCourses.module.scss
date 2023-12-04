@@ -8,10 +8,6 @@ thead {
     height: 50px;
 }
 
-tbody {
-    height: 60px;
-}
-
 .mt-5 h3 {
     font-size: 1.75em;
     font-weight: 600;
@@ -30,16 +26,35 @@ tbody {
     border-radius: 50%;
     margin-right: 4px;
   }
-  
+  .checkbox-select-all {
+    max-width: 130px;
+  }
   .select-all {
     min-width: 90px;
   }
   
-  .checkbox-select-all {
-    width: 140px;
-    margin: 0 8px;
-  }
+  .check-all-submit-btn {
+    margin-left: 8px; 
+    height: 32px; 
+    width: 80px;
+    line-height: normal; 
+    font-size: 500; /* Đặt kích thước chữ của nút */
+    cursor: pointer;
   
+    &:hover {
+      text-decoration: underline; /* Hiển thị gạch chân khi hover */
+    }
+  }
+  .underline {
+    color: #007BFF;
+    text-decoration: none;
+    display: inline-block; /* Cho phép hiển thị gạch chân */
+  
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .c-item img {
     max-width: 100%;
     height: auto;

@@ -4,9 +4,10 @@ import config from '~/config';
 import { HeaderOnly } from '~/layouts';
 
 import Home from '~/pages/Home';
-import CreateCourse from '~/pages/Course/create';
-import UpdateCourse from '~/pages/Course/edit';
+import CreateCourse from '~/pages/Course/component/create';
+import UpdateCourse from '~/pages/Course/component/edit';
 import StoredCourse from '~/pages/Course/MyCourses/storedCourses';
+import TrashCourse from '~/pages/Course/MyCourses/trashCourses';
 
 import Lecture from '~/pages/Lecture';
 import Profile from '~/pages/Profile';
@@ -31,6 +32,11 @@ const publicRoutes = [
   {
     path: config.routes.storedCourse,
     component: StoredCourse,
+    layout: HeaderOnly,
+  },
+  {
+    path: config.routes.trashCourse,
+    component: TrashCourse,
     layout: HeaderOnly,
   },
 
