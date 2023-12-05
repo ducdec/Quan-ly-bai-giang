@@ -10,7 +10,7 @@ function ScollList() {
       <div>
         <div className={cx('SL-heading-wrap')}>
           <h2 className={cx('SL-heading')}>
-            <span>Khoa hoc pro</span>
+            <span>Khoa hoc new</span>
           </h2>
         </div>
       </div>

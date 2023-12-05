@@ -1,10 +1,32 @@
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Course.module.scss';
 import Button from '~/components/Button';
 
+import * as CourseServices from '~/services/courseServices';
+
 const cx = classNames.bind(styles);
 
 function CreateCourse() {
+  const [courseResult, setCourseResult] = useState([]);
+
+  useEffect(() => {
+    const fetchApi = async () => {
+      try {
+        const result = await CourseServices.getCourse();
+        if (result) {
+          setCourseResult(result);
+        } else {
+          console.error('API returned an empty result.');
+        }
+      } catch (error) {
+        console.error('Error fetching course data:', error);
+      }
+    };
+
+    fetchApi();
+  }, []); // [] useEffect chỉ chạy một lần
+
   return (
     <div className={cx('form-container')}>
       <div className={cx('mt-5')}>

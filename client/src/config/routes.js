@@ -1,7 +1,7 @@
 const routers = {
   home: '/',
   createCourse: '/courses/store',
-  editCourse: '/courses/:id',
+  editCourse: '/courses/:id/edit',
   storedCourse: '/stored/courses',
   trashCourse: '/trash/courses',
 

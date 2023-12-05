@@ -3,34 +3,41 @@ import { Course } from '../models/Course.js';
 class CourseController {
   constructor() {}
 
-  getCourse(req, res) {
+  // courses/get
+  async getCourse(req, res) {
     try {
-      const a = new Course({
-        name: 'anpha',
-        title: 'Course',
-        description: 'dau het ca dau',
-        image: 'http://123',
-        slug: 'anpha',
-        videoID: 'anpha',
-      });
-      a.save();
+      // const a = new Course({
+      //   name: 'Cơ sở dữ liệu',
+      //   description: 'dau het ca dau',
+      //   image:
+      //     'https://i.ytimg.com/vi/79rF9BS0xvE/hqdefault.jpg?sqp=-oaymwEbCKgBEF5IVfKriqkDDggBFQAAiEIYAXABwAEG&rs=AOn4CLC1vPTpnHMz4iaoK-Y8iNdAtM-M4A',
+      //   instructors: 'Le Van A',
+      //   status: 'new',
+      //   slug: 'anpha',
+      // });
+      // a.save();
 
-      const courses = Course.find();
-      console.log('Test', courses);
-      res.status(200).json(Course);
+      const courses = await Course.find();
+      res.status(200).json(courses);
     } catch (err) {
       res.status(500).json(err);
     }
   }
 
   // [GET] /courses/:slug
-  show(req, res, next) {
-    const courses = Course.find();
-    res.json(courses);
+
+  async show(req, res, next) {
+    try {
+      const courses = await Course.find();
+      res.json(courses);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
 
-  // [POST] /courses/create
-  create(req, res) {
+  // [POST] /courses/store
+  async store(req, res) {
     const newCourse = req.body;
 
     // Kiểm tra xem dữ liệu có đầy đủ hay không
@@ -41,8 +48,7 @@ class CourseController {
     }
 
     const course = new Course(newCourse);
-
-    course
+    await course
       .save()
       .then((savedCourse) => {
         res.status(201).json(savedCourse); // Trạng thái 201: Created
@@ -52,24 +58,6 @@ class CourseController {
         res.status(500).json({ error: 'Internal Server Error' });
       });
   }
-
-  // // [POST] /course/store
-  // store(req, res, next) {
-  //   //res.json(req.body)
-  //   const formData = req.body;
-  //   formData.image = `https://i.ytimg.com/vi/${req.body.videoID}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBB2M7IXJ2Vy5vqYWTIN6R-qvBPjg`;
-  //   const course = new Course(formData);
-
-  //   course
-  //     .save()
-  //     .then(() => {
-  //       res.redirect('/');
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //       res.status(500).send('An error occurred while saving the course.');
-  //     });
-  //}
 }
 
 export default new CourseController();

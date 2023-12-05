@@ -9,23 +9,24 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    title: {
-      type: String,
-    },
     description: {
       type: String,
     },
     image: {
       type: String,
     },
+    instructors: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+    },
     slug: {
       type: String,
       slug: 'name',
       unique: true,
-    },
-    videoID: {
-      type: String,
-      required: true,
     },
   },
   {
