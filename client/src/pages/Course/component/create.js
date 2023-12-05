@@ -1,44 +1,50 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Course.module.scss';
 import Button from '~/components/Button';
 
-import * as CourseServices from '~/services/courseServices';
+import config from '~/config';
+import request from '~/utils/axios';
 
 const cx = classNames.bind(styles);
 
 function CreateCourse() {
-  const [courseResult, setCourseResult] = useState([]);
+  const [newCourse, setNewCourse] = useState({});
+  //const history = useHistory();
+  const handleInputChange = (e) => {
+    setNewCourse({
+      ...newCourse,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  useEffect(() => {
-    const fetchApi = async () => {
-      try {
-        const result = await CourseServices.getCourse();
-        if (result) {
-          setCourseResult(result);
-        } else {
-          console.error('API returned an empty result.');
-        }
-      } catch (error) {
-        console.error('Error fetching course data:', error);
-      }
-    };
-
-    fetchApi();
-  }, []); // [] useEffect chỉ chạy một lần
+  const handleCreateCourse = (e) => {
+    e.preventDefault();
+    request
+      .post('/courses/store', newCourse)
+      .then((res) => {
+        console.log('Success:', res.data);
+        //history.push('/courses/stored');
+      })
+      .catch((error) => {
+        console.error('Error:', error.res ? error.res.data : error.message);
+      });
+  };
 
   return (
     <div className={cx('form-container')}>
       <div className={cx('mt-5')}>
         <h3>Thêm Khóa Học</h3>
 
-        <form method="POST" action="/courses/store">
+        <form onSubmit={handleCreateCourse}>
           <div className={cx('form-group')}>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">
                 Tên
               </label>
               <input
+                onChange={handleInputChange}
+                value={newCourse.name || ''}
                 type="text"
                 className={cx('form-control')}
                 id="name"
@@ -51,6 +57,8 @@ function CreateCourse() {
                 Mô tả
               </label>
               <textarea
+                onChange={handleInputChange}
+                value={newCourse.description || ''}
                 rows="3"
                 className={cx('form-control')}
                 id="description"
@@ -59,26 +67,48 @@ function CreateCourse() {
             </div>
 
             <div className={cx('form-group')}>
-              <label htmlFor="instructors">Người Hướng Dẫn</label>
+              <label htmlFor="instructor">Người Hướng Dẫn</label>
               <input
+                onChange={handleInputChange}
+                value={newCourse.instructor || ''}
                 type="text"
                 className={cx('form-control')}
-                id="instructors"
-                name="instructors"
+                id="instructor"
+                name="instructor"
               />
             </div>
 
             <div className={cx('form-group')}>
-              <label htmlFor="videoID">Video ID</label>
+              <label htmlFor="image">Ảnh</label>
               <input
+                onChange={handleInputChange}
+                value={newCourse.image || ''}
                 type="text"
                 className={cx('form-control')}
-                id="videoID"
-                name="videoID"
+                id="image"
+                name="image"
               />
             </div>
 
-            <Button blue>Thêm</Button>
+            <div className={cx('form-group')}>
+              <label htmlFor="status">Trạng thái</label>
+              <input
+                onChange={handleInputChange}
+                value={newCourse.status || ''}
+                type="text"
+                className={cx('form-control')}
+                id="status"
+                name="status"
+              />
+            </div>
+
+            <Button
+              blue
+              onClick={handleCreateCourse}
+              to={config.routes.storedCourse}
+            >
+              Thêm
+            </Button>
           </div>
         </form>
       </div>

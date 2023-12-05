@@ -2,8 +2,8 @@ const routers = {
   home: '/',
   createCourse: '/courses/store',
   editCourse: '/courses/:id/edit',
-  storedCourse: '/stored/courses',
-  trashCourse: '/trash/courses',
+  storedCourse: '/courses/stored',
+  trashCourse: '/courses/trash',
 
   lecture: '/lecture',
   profile: '/:nickname',

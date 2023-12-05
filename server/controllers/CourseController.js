@@ -1,5 +1,5 @@
 import { Course } from '../models/Course.js';
-
+import { mutipleMongooseToObject } from '../util/mongoose.js';
 class CourseController {
   constructor() {}
 
@@ -38,25 +38,57 @@ class CourseController {
 
   // [POST] /courses/store
   async store(req, res) {
-    const newCourse = req.body;
+    try {
+      const newCourse = req.body;
 
-    // Kiểm tra xem dữ liệu có đầy đủ hay không
-    if (!newCourse || Object.keys(newCourse).length === 0) {
-      return res
-        .status(400)
-        .json({ error: 'Invalid data. Course data is required.' });
+      if (!newCourse || Object.keys(newCourse).length === 0) {
+        return res
+          .status(400)
+          .json({ error: 'Invalid data. Course data is required.' });
+      }
+
+      const course = new Course(newCourse);
+      const savedCourse = await course.save();
+
+      res.status(201).json(savedCourse);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
+  }
 
-    const course = new Course(newCourse);
-    await course
-      .save()
-      .then((savedCourse) => {
-        res.status(201).json(savedCourse); // Trạng thái 201: Created
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-      });
+  // [GET] /courses/:id/edit
+  async edit(req, res) {
+    try {
+      const courseId = req.params.id;
+
+      if (!mongoose.Types.ObjectId.isValid(courseId)) {
+        return res.status(400).json({ error: 'Invalid course ID' });
+      }
+
+      const course = await Course.findById(courseId);
+
+      // Check if the course exists
+      if (!course) {
+        return res.status(404).json({ error: 'Course not found' });
+      }
+
+      res.render('edit-course', { course });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  // [GET] courses/stored
+  async storeCourses(req, res, next) {
+    try {
+      const courses = await Course.find();
+      res.json(courses);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import slug from 'mongoose-slug-updater';
+import mongooseDelete from 'mongoose-delete';
 
 mongoose.plugin(slug);
 
@@ -15,7 +16,7 @@ const schema = new mongoose.Schema(
     image: {
       type: String,
     },
-    instructors: {
+    instructor: {
       type: String,
       required: true,
     },
@@ -33,5 +34,10 @@ const schema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+schema.plugin(mongooseDelete, {
+  deletedAt: true,
+  overrideMethods: true,
+});
 
 export const Course = mongoose.model('Course', schema);

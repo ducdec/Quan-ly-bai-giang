@@ -1,18 +1,31 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import styles from './MyCourses.module.scss';
+import { useState, useEffect } from 'react';
+
+import * as courseServices from '~/services/courseServices';
 
 const cx = classNames.bind(styles);
 
 function StoredCourse() {
+  const [courseResult, setCourseResult] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await courseServices.storedCourse();
+        setCourseResult(result);
+      } catch (error) {
+        console.error('Error in component:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // [] useEffect chỉ chạy một lần
+
   return (
     <div className={cx('form-container')}>
-      <form
-        className={cx('mt-5')}
-        name="container-form"
-        method="POST"
-        action="/courses/handle-form-actions"
-      >
+      <form className={cx('mt-5')} name="container-form">
         <h3>Danh Sách</h3>
         <div className={cx('row')}>
           <div
@@ -63,7 +76,7 @@ function StoredCourse() {
 
           <a
             className={cx('col-md-3', 'ms-md-auto', 'underline')}
-            href="/trash/courses"
+            href="/courses/trash"
           >
             Thùng Rác(0)
           </a>
@@ -76,58 +89,61 @@ function StoredCourse() {
               <th scope="col">Stt</th>
               <th scope="col">Tên</th>
               <th scope="col">Người hướng dẫn</th>
-              <th scope="col">Số tiết</th>
+              <th scope="col">Trạng thái</th>
               <th scope="col" colSpan="2">
                 Thời gian tạo
               </th>
             </tr>
           </thead>
 
-          {/* {{#each courses}} */}
-          <tbody>
+          {courseResult.length === 0 ? (
             <tr>
-              <td>
-                <div className={cx('form-check')}>
-                  <input
-                    className={cx('form-check-input')}
-                    type="checkbox"
-                    name="courseId[]"
-                    value="{{this._id}}"
-                  />
-                </div>
-              </td>
-              <th scope="row">1</th>
-              <td className={cx('name')}>name</td>
-              <td className={cx('number')}>1</td>
-              <td className={cx('number')}>123</td>
-              <td className={cx('duration')}>1tieng 32phut</td>
-              <td>
-                <a
-                  style={{ fontSize: '16px' }}
-                  href={`/courses/edit`}
-                  className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
-                >
-                  Sửa
-                </a>
-                <a
-                  href="123"
-                  style={{ fontSize: '16px' }}
-                  className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
-                  data-id="{this._id}"
-                  data-toggle="modal"
-                  data-target="#delete-course-model"
-                >
-                  Xóa
-                </a>
+              <td colSpan="5" className={cx('text-center')}>
+                Bạn chưa đăng gì cả!
+                <a href="/courses/create">Đăng ngay</a>
               </td>
             </tr>
-          </tbody>
-          <tr>
-            <td colSpan="5" className={cx('text-center')}>
-              Bạn chưa đăng gì cả!
-              <a href="/courses/create">Đăng ngay</a>
-            </td>
-          </tr>
+          ) : (
+            courseResult.map((course, index) => (
+              <tbody>
+                <tr key={course._id}>
+                  <td>
+                    <div className={cx('form-check')}>
+                      <input
+                        className={cx('form-check-input')}
+                        type="checkbox"
+                        name="courseId[]"
+                      />
+                    </div>
+                  </td>
+                  <th scope="row">{index + 1}</th>
+                  <td className={cx('name')}>{course.name}</td>
+                  <td className={cx('number')}>{course.instructors}</td>
+                  <td className={cx('number')}>{course.status}</td>
+                  <td className={cx('duration')}>{course.createdAt}</td>
+                  <td>
+                    <a
+                      style={{ fontSize: '16px' }}
+                      href={`/courses/${course._id}/edit`}
+                      className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
+                    >
+                      Sửa
+                    </a>
+                    <a
+                      href="123"
+                      style={{ fontSize: '16px' }}
+                      className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
+                      data-id={`${course._id}`}
+                      data-toggle="modal"
+                      data-target="#delete-course-model"
+                    >
+                      Xóa
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            ))
+          )}
         </table>
       </form>
 

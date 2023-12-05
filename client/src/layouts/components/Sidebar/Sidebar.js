@@ -12,7 +12,11 @@ function Sidebar() {
     <aside className={cx('wrapper')}>
       <Menu>
         <MenuItem title="For you" to={config.routes.home} icon={<HomeIcon />} />
-        <MenuItem title="anpha" to={config.routes.anpha} icon={<AnphaIcon />} />
+        <MenuItem
+          title="Course"
+          to={config.routes.storedCourse}
+          icon={<AnphaIcon />}
+        />
         <MenuItem
           title="Profile"
           to={config.routes.profile}
