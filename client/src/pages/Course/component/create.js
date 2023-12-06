@@ -4,7 +4,7 @@ import styles from './Course.module.scss';
 import Button from '~/components/Button';
 
 import config from '~/config';
-import request from '~/utils/axios';
+import courseService from '~/services/courseServices';
 
 const cx = classNames.bind(styles);
 
@@ -20,8 +20,8 @@ function CreateCourse() {
 
   const handleCreateCourse = (e) => {
     e.preventDefault();
-    request
-      .post('/courses/store', newCourse)
+    courseService
+      .createCourse(newCourse)
       .then((res) => {
         console.log('Success:', res.data);
         //history.push('/courses/stored');

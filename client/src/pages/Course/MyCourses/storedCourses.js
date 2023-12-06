@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './MyCourses.module.scss';
 import { useState, useEffect } from 'react';
 
-import * as courseServices from '~/services/courseServices';
+import courseService from '~/services/courseServices';
 
 const cx = classNames.bind(styles);
 
@@ -13,7 +13,7 @@ function StoredCourse() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await courseServices.storedCourse();
+        const result = await courseService.storedCourse();
         setCourseResult(result);
       } catch (error) {
         console.error('Error in component:', error);
@@ -22,6 +22,37 @@ function StoredCourse() {
 
     fetchData();
   }, []); // [] useEffect chỉ chạy một lần
+
+  //
+  const deleteButton = document.getElementById('deleteButton');
+  const deleteCourse = async (id, e) => {
+    e.preventDefault();
+    try {
+      await courseService.trueDelete(id, courseResult);
+      console.log('Course deleted successfully');
+    } catch (error) {
+      console.error('Error deleting course:', error);
+    }
+  };
+
+  const handleDeleteButtonClick = () => {
+    // Gắn sự kiện click cho nút "Delete"
+    deleteButton.addEventListener('click', function () {
+      // Lấy giá trị của thuộc tính data-id từ nút
+      const dataIdValue = deleteButton.dataset.id;
+
+      // Kiểm tra xem giá trị có tồn tại hay không
+      if (dataIdValue) {
+        console.log('Data ID:', dataIdValue);
+
+        // Gọi hàm deleteCourse với giá trị data-id
+        deleteCourse(dataIdValue);
+      } else {
+        console.error('Data ID is not available');
+      }
+    });
+  };
+  handleDeleteButtonClick();
 
   return (
     <div className={cx('form-container')}>
@@ -118,7 +149,7 @@ function StoredCourse() {
                   </td>
                   <th scope="row">{index + 1}</th>
                   <td className={cx('name')}>{course.name}</td>
-                  <td className={cx('number')}>{course.instructors}</td>
+                  <td className={cx('number')}>{course.instructor}</td>
                   <td className={cx('number')}>{course.status}</td>
                   <td className={cx('duration')}>{course.createdAt}</td>
                   <td>
@@ -130,10 +161,12 @@ function StoredCourse() {
                       Sửa
                     </a>
                     <a
-                      href="123"
+                      onClick={deleteCourse}
+                      href={`/courses/${course._id}/delete`}
                       style={{ fontSize: '16px' }}
                       className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
                       data-id={`${course._id}`}
+                      id="deleteButton"
                       data-toggle="modal"
                       data-target="#delete-course-model"
                     >

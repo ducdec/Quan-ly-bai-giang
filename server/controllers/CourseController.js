@@ -1,5 +1,5 @@
 import { Course } from '../models/Course.js';
-import { mutipleMongooseToObject } from '../util/mongoose.js';
+
 class CourseController {
   constructor() {}
 
@@ -62,21 +62,39 @@ class CourseController {
     try {
       const courseId = req.params.id;
 
-      if (!mongoose.Types.ObjectId.isValid(courseId)) {
-        return res.status(400).json({ error: 'Invalid course ID' });
-      }
-
       const course = await Course.findById(courseId);
 
-      // Check if the course exists
       if (!course) {
         return res.status(404).json({ error: 'Course not found' });
       }
 
-      res.render('edit-course', { course });
+      res.status(201).json(course);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  //[PUT] /courses/:id
+  async update(req, res, next) {
+    try {
+      await Course.updateOne({ _id: req.params.id }, req.body);
+      res.json({ success: true, message: 'Course updated successfully' });
+    } catch (error) {
+      console.error('Error in update:', error);
+      next(error);
+    }
+  }
+
+  //[DELETE] /courses/:id/force (Xo'a that)
+  async forceDestroy(req, res, next) {
+    try {
+      await Course.deleteOne({ _id: req.params.id });
+      console.log('Course deleted successfully');
+      res.json({ success: true, message: 'Course deleted successfully' });
+    } catch (error) {
+      console.error('Error in forceDestroy:', error);
+      next(error);
     }
   }
 

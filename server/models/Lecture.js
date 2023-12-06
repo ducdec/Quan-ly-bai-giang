@@ -9,10 +9,7 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    title: {
-      type: String,
-    },
-    content: {
+    description: {
       type: String,
     },
     image: {
