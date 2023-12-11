@@ -1,10 +1,26 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './MyCourses.module.scss';
+import courseService from '~/services/courseServices';
 
 const cx = classNames.bind(styles);
 
 function TrashCourse() {
+  const [dataCourse, setDataCourse] = useState([]);
+
+  useEffect(() => {
+    const fecthData = async () => {
+      try {
+        const result = await courseService.trashCourse();
+        setDataCourse(result);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fecthData();
+  }, []);
+
   return (
     <div className={cx('form-container')}>
       <form
@@ -63,7 +79,7 @@ function TrashCourse() {
 
           <a
             className={cx('col-md-3', 'ms-md-auto', 'underline')}
-            href="/stored/courses"
+            href="/courses/stored"
           >
             Danh sách khóa học
           </a>
@@ -84,52 +100,55 @@ function TrashCourse() {
           </thead>
 
           {/* {{#if course}} */}
-          <tbody>
+          {dataCourse.length === 0 ? (
             <tr>
-              <td>
-                <div className={cx('form-check')}>
-                  <input
-                    className={cx('form-check-input')}
-                    type="checkbox"
-                    name="courseId[]"
-                    value="{{this._id}}"
-                  />
-                </div>
-              </td>
-              <th scope="row">1</th>
-              <td className={cx('name')}>name</td>
-              <td className={cx('number')}>1</td>
-              <td className={cx('number')}>123</td>
-              <td className={cx('duration')}>1tieng 32phut</td>
-              <td>
-                <a
-                  style={{ fontSize: '16px' }}
-                  href={`/courses/edit`}
-                  className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
-                >
-                  Khôi phục
-                </a>
-                <a
-                  href="123"
-                  style={{ fontSize: '16px' }}
-                  className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
-                  data-id="{this._id}"
-                  data-toggle="modal"
-                  data-target="#delete-course-model"
-                >
-                  Xóa vĩnh viễn
-                </a>
+              <td colSpan="5" className={cx('text-center')}>
+                Thùng rác trống!
+                <a href="courses/stored">Danh sách</a>
               </td>
             </tr>
-          </tbody>
-          {/* {{else}} */}
-          <tr>
-            <td colSpan="5" className={cx('text-center')}>
-              Thùng rác trống!
-              <a href="/stored/courses">Danh sách</a>
-            </td>
-          </tr>
-          {/* {/if} */}
+          ) : (
+            dataCourse.map((course, index) => (
+              <tbody key={course._id}>
+                <tr>
+                  <td>
+                    <div className={cx('form-check')}>
+                      <input
+                        className={cx('form-check-input')}
+                        type="checkbox"
+                        name="courseId[]"
+                        value={course._id}
+                      />
+                    </div>
+                  </td>
+                  <th scope="row">{index + 1}</th>
+                  <td className={cx('name')}>{course.name}</td>
+                  <td className={cx('number')}>{course.instructor}</td>
+                  <td className={cx('number')}>{course.status}</td>
+                  <td className={cx('duration')}>{course.createdAt}</td>
+                  <td>
+                    <a
+                      style={{ fontSize: '16px' }}
+                      href={`/courses/edit`}
+                      className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
+                    >
+                      Khôi phục
+                    </a>
+                    <a
+                      href="123"
+                      style={{ fontSize: '16px' }}
+                      className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
+                      data-id="{this._id}"
+                      data-toggle="modal"
+                      data-target="#delete-course-model"
+                    >
+                      Xóa vĩnh viễn
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            ))
+          )}
         </table>
       </form>
 

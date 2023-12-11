@@ -1,15 +1,5 @@
 import request from '~/utils/axios';
 
-// export const storedCourse = async () => {
-//   try {
-//     const res = await request.get('courses/stored');
-//     return res.data;
-//   } catch (error) {
-//     console.error('Error fetching stored courses:', error);
-//     throw error;
-//   }
-// };
-
 const courseService = {
   //them
   createCourse(newCourse) {
@@ -37,14 +27,28 @@ const courseService = {
     return request.put(`/courses/${courseID}`, newCourse);
   },
 
-  //xoa
+  //xoa mềm
+  deleteCourse(courseID) {
+    return request.delete(`/courses/${courseID}`);
+  },
+
+  //xóa thật
   trueDelete(courseID, course) {
-    return request.delete(`/courses/${courseID}/delete`, { course });
+    return request.delete(`/courses/${courseID}/delete`);
   },
 
   storedCourse() {
     return request
       .get('courses/stored')
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error('Error fetching stored courses:', error);
+        throw error;
+      });
+  },
+  trashCourse() {
+    return request
+      .get('courses/trash')
       .then((res) => res.data)
       .catch((error) => {
         console.error('Error fetching stored courses:', error);

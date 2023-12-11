@@ -86,6 +86,18 @@ class CourseController {
     }
   }
 
+  //[DELETE] /courses/:id (Xoa me'm)
+  async destroy(req, res, next) {
+    try {
+      Course.delete({ _id: req.params.id });
+      console.log('Xoa mem succes!!!');
+      res.json({ success: true, message: 'xoa mem' });
+    } catch (next) {
+      console.error('Error in Destroy:', error);
+      next(error);
+    }
+  }
+
   //[DELETE] /courses/:id/force (Xo'a that)
   async forceDestroy(req, res, next) {
     try {
@@ -98,14 +110,77 @@ class CourseController {
     }
   }
 
-  // [GET] courses/stored
+  //[PATCH] /courses/:id/restore
+  async restore(req, res, next) {
+    await Course.restore({ _id: req.params.id });
+    console.log('restore success!!!');
+    res.json({ success: true, message: 'restore success!!!' });
+  }
+  catch(err) {
+    console.error('Error restore:', err);
+    next(err);
+  }
+
+  // [GET] /courses/stored
   async storeCourses(req, res, next) {
     try {
-      const courses = await Course.find();
-      res.json(courses);
+      const [storedCourses, countDeletedCourses] = await Promise.all([
+        Course.find(),
+        Course.countDocumentsWithDeleted({ deleted: true }),
+      ]);
+
+      res.json({
+        storedCourses,
+        countDeletedCourses,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  // [GET] me/trash/courses
+  trashCourses(req, res, next) {
+    Course.findWithDeleted({ deleted: true })
+      .then((courses) => res.json(courses))
+      .catch(next);
+  }
+
+  // [POST] /courses/handle-form-action
+  handleFormActions(req, res, next) {
+    switch (req.body.action) {
+      case 'delete':
+        Course.delete({ _id: { $in: req.body.courseId } })
+          .then(() =>
+            res.json({
+              success: true,
+              message: 'Courses deleted successfully',
+            }),
+          )
+          .catch(next);
+        break;
+
+      case 'restore':
+        Course.restore({ _id: { $in: req.body.courseId } })
+          .then(() =>
+            res.json({
+              success: true,
+              message: 'Courses restored successfully',
+            }),
+          )
+          .catch(next);
+        break;
+
+      case 'delete-force':
+        Course.deleteOne({ _id: { $in: req.body.courseId } })
+          .then(() =>
+            res.json({ success: true, message: 'Course deleted successfully' }),
+          )
+          .catch(next);
+        break;
+
+      default:
+        res.status(400).json({ success: false, message: 'Invalid action' });
     }
   }
 }
