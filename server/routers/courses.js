@@ -7,7 +7,6 @@ router.post('/store', CourseController.store); //create
 router.get('/:id/edit', CourseController.edit);
 router.put('/:id', CourseController.update);
 //
-router.post('/handle-form-actions', CourseController.handleFormActions);
 router.patch('/:id/restore', CourseController.restore);
 //
 router.delete('/:id', CourseController.destroy); //xoa gia

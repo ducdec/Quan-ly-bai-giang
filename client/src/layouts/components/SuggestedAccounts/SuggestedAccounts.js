@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import styles from './SuggestedAccounts.module.scss';
 import AccountItem from './AccounItem';
@@ -8,7 +8,7 @@ import AccountItem from './AccounItem';
 const cx = classNames.bind(styles);
 
 function SuggestedAccounts({ label }) {
-  const [accounts, setAccounts] = useState([]);
+  //const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {});
   return (

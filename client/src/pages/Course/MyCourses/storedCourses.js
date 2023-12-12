@@ -24,7 +24,7 @@ function StoredCourse() {
         const result = await courseService.storedCourse();
         setCourseResult(result);
       } catch (error) {
-        console.error('Error in component:', error);
+        console.error('API:', error);
       } finally {
         setLoading(false);
       }
@@ -33,24 +33,26 @@ function StoredCourse() {
     fetchData();
   }, []);
 
+  const handleDeleteButtonClick = (id, e) => {
+    e.preventDefault();
+    setDeleteCourseId(id);
+    setIsDelete(true);
+  };
+
   const deleteCourse = async () => {
+    console.log(deleteCourseId);
+
     if (deleteCourseId) {
       try {
-        await courseService.Delete(deleteCourseId);
-        console.log('Course deleted successfully');
+        await courseService.deleteCourse(deleteCourseId);
+        console.log('Xóa thanh cong');
       } catch (error) {
-        console.error('Error deleting course:', error);
+        console.error('Xoa that bai:', error);
       } finally {
         setDeleteCourseId(null);
         setIsDelete(false);
       }
     }
-  };
-
-  const handleDeleteButtonClick = (id, e) => {
-    e.preventDefault();
-    setDeleteCourseId(id);
-    setIsDelete(true);
   };
 
   return (
@@ -134,7 +136,12 @@ function StoredCourse() {
               <tr>
                 <td colSpan="5" className={cx('text-center')}>
                   Bạn chưa đăng gì cả!
-                  <a href="/courses/create">Đăng ngay</a>
+                  <a
+                    className={cx('mt-4', 'btn-lg', 'btn-link', 'underline')}
+                    href="/courses/store"
+                  >
+                    Đăng ngay
+                  </a>
                 </td>
               </tr>
             ) : (
@@ -190,17 +197,19 @@ function StoredCourse() {
           <p>Bạn chắc chắn muốn xóa?</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={deleteCourse}>
+          <Button primary small variant="danger" onClick={deleteCourse}>
             Xóa bỏ
           </Button>
-          <Button variant="secondary" onClick={() => setIsDelete(false)}>
+          <Button
+            outline
+            small
+            variant="secondary"
+            onClick={() => setIsDelete(false)}
+          >
             Hủy
           </Button>
         </Modal.Footer>
       </Modal>
-
-      {/* {{!--Delete hidden form  --}} */}
-      <form name="delete-course-form" method="POST"></form>
     </div>
   );
 }

@@ -6,17 +6,6 @@ class CourseController {
   // courses/get
   async getCourse(req, res) {
     try {
-      // const a = new Course({
-      //   name: 'Cơ sở dữ liệu',
-      //   description: 'dau het ca dau',
-      //   image:
-      //     'https://i.ytimg.com/vi/79rF9BS0xvE/hqdefault.jpg?sqp=-oaymwEbCKgBEF5IVfKriqkDDggBFQAAiEIYAXABwAEG&rs=AOn4CLC1vPTpnHMz4iaoK-Y8iNdAtM-M4A',
-      //   instructors: 'Le Van A',
-      //   status: 'new',
-      //   slug: 'anpha',
-      // });
-      // a.save();
-
       const courses = await Course.find();
       res.status(200).json(courses);
     } catch (err) {
@@ -86,13 +75,64 @@ class CourseController {
     }
   }
 
+  //[PATCH] /courses/:id/restore
+  async restore(req, res, next) {
+    try {
+      const courseId = req.params.id;
+      console.log('Restoring Course ID:', courseId);
+
+      // Check existing document
+      const existingDocument = await Course.findOne({
+        _id: courseId,
+        deleted: true,
+      });
+      console.log('Existing Document:', existingDocument);
+
+      const result = await Course.findOneAndUpdate(
+        { _id: courseId, deleted: true },
+        { $set: { deleted: false } },
+        { new: true },
+      );
+
+      console.log('Result:', result);
+
+      if (!result) {
+        return res.status(404).json({
+          _id: courseId,
+          result,
+          success: false,
+          message: 'Bản ghi không tồn tại hoặc đã được khôi phục trước đó.',
+        });
+      }
+
+      console.log('Khôi phục thành công!!!');
+      res.json({ success: true, message: 'Khôi phục thành công.' });
+    } catch (error) {
+      console.error('Lỗi khi khôi phục:', error);
+      next(error);
+    }
+  }
+
   //[DELETE] /courses/:id (Xoa me'm)
   async destroy(req, res, next) {
     try {
-      Course.delete({ _id: req.params.id });
-      console.log('Xoa mem succes!!!');
-      res.json({ success: true, message: 'xoa mem' });
-    } catch (next) {
+      // Sử dụng findOneAndUpdate để cập nhật giá trị deleted từ false thành true
+      const result = await Course.findOneAndUpdate(
+        { _id: req.params.id, deleted: false },
+        { $set: { deleted: true } },
+        { new: true },
+      );
+      // Kiểm tra xem có bản ghi nào được cập nhật không
+      if (!result) {
+        return res.status(404).json({
+          success: false,
+          message: 'Bản ghi không tồn tại hoặc đã bị xóa trước đó.',
+        });
+      }
+
+      console.log('Xoa success!!!');
+      res.json({ success: true, message: 'Xóa thành công.' });
+    } catch (error) {
       console.error('Error in Destroy:', error);
       next(error);
     }
@@ -108,17 +148,6 @@ class CourseController {
       console.error('Error in forceDestroy:', error);
       next(error);
     }
-  }
-
-  //[PATCH] /courses/:id/restore
-  async restore(req, res, next) {
-    await Course.restore({ _id: req.params.id });
-    console.log('restore success!!!');
-    res.json({ success: true, message: 'restore success!!!' });
-  }
-  catch(err) {
-    console.error('Error restore:', err);
-    next(err);
   }
 
   // [GET] /courses/stored
@@ -144,44 +173,6 @@ class CourseController {
     Course.findWithDeleted({ deleted: true })
       .then((courses) => res.json(courses))
       .catch(next);
-  }
-
-  // [POST] /courses/handle-form-action
-  handleFormActions(req, res, next) {
-    switch (req.body.action) {
-      case 'delete':
-        Course.delete({ _id: { $in: req.body.courseId } })
-          .then(() =>
-            res.json({
-              success: true,
-              message: 'Courses deleted successfully',
-            }),
-          )
-          .catch(next);
-        break;
-
-      case 'restore':
-        Course.restore({ _id: { $in: req.body.courseId } })
-          .then(() =>
-            res.json({
-              success: true,
-              message: 'Courses restored successfully',
-            }),
-          )
-          .catch(next);
-        break;
-
-      case 'delete-force':
-        Course.deleteOne({ _id: { $in: req.body.courseId } })
-          .then(() =>
-            res.json({ success: true, message: 'Course deleted successfully' }),
-          )
-          .catch(next);
-        break;
-
-      default:
-        res.status(400).json({ success: false, message: 'Invalid action' });
-    }
   }
 }
 

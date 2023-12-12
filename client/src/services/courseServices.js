@@ -27,13 +27,18 @@ const courseService = {
     return request.put(`/courses/${courseID}`, newCourse);
   },
 
+  //restore
+  restoreCourse(courseID) {
+    return request.patch(`/courses/${courseID}/restore`);
+  },
+
   //xoa mềm
   deleteCourse(courseID) {
     return request.delete(`/courses/${courseID}`);
   },
 
   //xóa thật
-  trueDelete(courseID, course) {
+  trueDelete(courseID) {
     return request.delete(`/courses/${courseID}/delete`);
   },
 
@@ -51,7 +56,7 @@ const courseService = {
       .get('courses/trash')
       .then((res) => res.data)
       .catch((error) => {
-        console.error('Error fetching stored courses:', error);
+        console.error('Error fetching trash courses:', error);
         throw error;
       });
   },
