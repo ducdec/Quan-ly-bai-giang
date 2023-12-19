@@ -13,7 +13,10 @@ const schema = new mongoose.Schema(
     description: {
       type: String,
     },
-    image: {
+    imageFile: {
+      type: String,
+    },
+    imageUrl: {
       type: String,
     },
     instructor: {
@@ -37,7 +40,7 @@ const schema = new mongoose.Schema(
 
 schema.plugin(mongooseDelete, {
   deletedAt: true,
-  overrideMethods: true,
+  overrideMethods: 'all',
 });
 
 export const Course = mongoose.model('Course', schema);

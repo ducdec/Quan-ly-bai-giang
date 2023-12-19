@@ -1,4 +1,6 @@
+import { isObjectIdOrHexString } from 'mongoose';
 import { Course } from '../models/Course.js';
+import { MongoClient, ObjectId } from 'mongodb';
 
 class CourseController {
   constructor() {}
@@ -79,34 +81,16 @@ class CourseController {
   async restore(req, res, next) {
     try {
       const courseId = req.params.id;
-      console.log('Restoring Course ID:', courseId);
 
-      // Check existing document
-      const existingDocument = await Course.findOne({
-        _id: courseId,
-        deleted: true,
-      });
-      console.log('Existing Document:', existingDocument);
-
-      const result = await Course.findOneAndUpdate(
-        { _id: courseId, deleted: true },
-        { $set: { deleted: false } },
-        { new: true },
-      );
-
-      console.log('Result:', result);
-
-      if (!result) {
-        return res.status(404).json({
-          _id: courseId,
-          result,
-          success: false,
-          message: 'Bản ghi không tồn tại hoặc đã được khôi phục trước đó.',
-        });
-      }
+      // Find and restore the course
+      const restoredCourse = await Course.restore({ _id: courseId });
 
       console.log('Khôi phục thành công!!!');
-      res.json({ success: true, message: 'Khôi phục thành công.' });
+      res.json({
+        success: true,
+        message: 'Khôi phục thành công.',
+        restoredCourse,
+      });
     } catch (error) {
       console.error('Lỗi khi khôi phục:', error);
       next(error);

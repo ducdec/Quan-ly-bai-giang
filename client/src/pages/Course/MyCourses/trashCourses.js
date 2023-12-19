@@ -2,10 +2,12 @@ import React from 'react';
 import classNames from 'classnames/bind';
 import styles from './MyCourses.module.scss';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 
 import courseService from '~/services/courseServices';
 import Button from '~/components/Button';
+import config from '~/config';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +17,7 @@ function StoredCourse() {
   const [loading, setLoading] = useState(true);
   const [isDelete, setIsDelete] = useState(false);
 
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,6 +39,10 @@ function StoredCourse() {
     try {
       await courseService.restoreCourse(id);
       console.log('Khôi phục thành công');
+      // Fetch the updated data after successful restoration
+      const updatedResult = await courseService.trashCourse();
+      setCourseResult(updatedResult);
+      navigate(config.routes.trashCourse);
     } catch (err) {
       console.error('Khôi phục thất bại:', err);
     }
@@ -53,6 +60,10 @@ function StoredCourse() {
       try {
         await courseService.trueDelete(deleteCourseId);
         console.log('Xóa thanh cong');
+        // Fetch the updated data after successful deletion
+        const updatedResult = await courseService.trashCourse();
+        setCourseResult(updatedResult);
+        navigate(config.routes.trashCourse);
       } catch (error) {
         console.error('Xoa that bai:', error);
       } finally {
@@ -138,22 +149,22 @@ function StoredCourse() {
               </tr>
             </thead>
 
-            {courseResult.length === 0 ? (
-              <tr>
-                <td colSpan="5" className={cx('text-center')}>
-                  Thùng rác trống!!!!
-                  <a
-                    className={cx('mt-4', 'btn-lg', 'btn-link', 'underline')}
-                    href="/courses/stored"
-                  >
-                    Danh Sách
-                  </a>
-                </td>
-              </tr>
-            ) : (
-              courseResult.map((course, index) => (
-                <tbody key={course._id}>
-                  <tr>
+            <tbody>
+              {courseResult.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className={cx('text-center')}>
+                    Thùng rác trống!!!!
+                    <a
+                      className={cx('mt-4', 'btn-lg', 'btn-link', 'underline')}
+                      href="/courses/stored"
+                    >
+                      Danh Sách
+                    </a>
+                  </td>
+                </tr>
+              ) : (
+                courseResult.map((course, index) => (
+                  <tr key={course._id}>
                     <td>
                       <div className={cx('form-check')}>
                         <input
@@ -188,9 +199,9 @@ function StoredCourse() {
                       </Button>
                     </td>
                   </tr>
-                </tbody>
-              ))
-            )}
+                ))
+              )}
+            </tbody>
           </table>
         </form>
       )}

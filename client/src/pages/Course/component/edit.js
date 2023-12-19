@@ -4,20 +4,27 @@ import Button from '~/components/Button';
 
 import { useEffect, useState } from 'react';
 import courseService from '~/services/courseServices';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import config from '~/config';
 
 const cx = classNames.bind(styles);
 
 function UpdateCourse() {
   const { id } = useParams();
-  const [resultCourse, setResultCourse] = useState({});
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    instructor: '',
+    image: '',
+    status: '',
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await courseService.editCourse(id);
-        setResultCourse(result);
+        setFormData(result);
       } catch (error) {
         console.error('Lỗi api:', error);
       }
@@ -27,8 +34,8 @@ function UpdateCourse() {
 
   //handle
   const handleInput = (e) => {
-    setResultCourse({
-      ...resultCourse,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
     });
   };
@@ -37,8 +44,9 @@ function UpdateCourse() {
     e.preventDefault();
     //put
     courseService
-      .updateCourse(id, resultCourse)
+      .updateCourse(id, formData)
       .then((res) => {
+        navigate(config.routes.storedCourse);
         console.log('Success:', res.data);
       })
       .catch((error) => {
@@ -48,6 +56,7 @@ function UpdateCourse() {
         );
       });
   };
+
   return (
     <div className={cx('form-container')}>
       <div className={cx('mt-5')}>
@@ -65,7 +74,7 @@ function UpdateCourse() {
                 id="name"
                 name="name"
                 onChange={handleInput}
-                value={resultCourse.name}
+                value={formData.name}
               />
             </div>
 
@@ -75,7 +84,7 @@ function UpdateCourse() {
               </label>
               <textarea
                 onChange={handleInput}
-                value={resultCourse.description}
+                value={formData.description}
                 rows="3"
                 className={cx('form-control')}
                 id="description"
@@ -87,7 +96,7 @@ function UpdateCourse() {
               <label htmlFor="instructor">Người Hướng Dẫn</label>
               <input
                 onChange={handleInput}
-                value={resultCourse.instructor}
+                value={formData.instructor}
                 type="text"
                 className={cx('form-control')}
                 id="instructor"
@@ -99,7 +108,7 @@ function UpdateCourse() {
               <label htmlFor="image">Ảnh</label>
               <input
                 onChange={handleInput}
-                value={resultCourse.image}
+                value={formData.image}
                 type="text"
                 className={cx('form-control')}
                 id="image"
@@ -111,7 +120,7 @@ function UpdateCourse() {
               <label htmlFor="status">Trạng thái</label>
               <input
                 onChange={handleInput}
-                value={resultCourse.status}
+                value={formData.status}
                 type="text"
                 className={cx('form-control')}
                 id="status"
@@ -119,7 +128,7 @@ function UpdateCourse() {
               />
             </div>
 
-            <Button blue onClick={handleUpdate} to={config.routes.storedCourse}>
+            <Button blue onClick={handleUpdate} type="submit">
               Cập Nhật
             </Button>
           </div>
