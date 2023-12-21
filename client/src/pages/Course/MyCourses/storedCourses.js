@@ -8,6 +8,7 @@ import courseService from '~/services/courseServices';
 import Button from '~/components/Button';
 import { useNavigate } from 'react-router-dom';
 import config from '~/config';
+import FormatTime from '~/components/FormatTime';
 
 const cx = classNames.bind(styles);
 
@@ -19,9 +20,12 @@ function StoredCourse() {
   const [deleteCourseId, setDeleteCourseId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDelete, setIsDelete] = useState(false);
+  //
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedCourses, setSelectedCourses] = useState([]);
+  const [showActionWarning, setShowActionWarning] = useState(false);
 
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,6 +41,62 @@ function StoredCourse() {
     fetchData();
   }, []);
 
+  //handle checkbox
+  const handleSelectAllChange = (e) => {
+    const isChecked = e.target.checked;
+    setSelectAll(isChecked);
+
+    const allCourseIds = courseResult.storedCourses.map((course) => course._id);
+
+    if (isChecked && selectedCourses.length === allCourseIds.length) {
+      // Hủy tích "Chọn tất cả"
+      setSelectAll(false);
+      setSelectedCourses([]);
+    } else {
+      // Ngược lại, thiết lập danh sách khóa học đã chọn thành tất cả các ID
+      setSelectedCourses(isChecked ? allCourseIds : []);
+    }
+  };
+
+  const handleCourseCheckboxChange = (e, courseId) => {
+    const isChecked = e.target.checked;
+    setSelectAll(false);
+
+    if (isChecked) {
+      setSelectedCourses((prevSelected) => [...prevSelected, courseId]);
+    } else {
+      setSelectedCourses((prevSelected) =>
+        prevSelected.filter((id) => id !== courseId),
+      );
+    }
+  };
+
+  const handleActionSubmit = async (e) => {
+    const selectedActionElement = document.querySelector('[name="action"]');
+    const selectedAction = selectedActionElement.value;
+
+    if (selectedAction === '-- Hành động --') {
+      e.preventDefault();
+      setShowActionWarning(true);
+      return;
+    }
+
+    setShowActionWarning(false);
+
+    if (selectedAction === 'delete') {
+      selectedCourses.forEach(async (courseId) => {
+        await courseService.deleteCourse(courseId);
+      });
+    }
+
+    // Sau khi thực hiện hành động, cập nhật danh sách khóa học và làm sạch dữ liệu đã chọn
+    const updatedResult = await courseService.storedCourse();
+    setCourseResult(updatedResult);
+    setSelectedCourses([]);
+    navigate(config.routes.storedCourse);
+  };
+
+  //course
   const handleDeleteButtonClick = (id, e) => {
     e.preventDefault();
     setDeleteCourseId(id);
@@ -70,7 +130,7 @@ function StoredCourse() {
       ) : (
         <form className={cx('mt-5')} name="container-form">
           <h3>Danh Sách</h3>
-          <div className={cx('row')}>
+          <div className={cx('row', 'error-container')}>
             <div
               className={cx('mt-4', 'd-flex', 'align-items-center', 'col-md-5')}
             >
@@ -78,7 +138,8 @@ function StoredCourse() {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  value=""
+                  checked={selectAll}
+                  onChange={handleSelectAllChange}
                   id="checkbox-all"
                 />
                 <label
@@ -94,6 +155,7 @@ function StoredCourse() {
                   'form-select',
                   'form-select-lg',
                   'checkbox-select-all',
+                  showActionWarning && 'is-invalid', // Thêm class is-invalid nếu cần hiển thị thông báo
                 )}
                 aria-label="Default select example"
                 name="action"
@@ -103,6 +165,11 @@ function StoredCourse() {
                 <option disabled>-- Hành động --</option>
                 <option value="delete">Xóa</option>
               </select>
+              {showActionWarning && (
+                <div className="invalid-feedback">
+                  Vui lòng chọn một mục trong danh sách.
+                </div>
+              )}
 
               <button
                 className={cx(
@@ -111,7 +178,8 @@ function StoredCourse() {
                   'btn-lg',
                   'check-all-submit-btn',
                 )}
-                disabled
+                onClick={(e) => handleActionSubmit(e)}
+                disabled={selectedCourses.length === 0}
               >
                 Thực hiện
               </button>
@@ -143,7 +211,7 @@ function StoredCourse() {
             <tbody>
               {courseResult.storedCourses.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className={cx('text-center')}>
+                  <td colSpan="6" className={cx('text-center')}>
                     Bạn chưa đăng gì cả!
                     <a
                       className={cx('mt-4', 'btn-lg', 'btn-link', 'underline')}
@@ -162,6 +230,10 @@ function StoredCourse() {
                           className={cx('form-check-input')}
                           type="checkbox"
                           name="courseId[]"
+                          checked={selectedCourses.includes(course._id)}
+                          onChange={(e) =>
+                            handleCourseCheckboxChange(e, course._id)
+                          }
                         />
                       </div>
                     </td>
@@ -169,7 +241,9 @@ function StoredCourse() {
                     <td className={cx('name')}>{course.name}</td>
                     <td className={cx('number')}>{course.instructor}</td>
                     <td className={cx('number')}>{course.status}</td>
-                    <td className={cx('duration')}>{course.createdAt}</td>
+                    <td className={cx('duration')}>
+                      {FormatTime(course.createdAt)}
+                    </td>
                     <td>
                       <Button
                         style={{ fontSize: '16px' }}
@@ -193,8 +267,6 @@ function StoredCourse() {
           </table>
         </form>
       )}
-
-      {/* {{!-- confim --}}  */}
 
       {/* Modal */}
       <Modal show={isDelete} onHide={() => setIsDelete(false)}>

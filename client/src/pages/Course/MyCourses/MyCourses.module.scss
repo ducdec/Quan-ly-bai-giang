@@ -26,6 +26,21 @@ thead {
     border-radius: 50%;
     margin-right: 4px;
   }
+  /* Thêm class cho phần tử cha */
+.error-container {
+  position: relative;
+}
+
+/* Định dạng phần tử con */
+.invalid-feedback {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin-top: 2px; /* Điều chỉnh khoảng cách giữa phần tử và select */
+  color: #dc3545; /* Màu sắc của thông báo lỗi */
+  font-size: 14px; /* Kích thước font của thông báo lỗi */
+}
+
   .checkbox-select-all {
     max-width: 130px;
   }
@@ -45,6 +60,7 @@ thead {
       text-decoration: underline; /* Hiển thị gạch chân khi hover */
     }
   }
+  
   .underline {
     color: #007BFF;
     text-decoration: none;
