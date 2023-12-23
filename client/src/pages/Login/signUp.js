@@ -4,6 +4,7 @@ import styles from './Login.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
+import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
@@ -35,7 +36,7 @@ function SignUp() {
                 Nhập lại Mật khẩu
               </label>
             </div>
-            <button>Đăng ký</button>
+            <Button btnLogin>Đăng ký</Button>
             <div className={cx('register')}>
               <p>
                 Bạn đã có tài khoản? <a href="/login/signin">Đăng nhập</a>

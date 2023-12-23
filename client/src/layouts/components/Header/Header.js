@@ -91,7 +91,7 @@ function Header() {
     {
       icon: <FontAwesomeIcon icon={faSignOut} />,
       title: 'Log out',
-      to: './config.routes.signIn,',
+      to: config.routes.signIn,
       separate: true,
     },
   ];
@@ -107,19 +107,24 @@ function Header() {
 
         <div className={cx('actions')}>
           {currentUser ? (
-            <>
-              <Tippy delay={[0, 200]} content="Upload video" placement="bottom">
-                <button className={cx('action-btn')}>
-                  <FontAwesomeIcon icon={faCloudUpload} />
-                </button>
-              </Tippy>
-              {/* <Tippy delay={[0, 200]} content="Message" placement="bottom">
-                <button className={cx('action-btn')}>
-                  <MessageIcon />
-                </button>
-              </Tippy> */}
-            </>
+            <div></div>
           ) : (
+            // <>
+            //   <Tippy delay={[0, 200]} content="Upload video" placement="bottom">
+            //     <button
+            //       src="./courses/store"
+            //       on={config.routes.createCourse}
+            //       className={cx('action-btn')}
+            //     >
+            //       <FontAwesomeIcon icon={faCloudUpload} />
+            //     </button>
+            //   </Tippy>
+            //   <Tippy delay={[0, 200]} content="Message" placement="bottom">
+            //     <button className={cx('action-btn')}>
+            //       <MessageIcon />
+            //     </button>
+            //   </Tippy>
+            // </>
             <>
               <Button text>Upload</Button>
               <Button primary>Log in</Button>

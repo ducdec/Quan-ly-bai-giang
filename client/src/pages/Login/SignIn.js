@@ -7,6 +7,7 @@ import {
   faEye,
   faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
+import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
@@ -47,7 +48,7 @@ function SignIn() {
                 Nhớ <a href="/">Lấy lại mật khẩu</a>
               </label>
             </div>
-            <button>Đăng nhập</button>
+            <Button btnLogin>Đăng nhập</Button>
             <div className={cx('register')}>
               <p>
                 Bạn chưa có tài khoản? <a href="/login/signup">Đăng ký</a>
