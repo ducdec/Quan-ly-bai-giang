@@ -92,7 +92,7 @@ function Header() {
     {
       icon: <FontAwesomeIcon icon={faSignOut} />,
       title: 'Log out',
-      to: '/login/signin',
+      to: config.routes.signIn,
       separate: true,
     },
   ];
