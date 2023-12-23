@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
-import { faLock } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEnvelope,
+  faEye,
+  faEyeSlash,
+} from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
 function SignIn() {
+  const [isPasswordVisible, setPasswordVisibility] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisibility(!isPasswordVisible);
+  };
+
   return (
     <div className={cx('section')}>
       <div className={cx('form-box')}>
@@ -22,8 +31,12 @@ function SignIn() {
               </label>
             </div>
             <div className={cx('input-box')}>
-              <FontAwesomeIcon className={cx('faicon')} icon={faLock} />
-              <input type="password" required />
+              <FontAwesomeIcon
+                icon={isPasswordVisible ? faEyeSlash : faEye}
+                className={cx('faicon')}
+                onClick={togglePasswordVisibility}
+              />
+              <input type={isPasswordVisible ? 'text' : 'password'} required />
               <label className={cx('label')} htmlFor="">
                 Mật Khẩu
               </label>
@@ -31,7 +44,7 @@ function SignIn() {
             <div className={cx('forget')}>
               <label className={cx('label')} htmlFor="">
                 <input type="checkbox" />
-                Nhớ<a href="/">Lấy lại mật khẩu</a>
+                Nhớ <a href="/">Lấy lại mật khẩu</a>
               </label>
             </div>
             <button>Đăng nhập</button>

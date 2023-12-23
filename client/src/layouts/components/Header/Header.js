@@ -20,7 +20,6 @@ import config from '~/config';
 
 import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
-import { MessageIcon } from '~/components/Icons';
 import images from '~/assets/images';
 import Image from '~/components/Image';
 import Search from '../Search';
@@ -92,7 +91,7 @@ function Header() {
     {
       icon: <FontAwesomeIcon icon={faSignOut} />,
       title: 'Log out',
-      to: config.routes.signIn,
+      to: './config.routes.signIn,',
       separate: true,
     },
   ];
@@ -114,11 +113,11 @@ function Header() {
                   <FontAwesomeIcon icon={faCloudUpload} />
                 </button>
               </Tippy>
-              <Tippy delay={[0, 200]} content="Message" placement="bottom">
+              {/* <Tippy delay={[0, 200]} content="Message" placement="bottom">
                 <button className={cx('action-btn')}>
                   <MessageIcon />
                 </button>
-              </Tippy>
+              </Tippy> */}
             </>
           ) : (
             <>
