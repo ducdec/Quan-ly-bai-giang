@@ -4,6 +4,7 @@ const images = {
   Vex: require('~/assets/images/vex.jpg'),
   MeoLeLuoi: require('~/assets/images/mèo lè lưỡi.jpg'),
   MeoMatTo: require('~/assets/images/meo mat to.jpg'),
+  BackGround: require('~/assets/images/backr3.jpg'),
 };
 
 export default images;

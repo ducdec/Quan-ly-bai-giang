@@ -92,7 +92,7 @@ function Header() {
     {
       icon: <FontAwesomeIcon icon={faSignOut} />,
       title: 'Log out',
-      to: '/logout',
+      to: '/login/signin',
       separate: true,
     },
   ];

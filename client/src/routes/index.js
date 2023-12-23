@@ -4,6 +4,10 @@ import config from '~/config';
 import { HeaderOnly } from '~/layouts';
 
 import Home from '~/pages/Home';
+//Login
+import SignIn from '~/pages/Login/SignIn';
+import SignUp from '~/pages/Login/signUp';
+//Courses
 import CreateCourse from '~/pages/Course/component/create';
 import UpdateCourse from '~/pages/Course/component/edit';
 import StoredCourse from '~/pages/Course/MyCourses/storedCourses';
@@ -18,6 +22,17 @@ import Upload from '~/pages/Upload';
 const publicRoutes = [
   { path: config.routes.home, component: Home },
 
+  //Login routes
+  {
+    path: config.routes.signIn,
+    component: SignIn,
+    layout: null,
+  },
+  {
+    path: config.routes.signUp,
+    component: SignUp,
+    layout: null,
+  },
   //Courses
   {
     path: config.routes.createCourse,
