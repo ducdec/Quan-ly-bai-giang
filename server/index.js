@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }));
 app.use('/', cors());
 
 app.use('/courses', courses);
-app.use('/users', users);
+app.use('/login', users);
 
 //data http://localhost:5000/
 

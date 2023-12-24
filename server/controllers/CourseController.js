@@ -5,7 +5,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 class CourseController {
   constructor() {}
 
-  // courses/get
+  // [GET] courses/get
   async getCourse(req, res) {
     try {
       const courses = await Course.find();
