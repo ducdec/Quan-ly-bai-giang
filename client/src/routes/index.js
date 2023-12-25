@@ -12,11 +12,12 @@ import CreateCourse from '~/pages/Course/component/create';
 import UpdateCourse from '~/pages/Course/component/edit';
 import StoredCourse from '~/pages/Course/MyCourses/storedCourses';
 import TrashCourse from '~/pages/Course/MyCourses/trashCourses';
-
+//Profile
+import Profile from '~/pages/Profile/Profile';
 import Lecture from '~/pages/Lecture';
-import Profile from '~/pages/Profile';
 import Search from '~/pages/Search';
 import Upload from '~/pages/Upload';
+import HeaderProfile from '~/layouts/HeaderProfile';
 
 //Public routes
 const publicRoutes = [
@@ -57,7 +58,9 @@ const publicRoutes = [
 
   //Lectures
   { path: config.routes.lecture, component: Lecture, layout: HeaderOnly },
-  { path: config.routes.profile, component: Profile },
+
+  //Profiles
+  { path: config.routes.profile, component: Profile, layout: HeaderProfile },
   { path: config.routes.search, component: Search, layout: null },
   { path: config.routes.upload, component: Upload, layout: HeaderOnly },
 ];

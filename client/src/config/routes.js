@@ -10,6 +10,9 @@ const routers = {
   trashCourse: '/courses/trash',
   //
   lecture: '/lecture',
+  //instructor
+
+  //profile
   profile: '/:nickname',
   search: '/search',
   upload: '/upload',

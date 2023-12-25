@@ -1,0 +1,63 @@
+.wrapper {
+  --height: 66px;
+  align-items: center;
+  background-color: #fff;
+  border-bottom: 1px solid #e8ebed;
+  display: flex;
+  font-size: 1.4rem;
+  height: var(--height);
+  left: 0;
+  padding: 0 28px;
+  position: -webkit-sticky;
+  position: sticky;
+  right: 0;
+  top: 0;
+  z-index: 20;
+  background-color: transparent;
+  border-bottom: none;
+}
+
+// .inner {
+//   height: 100%;
+//   width: var(--default-layout-width);
+//   padding: 0 var(--default-layout-horizontal-spacer);
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+// }
+
+
+.logo {
+  flex: 1 1 0;
+  align-items: center;
+  display: flex;
+}
+.logo a {
+  display: flex;
+}
+
+//Action
+.actions {
+  flex: 1 1 0;
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.more-btn {
+  font-size: 2rem;
+  margin-left: 28px;
+  padding: 4px 8px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-left: 12px;
+  cursor: pointer;
+}
