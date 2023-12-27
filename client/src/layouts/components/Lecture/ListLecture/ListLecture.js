@@ -35,7 +35,7 @@ function ListLecture() {
                     </li>
                     <li className={cx('dot')}>•</li> */}
                     <li>
-                      <strong>138 </strong> bài học
+                      <strong>8 </strong> bài học
                     </li>
                     <li className={cx('dot')}>•</li>
                     <li>
@@ -72,7 +72,7 @@ function ListLecture() {
                 </li>
                 <li>
                   <span>
-                    Tổng số <strong>138</strong> bài học
+                    Tổng số <strong>8</strong> giảng viên
                   </span>
                 </li>
                 <li>

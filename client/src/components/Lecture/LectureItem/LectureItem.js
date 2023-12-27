@@ -1,16 +1,20 @@
 import styles from './LectureItem.module.scss';
 import classNames from 'classnames/bind';
+import { Link } from 'react-router-dom';
 import { StartIcon } from '~/components/Icons';
+import config from '~/config';
 const cx = classNames.bind(styles);
 
 function LectureItem() {
   return (
     <div className={cx('lessonItem')}>
-      <span className={cx('floatLeft')}>
-        <StartIcon className={cx('icon')} />
-        <div className={cx('lectureName')}>1. Gioi thieu khoa hoc</div>
-      </span>
-      <span className={cx('floatRight')}>1:03</span>
+      <Link to={config.routes.learning}>
+        <span className={cx('floatLeft')}>
+          <StartIcon className={cx('icon')} />
+          <div className={cx('lectureName')}>1. Nguyễn Văn A</div>
+        </span>
+        <span className={cx('floatRight')}>13 video</span>
+      </Link>
     </div>
   );
 }
