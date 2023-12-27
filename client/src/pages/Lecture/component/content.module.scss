@@ -1,0 +1,30 @@
+.Video_wrapper {
+    background-color: var(--black-color);
+    padding: 0 8.5%;
+    position: relative;
+    width: 100%;
+}
+.noselect {
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+.VideoPlayer_wrapper {
+    padding-top: 56.25%;
+    position: relative;
+}
+.VideoPlayer_player {
+    inset: 0;
+    overflow: hidden;
+    position: absolute;
+}
+.react-player__preview:hover
+.react-player__shadow {
+    transform: scale(1.1);
+}
+.react-player__shadow {
+    background: var(--primary) !important;
+    transition: .3s ease;
+}
+.react-player__play-icon {
+
+}

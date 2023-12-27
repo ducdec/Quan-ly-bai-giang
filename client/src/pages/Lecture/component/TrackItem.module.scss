@@ -1,0 +1,77 @@
+.TrackItem_wrapper {
+    background-color: #f7f8fa;
+    border-bottom: 1px solid #dedfe0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 8px 20px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    z-index: 2;
+}
+.TrackItem_title {
+    color: var(--black-color);
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin: 0;
+}
+.TrackItem_desc {
+    color: #29303b;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-top: 4px;
+}
+.TrackItem_icon {
+    color: var(--text-color);
+    font-size: 1.6rem;
+    position: absolute;
+    right: 23px;
+    top: 12px;
+}
+.trackItem_list {
+    display: block;
+}
+.StepItem_wrapper {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0 10px 2px;
+    position: relative;
+    transition: all .3s ease-in-out;
+}
+.StepItem_info {
+    cursor: pointer;
+    flex: 1 1;
+    margin: 0 0 0 28px;
+    position: relative;
+}
+.StepItem_title {
+    color: var(--black-color);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.4;
+    margin: 0;
+    position: relative;
+    top: -2px;
+}
+.StepItem_desc {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+.lesson-icon {
+    color: #888;
+    font-size: 1rem;
+    margin-right: 6px;
+    transition: all .3s ease-in-out;
+}
+.StepItem_icon-box {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-right: 12px;
+    width: 36px;
+}
