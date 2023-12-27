@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import 'tippy.js/dist/tippy.css';
 import config from '~/config';
 
+import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
 import images from '~/assets/images';
 import Image from '~/components/Image';
@@ -96,18 +97,22 @@ function HeaderNoSearch() {
   return (
     <header className={cx('wrapper')}>
       <div className={cx('inner')}>
-        <div className={cx('logo')}>
-          <Link to={config.routes.home} className={cx('logo-link')}>
-            <Image src={images.logo} alt="#" />
-          </Link>
-          <a href="/" class="NavBar_backHome__U1RTm">
-            <h4 class="NavBar_logoHeading__bs7MP">
-              <BackIcon />
-              <span>Quay lại</span>
-            </h4>
-          </a>
-        </div>
+        <Link to={config.routes.home} className={cx('logo-link')}>
+          <Image src={images.logo} alt="#" />
+          <div className={cx('icon')}>
+            <BackIcon className={cx('iconBack')} />
+            <span>Quay lại</span>
+          </div>
+        </Link>
         <div className={cx('actions')}>
+          {currentUser ? (
+            <div></div>
+          ) : (
+            <>
+              <Button text>Upload</Button>
+              <Button primary>Log in</Button>
+            </>
+          )}
           <Menu
             items={currentUser ? userMENU : MENU_ITEMS}
             onChange={handleMenuChange}
