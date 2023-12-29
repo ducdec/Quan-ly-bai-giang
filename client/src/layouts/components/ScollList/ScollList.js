@@ -16,7 +16,7 @@ function ScollList() {
       </div>
 
       <div className={cx('body')}>
-        <section className={cx('index-module-row')}>
+        <section className={cx('row')}>
           <CourseItem />
           <CourseItem />
           <CourseItem />

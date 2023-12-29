@@ -6,11 +6,13 @@ const cx = classNames.bind(styles);
 
 function Home() {
   return (
-    <div className={cx('home-wrapper')}>
-      <ScollList />
-      <ScollList />
-      <ScollList />
-    </div>
+    <section className={cx('grid', 'fullWidth')} style={{ maxWidth: '1920px' }}>
+      <div className={cx('home-wrapper')}>
+        <ScollList />
+        <ScollList />
+        <ScollList />
+      </div>
+    </section>
   );
 }
 

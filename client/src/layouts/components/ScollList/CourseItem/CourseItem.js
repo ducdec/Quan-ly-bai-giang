@@ -6,8 +6,8 @@ const cx = classNames.bind(styles);
 
 function CourseItem() {
   return (
-    <section className={cx('index-module-col')}>
-      <div className={cx('Item-wrap')}>
+    <section className={cx('col', 'c-12', 'm-4', 'col_1-3')}>
+      <div className={cx('Item', 'Item-wrap')}>
         <a className={cx('Item-link')} href="lecture">
           <Image
             src="https://files.fullstack.edu.vn/f8-prod/courses/15/62f13d2424a47.png"

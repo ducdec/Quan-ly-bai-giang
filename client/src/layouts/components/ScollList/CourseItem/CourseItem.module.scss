@@ -1,21 +1,43 @@
+.c-12 {
+  width: 100%;
+}
+
+.col {
+  padding-left: 8px; 
+  padding-right: 8px; 
+}
 @media (min-width: 740px) {
-  .index-module-col {
-    width: 33.33333%;
+  .m-4 {
+    width: 33.3333%;
     display: block;
-    padding-left: 8px;
-    padding-right: 8px;
   }
+}
+@media (min-width: 740px) {
+  .col {
+    padding-left: 8px; 
+    padding-right: 8px; 
+  }
+}
+@media (min-width: 1113px) {
+  .col_1-3 {
+    width: 25%;
+    display: block;
+}
 }
 
 @media (min-width: 1113px) {
-  .index-module-col {
-    width: 25%;
+  .col {
     padding-left: 12px; 
     padding-right: 12px; 
   }
 }
 
-  .Item-wrap {
+
+.Item {
+  overflow: unset;
+  position: relative;
+}
+.Item-wrap {
     margin-bottom: 32px;
     flex-shrink: 0;
     overflow: hidden;
@@ -41,12 +63,19 @@
   .Item-link {
     border-radius: 16px;
     display: block;
+    object-fit: cover;
     overflow: hidden;
+    padding-top: 56.25%;
+    position: relative;
     width: 100%;
   }
   
   .Item-image {
+    height: 100%;
+    left: 0;
     object-fit: cover;
+    position: absolute;
+    top: 0;
     width: 100%;
   }
   
