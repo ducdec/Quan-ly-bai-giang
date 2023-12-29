@@ -38,7 +38,7 @@ const Profile = () => {
                     <span>
                       Thành viên của{' '}
                       <span className={cx('Profile_highlight')}>
-                        F8 - Học lập trình để đi làm
+                        Quản Lý Bài Giảng
                       </span>{' '}
                       từ 4 năm trước
                     </span>
