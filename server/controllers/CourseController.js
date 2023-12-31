@@ -1,6 +1,4 @@
-import { isObjectIdOrHexString } from 'mongoose';
 import { Course } from '../models/Course.js';
-import { MongoClient, ObjectId } from 'mongodb';
 
 class CourseController {
   constructor() {}

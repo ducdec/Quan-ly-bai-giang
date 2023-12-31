@@ -7,9 +7,11 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-import connectDB from '../server/config/db/index.js';
-import courses from '../server/routers/courses.js';
-import users from '../server/routers/users.js';
+import connectDB from './config/db/index.js';
+//import anpha from './routers/site.js';
+import courses from './routers/courses.js';
+import users from './routers/users.js';
+import { Course } from './models/Course.js';
 
 import customRenderer from './util/customRenderer.js';
 
@@ -21,7 +23,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 //file ti~nh
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'assets')));
 
 // POST res
 app.use(methodOverride('_method'));
@@ -35,7 +37,29 @@ app.set('views', path.join(__dirname, 'views', 'pages'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }));
 
-app.use('/', cors());
+app.use(cors());
+
+app.get('/', async (req, res) => {
+  try {
+    const allStatus = await Course.distinct('status');
+
+    const coursesByStatus = {};
+
+    // Lặp qua từng giá trị status
+    for (const status of allStatus) {
+      // Tìm các khóa học có status tương ứng
+      const courses = await Course.find({ status });
+
+      // Lưu danh sách khóa học vào đối tượng coursesByStatus
+      coursesByStatus[status] = courses;
+    }
+
+    res.json({ coursesByStatus });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 app.use('/courses', courses);
 app.use('/login', users);
@@ -46,15 +70,3 @@ connectDB();
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
 });
-
-// const URI = process.env.MONGODB_URI;
-
-// mongoose
-//   .connect(URI)
-//   .then(() => {
-//     console.log('Connected to DB');
-//     app.listen(PORT, () => {
-//       console.log('listening on port', PORT);
-//     });
-//   })
-//   .catch((err) => console.log('err', err));
