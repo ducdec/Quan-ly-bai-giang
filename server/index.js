@@ -10,6 +10,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db/index.js';
 //import anpha from './routers/site.js';
 import courses from './routers/courses.js';
+import lectures from './routers/lectures.js';
 import users from './routers/users.js';
 import { Course } from './models/Course.js';
 
@@ -42,14 +43,12 @@ app.use(cors());
 app.get('/', async (req, res) => {
   try {
     const allStatus = await Course.distinct('status');
-
     const coursesByStatus = {};
 
     // Lặp qua từng giá trị status
     for (const status of allStatus) {
       // Tìm các khóa học có status tương ứng
       const courses = await Course.find({ status });
-
       // Lưu danh sách khóa học vào đối tượng coursesByStatus
       coursesByStatus[status] = courses;
     }
@@ -62,6 +61,7 @@ app.get('/', async (req, res) => {
 });
 
 app.use('/courses', courses);
+app.use('/lecture', lectures);
 app.use('/login', users);
 
 //data http://localhost:5000/

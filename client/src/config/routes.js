@@ -10,6 +10,7 @@ const routers = {
   trashCourse: '/courses/trash',
   //Lecture
   lecture: '/lecture',
+  createLec: '/lecture/:slug/create',
   learning: '/learning/:course',
   //instructor
 

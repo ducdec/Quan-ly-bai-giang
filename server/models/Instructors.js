@@ -5,19 +5,9 @@ mongoose.plugin(slug);
 
 const schema = new mongoose.Schema(
   {
-    firstName: {
+    name: {
       type: String,
       required: true,
-    },
-    lastName: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-    },
-    phone: {
-      type: String,
     },
     slug: {
       type: String,
@@ -30,4 +20,4 @@ const schema = new mongoose.Schema(
   },
 );
 
-export const Course = mongoose.model('Course', schema);
+export const Instructor = mongoose.model('Instructor', schema);

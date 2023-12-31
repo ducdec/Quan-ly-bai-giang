@@ -1,15 +1,12 @@
 import mongoose from 'mongoose';
-import slug from 'mongoose-slug-updater';
-
-mongoose.plugin(slug);
 
 const schema = new mongoose.Schema(
   {
-    courseID: {
+    instructorID: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
-    lectureID: {
+    courseID: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
@@ -19,4 +16,4 @@ const schema = new mongoose.Schema(
   },
 );
 
-export const CourseLecture = mongoose.model('CourseLecture', schema);
+export const InstructorCourse = mongoose.model('InstructorCourse', schema);

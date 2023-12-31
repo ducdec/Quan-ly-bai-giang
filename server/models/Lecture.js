@@ -12,7 +12,10 @@ const schema = new mongoose.Schema(
     description: {
       type: String,
     },
-    image: {
+    instructor: {
+      type: String,
+    },
+    course: {
       type: String,
     },
     slug: {

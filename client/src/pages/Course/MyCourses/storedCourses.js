@@ -247,6 +247,13 @@ function StoredCourse() {
                     <td>
                       <Button
                         style={{ fontSize: '16px' }}
+                        href={`/lecture/${course.slug}/create`}
+                        className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
+                      >
+                        Thêm
+                      </Button>
+                      <Button
+                        style={{ fontSize: '16px' }}
                         href={`/courses/${course._id}/edit`}
                         className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
                       >

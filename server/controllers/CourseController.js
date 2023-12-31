@@ -1,4 +1,6 @@
 import { Course } from '../models/Course.js';
+import { Instructor } from '../models/Instructors.js';
+import { InstructorCourse } from '../models/InstructorCourse.js';
 
 class CourseController {
   constructor() {}
@@ -36,9 +38,25 @@ class CourseController {
           .json({ error: 'Invalid data. Course data is required.' });
       }
 
+      console.log('New Course:', newCourse);
       const course = new Course(newCourse);
-      const savedCourse = await course.save();
+      console.log('New Course Instance:', course);
 
+      const savedCourse = await course.save();
+      console.log('Saved Course:', savedCourse);
+
+      const instructor = new Instructor({ name: newCourse.instructor });
+      console.log('New Instructor Instance:', instructor);
+      await instructor.save();
+
+      const instructorCourse = new InstructorCourse({
+        instructorID: instructor._id,
+        courseID: savedCourse._id,
+      });
+      console.log('New InstructorCourse Instance:', instructorCourse);
+      await instructorCourse.save();
+
+      console.log('All data successfully saved!');
       res.status(201).json(savedCourse);
     } catch (error) {
       console.error(error);

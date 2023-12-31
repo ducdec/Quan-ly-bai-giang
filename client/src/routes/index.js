@@ -16,6 +16,7 @@ import TrashCourse from '~/pages/Course/MyCourses/trashCourses';
 import Profile from '~/pages/Profile/Profile';
 //Lecture
 import Lecture from '~/pages/Lecture';
+import CreateLecture from '~/pages/Lecture/MyLecture/create';
 import learning from '~/pages/Lecture/learning';
 //
 import Search from '~/pages/Search';
@@ -61,6 +62,11 @@ const publicRoutes = [
 
   //Lectures
   { path: config.routes.lecture, component: Lecture, layout: HeaderOnly },
+  {
+    path: config.routes.createLec,
+    component: CreateLecture,
+    layout: HeaderOnly,
+  },
   { path: config.routes.learning, component: learning, layout: HeaderOnly },
 
   //Profiles
