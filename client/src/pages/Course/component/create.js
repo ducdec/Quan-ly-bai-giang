@@ -19,7 +19,7 @@ function CreateCourse() {
     status: '',
   });
 
-  const [selectedOption, setSelectedOption] = useState('File');
+  const [selectedOption, setSelectedOption] = useState('URL');
   const [errorFields, setErrorFields] = useState([]);
 
   const navigate = useNavigate();

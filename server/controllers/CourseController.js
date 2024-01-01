@@ -1,5 +1,5 @@
 import { Course } from '../models/Course.js';
-import { Instructor } from '../models/Instructors.js';
+import { Instructor } from '../models/Instructor.js';
 import { InstructorCourse } from '../models/InstructorCourse.js';
 
 class CourseController {
@@ -38,17 +38,41 @@ class CourseController {
           .json({ error: 'Invalid data. Course data is required.' });
       }
 
+      // Tạo mới khóa học
+      const createdCourse = await Course.create(newCourse);
+      res.status(201).json(createdCourse);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  // [GET] /courses/:id/edit
+  async edit(req, res) {
+    try {
+      const newCourse = req.body;
+
+      if (!newCourse || Object.keys(newCourse).length === 0) {
+        return res
+          .status(400)
+          .json({ error: 'Invalid data. Course data is required.' });
+      }
+
       console.log('New Course:', newCourse);
+
+      // Attempt to create a new course
       const course = new Course(newCourse);
       console.log('New Course Instance:', course);
 
       const savedCourse = await course.save();
       console.log('Saved Course:', savedCourse);
 
+      // Attempt to create a new instructor
       const instructor = new Instructor({ name: newCourse.instructor });
       console.log('New Instructor Instance:', instructor);
       await instructor.save();
 
+      // Attempt to create a new instructor course association
       const instructorCourse = new InstructorCourse({
         instructorID: instructor._id,
         courseID: savedCourse._id,
@@ -60,24 +84,20 @@ class CourseController {
       res.status(201).json(savedCourse);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  }
 
-  // [GET] /courses/:id/edit
-  async edit(req, res) {
-    try {
-      const courseId = req.params.id;
-
-      const course = await Course.findById(courseId);
-
-      if (!course) {
-        return res.status(404).json({ error: 'Course not found' });
+      // Handle duplicate key error for the 'slug' field
+      if (
+        error.name === 'MongoError' &&
+        error.code === 11000 &&
+        error.keyPattern &&
+        error.keyValue
+      ) {
+        const duplicatedSlug = error.keyValue.slug;
+        return res.status(400).json({
+          error: `Duplicate key error. The slug '${duplicatedSlug}' already exists.`,
+        });
       }
 
-      res.status(201).json(course);
-    } catch (error) {
-      console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }

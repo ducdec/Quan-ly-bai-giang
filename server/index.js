@@ -11,6 +11,7 @@ import connectDB from './config/db/index.js';
 //import anpha from './routers/site.js';
 import courses from './routers/courses.js';
 import lectures from './routers/lectures.js';
+import instructors from './routers/instructor.js';
 import users from './routers/users.js';
 import { Course } from './models/Course.js';
 
@@ -62,6 +63,7 @@ app.get('/', async (req, res) => {
 
 app.use('/courses', courses);
 app.use('/lecture', lectures);
+app.use('/instructor', instructors);
 app.use('/login', users);
 
 //data http://localhost:5000/

@@ -6,9 +6,15 @@ const schema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
+    instructor: {
+      type: String,
+    },
     courseID: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+    },
+    course: {
+      type: String,
     },
   },
   {

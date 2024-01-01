@@ -18,6 +18,8 @@ import Profile from '~/pages/Profile/Profile';
 import Lecture from '~/pages/Lecture';
 import CreateLecture from '~/pages/Lecture/MyLecture/create';
 import learning from '~/pages/Lecture/learning';
+//instructor
+import CreateInstructor from '~/pages/Instructor/component/create';
 //
 import Search from '~/pages/Search';
 import Upload from '~/pages/Upload';
@@ -68,6 +70,13 @@ const publicRoutes = [
     layout: HeaderOnly,
   },
   { path: config.routes.learning, component: learning, layout: HeaderOnly },
+
+  //instructors
+  {
+    path: config.routes.CreateIns,
+    component: CreateInstructor,
+    layout: HeaderOnly,
+  },
 
   //Profiles
   { path: config.routes.profile, component: Profile, layout: HeaderProfile },

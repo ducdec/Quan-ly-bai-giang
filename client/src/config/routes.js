@@ -13,6 +13,7 @@ const routers = {
   createLec: '/lecture/:slug/create',
   learning: '/learning/:course',
   //instructor
+  CreateIns: '/instructor/create',
 
   //profile
   profile: '/:nickname',

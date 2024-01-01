@@ -18,8 +18,8 @@ function Sidebar() {
           icon={<AnphaIcon />}
         />
         <MenuItem
-          title="Profile"
-          to={config.routes.profile}
+          title="Instructor"
+          to={config.routes.CreateIns}
           icon={<UserIcon />}
         />
       </Menu>
