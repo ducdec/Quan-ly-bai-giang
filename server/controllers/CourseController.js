@@ -47,61 +47,79 @@ class CourseController {
     }
   }
 
+  // async edit(req, res) {
+  //   try {
+  //     const newCourse = req.body;
+
+  //     if (!newCourse || Object.keys(newCourse).length === 0) {
+  //       return res
+  //         .status(400)
+  //         .json({ error: 'Invalid data. Course data is required.' });
+  //     }
+
+  //     console.log('New Course:', newCourse);
+
+  //     // Attempt to create a new course
+  //     const course = new Course(newCourse);
+  //     console.log('New Course Instance:', course);
+
+  //     const savedCourse = await course.save();
+  //     console.log('Saved Course:', savedCourse);
+
+  //     // Attempt to create a new instructor
+  //     const instructor = new Instructor({ name: newCourse.instructor });
+  //     console.log('New Instructor Instance:', instructor);
+  //     await instructor.save();
+
+  //     // Attempt to create a new instructor course association
+  //     const instructorCourse = new InstructorCourse({
+  //       instructorID: instructor._id,
+  //       courseID: savedCourse._id,
+  //     });
+  //     console.log('New InstructorCourse Instance:', instructorCourse);
+  //     await instructorCourse.save();
+
+  //     console.log('All data successfully saved!');
+  //     res.status(201).json(savedCourse);
+  //   } catch (error) {
+  //     console.error(error);
+
+  //     // Handle duplicate key error for the 'slug' field
+  //     if (
+  //       error.name === 'MongoError' &&
+  //       error.code === 11000 &&
+  //       error.keyPattern &&
+  //       error.keyValue
+  //     ) {
+  //       const duplicatedSlug = error.keyValue.slug;
+  //       return res.status(400).json({
+  //         error: `Duplicate key error. The slug '${duplicatedSlug}' already exists.`,
+  //       });
+  //     }
+
+  //     res.status(500).json({ error: 'Internal Server Error' });
+  //   }
+  // }
+
   // [GET] /courses/:id/edit
   async edit(req, res) {
     try {
-      const newCourse = req.body;
+      const courseId = req.params.id;
 
-      if (!newCourse || Object.keys(newCourse).length === 0) {
-        return res
-          .status(400)
-          .json({ error: 'Invalid data. Course data is required.' });
+      // Sử dụng model Course để tìm kiếm khóa học theo ID
+      const course = await Course.findById(courseId);
+
+      if (!course) {
+        return res.status(404).json({ error: 'Không tìm thấy khóa học' });
       }
 
-      console.log('New Course:', newCourse);
-
-      // Attempt to create a new course
-      const course = new Course(newCourse);
-      console.log('New Course Instance:', course);
-
-      const savedCourse = await course.save();
-      console.log('Saved Course:', savedCourse);
-
-      // Attempt to create a new instructor
-      const instructor = new Instructor({ name: newCourse.instructor });
-      console.log('New Instructor Instance:', instructor);
-      await instructor.save();
-
-      // Attempt to create a new instructor course association
-      const instructorCourse = new InstructorCourse({
-        instructorID: instructor._id,
-        courseID: savedCourse._id,
-      });
-      console.log('New InstructorCourse Instance:', instructorCourse);
-      await instructorCourse.save();
-
-      console.log('All data successfully saved!');
-      res.status(201).json(savedCourse);
+      // Trả về trang chỉnh sửa với thông tin của khóa học
+      return res.render('editCourse', { course });
     } catch (error) {
-      console.error(error);
-
-      // Handle duplicate key error for the 'slug' field
-      if (
-        error.name === 'MongoError' &&
-        error.code === 11000 &&
-        error.keyPattern &&
-        error.keyValue
-      ) {
-        const duplicatedSlug = error.keyValue.slug;
-        return res.status(400).json({
-          error: `Duplicate key error. The slug '${duplicatedSlug}' already exists.`,
-        });
-      }
-
-      res.status(500).json({ error: 'Internal Server Error' });
+      console.error('Lỗi khi lấy thông tin khóa học:', error);
+      return res.status(500).json({ error: 'Lỗi server' });
     }
   }
-
   //[PUT] /courses/:id
   async update(req, res, next) {
     try {

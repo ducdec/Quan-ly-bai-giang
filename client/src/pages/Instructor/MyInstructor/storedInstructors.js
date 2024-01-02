@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames/bind';
-import styles from './instructorMain.module.scss';
+import styles from './MyInstructor.module.scss';
 import { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 
@@ -12,12 +12,11 @@ import FormatTime from '~/components/FormatTime';
 
 const cx = classNames.bind(styles);
 
-function Instructor() {
+function StoredInstructor() {
   const [courseResult, setCourseResult] = useState({
     storedCourses: [],
     countDeletedCourses: 0,
   });
-
   const [deleteCourseId, setDeleteCourseId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDelete, setIsDelete] = useState(false);
@@ -202,7 +201,7 @@ function Instructor() {
                 <th scope="col">Stt</th>
                 <th scope="col">Tên</th>
                 <th scope="col" colSpan="2">
-                  Môn học
+                  Khóa học
                 </th>
               </tr>
             </thead>
@@ -211,12 +210,12 @@ function Instructor() {
               {courseResult.storedCourses.length === 0 ? (
                 <tr>
                   <td colSpan="6" className={cx('text-center')}>
-                    Chưa có giáo viên!
+                    Bạn chưa đăng gì cả!
                     <a
                       className={cx('mt-4', 'btn-lg', 'btn-link', 'underline')}
                       href="/courses/store"
                     >
-                      Thêm ngay
+                      Đăng ngay
                     </a>
                   </td>
                 </tr>
@@ -238,19 +237,10 @@ function Instructor() {
                     </td>
                     <th scope="row">{index + 1}</th>
                     <td className={cx('name')}>{course.name}</td>
-                    <td className={cx('number')}>{course.instructor}</td>
-                    <td className={cx('number')}>{course.status}</td>
                     <td className={cx('duration')}>
                       {FormatTime(course.createdAt)}
                     </td>
                     <td>
-                      <Button
-                        style={{ fontSize: '16px' }}
-                        href={`/lecture/${course.slug}/create`}
-                        className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
-                      >
-                        Thêm
-                      </Button>
                       <Button
                         style={{ fontSize: '16px' }}
                         href={`/courses/${course._id}/edit`}
@@ -300,4 +290,4 @@ function Instructor() {
   );
 }
 
-export default Instructor;
+export default StoredInstructor;

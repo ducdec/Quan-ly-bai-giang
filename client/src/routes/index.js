@@ -20,6 +20,7 @@ import CreateLecture from '~/pages/Lecture/MyLecture/create';
 import learning from '~/pages/Lecture/learning';
 //instructor
 import CreateInstructor from '~/pages/Instructor/component/create';
+import StoredInstructor from '~/pages/Instructor/MyInstructor/storedInstructors';
 //
 import Search from '~/pages/Search';
 import Upload from '~/pages/Upload';
@@ -75,6 +76,11 @@ const publicRoutes = [
   {
     path: config.routes.CreateIns,
     component: CreateInstructor,
+    layout: HeaderOnly,
+  },
+  {
+    path: config.routes.storedInstructor,
+    component: StoredInstructor,
     layout: HeaderOnly,
   },
 

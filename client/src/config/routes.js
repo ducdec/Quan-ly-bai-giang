@@ -14,6 +14,7 @@ const routers = {
   learning: '/learning/:course',
   //instructor
   CreateIns: '/instructor/create',
+  storedInstructor: '/instructor/stored',
 
   //profile
   profile: '/:nickname',
