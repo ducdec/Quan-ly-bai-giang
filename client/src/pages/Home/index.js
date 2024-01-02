@@ -1,3 +1,4 @@
+// Home.jsx
 import ScollList from '~/layouts/components/ScollList';
 import styles from './Home.module.scss';
 import classNames from 'classnames/bind';
@@ -14,8 +15,14 @@ function Home() {
       try {
         const res = await siteService.home();
 
+        const filteredCoursesByStatus = Object.fromEntries(
+          Object.entries(res.coursesByStatus).filter(
+            ([status, courses]) => courses.length > 0,
+          ),
+        );
+
         // Cập nhật state với dữ liệu từ API
-        setCoursesByStatus(res.coursesByStatus);
+        setCoursesByStatus(filteredCoursesByStatus);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

@@ -13,7 +13,8 @@ class SiteController {
   // [GET] /home
   async home(req, res, next) {
     try {
-      const status = req.query.status || 'new';
+      //const status = req.query.status || 'new';
+      const status = await Course.distinct('status', { deleted: false });
 
       const courses = await Course.find({ status });
 
