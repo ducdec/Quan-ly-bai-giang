@@ -106,20 +106,19 @@ class CourseController {
     try {
       const courseId = req.params.id;
 
-      // Sử dụng model Course để tìm kiếm khóa học theo ID
       const course = await Course.findById(courseId);
 
       if (!course) {
-        return res.status(404).json({ error: 'Không tìm thấy khóa học' });
+        return res.status(404).json({ error: 'Course not found' });
       }
 
-      // Trả về trang chỉnh sửa với thông tin của khóa học
-      return res.render('editCourse', { course });
+      res.status(201).json(course);
     } catch (error) {
-      console.error('Lỗi khi lấy thông tin khóa học:', error);
-      return res.status(500).json({ error: 'Lỗi server' });
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+
   //[PUT] /courses/:id
   async update(req, res, next) {
     try {
