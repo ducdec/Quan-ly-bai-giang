@@ -4,33 +4,30 @@ import styles from './MyInstructor.module.scss';
 import { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 
-import courseService from '~/services/courseServices';
 import Button from '~/components/Button';
 import { useNavigate } from 'react-router-dom';
 import config from '~/config';
 import FormatTime from '~/components/FormatTime';
+import InstructorService from '~/services/instructorServices';
 
 const cx = classNames.bind(styles);
 
 function StoredInstructor() {
-  const [courseResult, setCourseResult] = useState({
-    storedCourses: [],
-    countDeletedCourses: 0,
-  });
-  const [deleteCourseId, setDeleteCourseId] = useState(null);
+  const [insResult, setInsResult] = useState([]);
+  const [deleteInsId, setDeleteInsId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDelete, setIsDelete] = useState(false);
   //
   const [selectAll, setSelectAll] = useState(false);
-  const [selectedCourses, setSelectedCourses] = useState([]);
+  const [selectedIns, setSelectedIns] = useState([]);
   const [showActionWarning, setShowActionWarning] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await courseService.storedCourse();
-        setCourseResult(result);
+        const result = await InstructorService.storedInstructor();
+        setInsResult(result);
       } catch (error) {
         console.error('API:', error);
       } finally {
@@ -46,27 +43,27 @@ function StoredInstructor() {
     const isChecked = e.target.checked;
     setSelectAll(isChecked);
 
-    const allCourseIds = courseResult.storedCourses.map((course) => course._id);
+    const allInstIds = insResult.map((instructor) => instructor._id);
 
-    if (isChecked && selectedCourses.length === allCourseIds.length) {
+    if (isChecked && selectedIns.length === allInstIds.length) {
       // Hủy tích "Chọn tất cả"
       setSelectAll(false);
-      setSelectedCourses([]);
+      setSelectedIns([]);
     } else {
       // Ngược lại, thiết lập danh sách khóa học đã chọn thành tất cả các ID
-      setSelectedCourses(isChecked ? allCourseIds : []);
+      setSelectedIns(isChecked ? allInstIds : []);
     }
   };
 
-  const handleCourseCheckboxChange = (e, courseId) => {
+  const handleInsCheckboxChange = (e, instructorId) => {
     const isChecked = e.target.checked;
     setSelectAll(false);
 
     if (isChecked) {
-      setSelectedCourses((prevSelected) => [...prevSelected, courseId]);
+      setSelectedIns((prevSelected) => [...prevSelected, instructorId]);
     } else {
-      setSelectedCourses((prevSelected) =>
-        prevSelected.filter((id) => id !== courseId),
+      setSelectedIns((prevSelected) =>
+        prevSelected.filter((id) => id !== instructorId),
       );
     }
   };
@@ -84,40 +81,40 @@ function StoredInstructor() {
     setShowActionWarning(false);
 
     if (selectedAction === 'delete') {
-      selectedCourses.forEach(async (courseId) => {
-        await courseService.deleteCourse(courseId);
+      selectedIns.forEach(async (instructorId) => {
+        await InstructorService.trueDelete(instructorId);
       });
     }
 
     // Sau khi thực hiện hành động, cập nhật danh sách khóa học và làm sạch dữ liệu đã chọn
-    const updatedResult = await courseService.storedCourse();
-    setCourseResult(updatedResult);
-    setSelectedCourses([]);
-    navigate(config.routes.storedCourse);
+    const updatedResult = await InstructorService.storedIntructor();
+    setInsResult(updatedResult);
+    setSelectedIns([]);
+    navigate(config.routes.storedIns);
   };
 
-  //course
+  //instructor
   const handleDeleteButtonClick = (id, e) => {
     e.preventDefault();
-    setDeleteCourseId(id);
+    setDeleteInsId(id);
     setIsDelete(true);
   };
 
-  const deleteCourse = async () => {
-    console.log(deleteCourseId);
+  const deleteinstructor = async () => {
+    console.log(deleteInsId);
 
-    if (deleteCourseId) {
+    if (deleteInsId) {
       try {
-        await courseService.deleteCourse(deleteCourseId);
+        await InstructorService.trueDelete(deleteInsId);
         console.log('Xóa thanh cong');
         // Fetch the updated data after successful deletion
-        const updatedResult = await courseService.storedCourse();
-        setCourseResult(updatedResult);
-        navigate(config.routes.storedCourse);
+        const updatedResult = await InstructorService.storedInstructor();
+        setInsResult(updatedResult);
+        navigate(config.routes.storedIns);
       } catch (error) {
         console.error('Xoa that bai:', error);
       } finally {
-        setDeleteCourseId(null);
+        setDeleteInsId(null);
         setIsDelete(false);
       }
     }
@@ -179,19 +176,11 @@ function StoredInstructor() {
                   'check-all-submit-btn',
                 )}
                 onClick={(e) => handleActionSubmit(e)}
-                disabled={selectedCourses.length === 0}
+                disabled={selectedIns.length === 0}
               >
                 Thực hiện
               </button>
             </div>
-
-            <a
-              className={cx('col-md-3', 'ms-md-auto', 'underline')}
-              href="/courses/trash"
-            >
-              Thùng Rác(
-              {courseResult.countDeletedCourses})
-            </a>
           </div>
 
           <table className={cx('table', 'mt-4')}>
@@ -207,49 +196,51 @@ function StoredInstructor() {
             </thead>
 
             <tbody>
-              {courseResult.storedCourses.length === 0 ? (
+              {insResult.length === 0 ? (
                 <tr>
                   <td colSpan="6" className={cx('text-center')}>
-                    Bạn chưa đăng gì cả!
+                    Chưa có người hướng dẫn!
                     <a
                       className={cx('mt-4', 'btn-lg', 'btn-link', 'underline')}
-                      href="/courses/store"
+                      href="/instructor/create"
                     >
-                      Đăng ngay
+                      Tạo ngay
                     </a>
                   </td>
                 </tr>
               ) : (
-                courseResult.storedCourses.map((course, index) => (
-                  <tr key={course._id}>
+                insResult.map((instructor, index) => (
+                  <tr key={instructor._id}>
                     <td>
                       <div className={cx('form-check')}>
                         <input
                           className={cx('form-check-input')}
                           type="checkbox"
-                          name="courseId[]"
-                          checked={selectedCourses.includes(course._id)}
+                          name="instructorId[]"
+                          checked={selectedIns.includes(instructor._id)}
                           onChange={(e) =>
-                            handleCourseCheckboxChange(e, course._id)
+                            handleInsCheckboxChange(e, instructor._id)
                           }
                         />
                       </div>
                     </td>
                     <th scope="row">{index + 1}</th>
-                    <td className={cx('name')}>{course.name}</td>
+                    <td className={cx('name')}>{instructor.name}</td>
                     <td className={cx('duration')}>
-                      {FormatTime(course.createdAt)}
+                      {FormatTime(instructor.createdAt)}
                     </td>
                     <td>
                       <Button
                         style={{ fontSize: '16px' }}
-                        href={`/courses/${course._id}/edit`}
+                        href={`/instructor/${instructor._id}/edit`}
                         className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
                       >
                         Sửa
                       </Button>
                       <Button
-                        onClick={(e) => handleDeleteButtonClick(course._id, e)}
+                        onClick={(e) =>
+                          handleDeleteButtonClick(instructor._id, e)
+                        }
                         style={{ fontSize: '16px' }}
                         className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
                       >
@@ -273,7 +264,7 @@ function StoredInstructor() {
           <p>Bạn chắc chắn muốn xóa?</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button primary small variant="danger" onClick={deleteCourse}>
+          <Button primary small variant="danger" onClick={deleteinstructor}>
             Xóa bỏ
           </Button>
           <Button

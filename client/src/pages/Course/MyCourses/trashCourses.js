@@ -109,7 +109,6 @@ function StoredCourse() {
     e.preventDefault();
     setDeleteCourseId(id);
     setIsDelete(true);
-    console.log(id);
   };
 
   const deleteCourse = async () => {
