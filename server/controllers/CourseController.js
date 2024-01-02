@@ -47,6 +47,18 @@ class CourseController {
     }
   }
 
+  //[GET] courses/store
+  async storeInstructor(req, res, next) {
+    try {
+      const instructors = await Instructor.find();
+
+      res.json(instructors);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
   // async edit(req, res) {
   //   try {
   //     const newCourse = req.body;

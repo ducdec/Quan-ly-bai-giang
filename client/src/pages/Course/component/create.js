@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Course.module.scss';
 import Button from '~/components/Button';
@@ -18,16 +18,30 @@ function CreateCourse() {
     imageUrl: '',
     status: '',
   });
+  const [instructors, setInstructors] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState('URL');
   const [errorFields, setErrorFields] = useState([]);
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await courseService.storedIns();
+        setInstructors(result);
+      } catch (error) {
+        console.error('API:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  //hande
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Xóa trường đó khỏi danh sách lỗi khi người dùng bắt đầu nhập
     const updatedErrorFields = errorFields.filter((field) => field !== name);
     setErrorFields(updatedErrorFields);
 
@@ -45,12 +59,10 @@ function CreateCourse() {
     e.preventDefault();
 
     // Kiểm tra xem có trường nào chưa được nhập không
-    const requiredFields = ['name', 'instructor', 'status'];
+    const requiredFields = ['name', 'instructor', 'image', 'status'];
     const missingFields = requiredFields.filter((field) => !newCourse[field]);
 
     if (missingFields.length > 0) {
-      // Nếu có trường chưa được nhập, hiển thị thông báo lỗi và cập nhật danh sách lỗi
-      console.error(`Missing required fields: ${missingFields.join(', ')}`);
       setErrorFields(missingFields);
       return;
     }
@@ -111,19 +123,25 @@ function CreateCourse() {
               <label htmlFor="instructor" className="form-label">
                 Người Hướng Dẫn
               </label>
-              <input
+              <select
                 onChange={handleInputChange}
                 value={newCourse.instructor}
-                type="text"
                 className={cx('form-control', {
                   'is-invalid': errorFields.includes('instructor'),
                 })}
                 id="instructor"
                 name="instructor"
-              />
+              >
+                <option value="">Chọn Người Hướng Dẫn</option>
+                {instructors.map((instructor) => (
+                  <option key={instructor._id} value={instructor.name}>
+                    {instructor.name}
+                  </option>
+                ))}
+              </select>
               {errorFields.includes('instructor') && (
                 <div className="invalid-feedback">
-                  Vui lòng nhập tên người hướng dẫn.
+                  Vui lòng chọn người hướng dẫn.
                 </div>
               )}
             </div>
@@ -157,17 +175,17 @@ function CreateCourse() {
 
             {selectedOption === 'File' && (
               <div className={cx('form-group')}>
-                <label htmlFor="imageFile">Chọn File</label>
+                <label htmlFor="image">Chọn File</label>
                 <input
                   type="file"
                   className={cx('form-control', {
-                    'is-invalid': errorFields.includes('imageFile'),
+                    'is-invalid': errorFields.includes('image'),
                   })}
                   id="imageFile"
                   name="imageFile"
                   onChange={handleInputChange}
                 />
-                {errorFields.includes('imageFile') && (
+                {errorFields.includes('image') && (
                   <div className="invalid-feedback">
                     Vui lòng chọn file hình ảnh.
                   </div>
@@ -177,17 +195,17 @@ function CreateCourse() {
 
             {selectedOption === 'URL' && (
               <div className={cx('form-group')}>
-                <label htmlFor="imageUrl">Nhập URL</label>
+                <label htmlFor="image">Nhập URL</label>
                 <input
                   type="text"
                   className={cx('form-control', {
-                    'is-invalid': errorFields.includes('imageUrl'),
+                    'is-invalid': errorFields.includes('image'),
                   })}
                   id="imageUrl"
                   name="imageUrl"
                   onChange={handleInputChange}
                 />
-                {errorFields.includes('imageUrl') && (
+                {errorFields.includes('image') && (
                   <div className="invalid-feedback">
                     Vui lòng nhập URL hình ảnh.
                   </div>
@@ -209,7 +227,7 @@ function CreateCourse() {
               />
               {errorFields.includes('status') && (
                 <div className="invalid-feedback">
-                  Vui lòng chọn phương thức hình ảnh.
+                  Vui lòng nhập trạng thái.
                 </div>
               )}
             </div>

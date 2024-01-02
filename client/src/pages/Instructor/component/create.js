@@ -53,7 +53,7 @@ function CreateInstructor() {
     InstructorService.create(newInstructor)
       .then((res) => {
         console.log('Success:', res.data);
-        navigate(config.routes.CreateIns);
+        navigate(config.routes.storedIns);
       })
       .catch((error) => {
         console.error('Error:', error.res ? error.res.data : error.message);

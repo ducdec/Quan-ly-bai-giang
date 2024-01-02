@@ -4,6 +4,7 @@ import CourseController from '../controllers/CourseController.js';
 const router = express.Router();
 
 router.post('/store', CourseController.store); //create
+router.get('/store', CourseController.storeInstructor);
 router.get('/:id/edit', CourseController.edit);
 router.put('/:id', CourseController.update);
 //

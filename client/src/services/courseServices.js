@@ -12,6 +12,19 @@ const courseService = {
       });
   },
 
+  storedIns() {
+    return request
+      .get('/courses/store')
+      .then((res) => {
+        console.log('API Response:', res.data); // Kiểm tra dữ liệu trả về từ API
+        return res.data;
+      })
+      .catch((error) => {
+        console.error('Error create instructors:', error);
+        throw error; // bạn có thể xử lý lỗi hoặc chuyển tiếp nó
+      });
+  },
+
   //sua
   editCourse(courseID) {
     return request

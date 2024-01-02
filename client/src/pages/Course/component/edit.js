@@ -15,9 +15,13 @@ function UpdateCourse() {
     name: '',
     description: '',
     instructor: '',
-    image: '',
+    imageFile: '',
+    imageUrl: '',
     status: '',
   });
+  const [instructors, setInstructors] = useState([]);
+  const [selectedOption, setSelectedOption] = useState('URL');
+  const [errorFields, setErrorFields] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +29,10 @@ function UpdateCourse() {
       try {
         const result = await courseService.editCourse(id);
         setFormData(result);
+
+        // Fetch the list of instructors
+        const instructorsData = await courseService.storedIns();
+        setInstructors(instructorsData);
       } catch (error) {
         console.error('Lỗi api:', error);
       }
@@ -32,7 +40,7 @@ function UpdateCourse() {
     fetchData();
   }, [id]);
 
-  //handle
+  // handle
   const handleInput = (e) => {
     setFormData({
       ...formData,
@@ -40,9 +48,26 @@ function UpdateCourse() {
     });
   };
 
+  //option
+  const handleSelectChange = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
   const handleUpdate = (e) => {
     e.preventDefault();
-    //put
+
+    // Kiểm tra xem có trường nào chưa được nhập không
+    const requiredFields = ['name', 'instructor', 'image', 'status'];
+    const missingFields = requiredFields.filter((field) => !formData[field]);
+
+    if (missingFields.length > 0) {
+      // Nếu có trường chưa được nhập, hiển thị thông báo lỗi và cập nhật danh sách lỗi
+      console.error(`Missing required fields: ${missingFields.join(', ')}`);
+      setErrorFields(missingFields);
+      return;
+    }
+
+    // Put
     courseService
       .updateCourse(id, formData)
       .then((res) => {
@@ -54,6 +79,9 @@ function UpdateCourse() {
           'Error data:',
           error.res ? error.res.data : error.message,
         );
+
+        // Update errorFields based on the error response or add a generic error field
+        setErrorFields(error.res ? Object.keys(error.res.data) : ['error']);
       });
   };
 
@@ -70,12 +98,17 @@ function UpdateCourse() {
               </label>
               <input
                 type="text"
-                className={cx('form-control')}
+                className={cx('form-control', {
+                  'is-invalid': errorFields.includes('name'),
+                })}
                 id="name"
                 name="name"
                 onChange={handleInput}
                 value={formData.name}
               />
+              {errorFields.includes('name') && (
+                <div className="invalid-feedback">Vui lòng nhập tên.</div>
+              )}
             </div>
 
             <div className="mb-3">
@@ -94,27 +127,94 @@ function UpdateCourse() {
 
             <div className={cx('form-group')}>
               <label htmlFor="instructor">Người Hướng Dẫn</label>
-              <input
+              <select
                 onChange={handleInput}
                 value={formData.instructor}
-                type="text"
-                className={cx('form-control')}
+                className={cx('form-control', {
+                  'is-invalid': errorFields.includes('instructor'),
+                })}
                 id="instructor"
                 name="instructor"
-              />
+              >
+                <option value="">Chọn Người Hướng Dẫn</option>
+                {instructors.map((instructor) => (
+                  <option key={instructor._id} value={instructor._id}>
+                    {instructor.name}
+                  </option>
+                ))}
+              </select>
+              {errorFields.includes('instructor') && (
+                <div className="invalid-feedback">
+                  Vui lòng chọn người hướng dẫn.
+                </div>
+              )}
             </div>
 
-            <div className={cx('form-group')}>
-              <label htmlFor="image">Ảnh</label>
-              <input
-                onChange={handleInput}
-                value={formData.image}
-                type="text"
-                className={cx('form-control')}
-                id="image"
-                name="image"
-              />
+            <div className={cx('form-group', 'row')}>
+              <label
+                htmlFor="action"
+                className={cx('col-md-2', 'col-form-label')}
+              >
+                Hình ảnh
+              </label>
+              <div className={cx('col-md-10')}>
+                <select
+                  className={cx(
+                    'form-select',
+                    'form-select-lg',
+                    'checkbox-select-all',
+                  )}
+                  aria-label="Default select example"
+                  name="action"
+                  value={selectedOption}
+                  onChange={handleSelectChange}
+                  required
+                >
+                  <option>File</option>
+                  <option>URL</option>
+                </select>
+              </div>
             </div>
+
+            {selectedOption === 'File' && (
+              <div className={cx('form-group')}>
+                <label htmlFor="image">Chọn File</label>
+                <input
+                  type="file"
+                  className={cx('form-control', {
+                    'is-invalid': errorFields.includes('image'),
+                  })}
+                  id="image"
+                  name="image"
+                  onChange={handleInput}
+                />
+                {errorFields.includes('image') && (
+                  <div className="invalid-feedback">
+                    Vui lòng chọn file hình ảnh.
+                  </div>
+                )}
+              </div>
+            )}
+
+            {selectedOption === 'URL' && (
+              <div className={cx('form-group')}>
+                <label htmlFor="image">Nhập URL</label>
+                <input
+                  type="text"
+                  className={cx('form-control', {
+                    'is-invalid': errorFields.includes('image'),
+                  })}
+                  id="image"
+                  name="image"
+                  onChange={handleInput}
+                />
+                {errorFields.includes('image') && (
+                  <div className="invalid-feedback">
+                    Vui lòng nhập URL hình ảnh.
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className={cx('form-group')}>
               <label htmlFor="status">Trạng thái</label>
@@ -122,10 +222,17 @@ function UpdateCourse() {
                 onChange={handleInput}
                 value={formData.status}
                 type="text"
-                className={cx('form-control')}
+                className={cx('form-control', {
+                  'is-invalid': errorFields.includes('status'),
+                })}
                 id="status"
                 name="status"
               />
+              {errorFields.includes('status') && (
+                <div className="invalid-feedback">
+                  Vui lòng nhập trạng thái.
+                </div>
+              )}
             </div>
 
             <Button blue onClick={handleUpdate} type="submit">
