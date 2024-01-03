@@ -42,29 +42,37 @@ class CourseController {
       let instructor = await Instructor.findOne({ name: newCourse.instructor });
 
       if (!instructor) {
-        // Nếu người hướng dẫn chưa tồn tại, tạo mới một người hướng dẫn
+        // Nếu người hướng dẫn chưa tồn tại, tạo mới một người hướng dẫn với mảng courses
         instructor = await Instructor.create({
           name: newCourse.instructor,
-          courses: [],
+          course: [newCourse.name],
         });
+      } else if (!instructor.courses) {
+        // Nếu người hướng dẫn tồn tại nhưng mảng courses không tồn tại, khởi tạo mảng courses
+        instructor.courses = [newCourse.name];
+        await instructor.save();
+      } else {
+        // Nếu người hướng dẫn và mảng courses đều tồn tại, thêm thủ công tên khóa học vào mảng courses
+        instructor.courses.push(newCourse.name);
+        await instructor.save();
       }
 
       // Tạo mới khóa học
       const createdCourse = await Course.create(newCourse);
 
-      // Thêm tên khóa học vào danh sách khóa học của người hướng dẫn
-      instructor.course.push(createdCourse.name);
-      await instructor.save();
-
-      // Liên kết người hướng dẫn và khóa học trong bảng InstructorCourse
-      const instructorCourseData = {
-        instructorID: instructor._id,
-        instructor: instructor.name,
-        courseID: createdCourse._id,
-        course: createdCourse.name,
-      };
-
-      await InstructorCourse.create(instructorCourseData);
+      // Thực hiện updateOne trong trường hợp bản ghi InstructorCourse đã tồn tại
+      await InstructorCourse.updateOne(
+        { instructorID: instructor._id, courseID: createdCourse._id },
+        {
+          $setOnInsert: {
+            instructorID: instructor._id,
+            instructor: instructor.name,
+            courseID: createdCourse._id,
+            course: createdCourse.name,
+          },
+        },
+        { upsert: true }, // Tạo mới nếu không tồn tại
+      );
 
       res.status(201).json(createdCourse);
     } catch (error) {

@@ -16,7 +16,6 @@ const courseService = {
     return request
       .get('/courses/store')
       .then((res) => {
-        console.log('API Response:', res.data); // Kiểm tra dữ liệu trả về từ API
         return res.data;
       })
       .catch((error) => {
