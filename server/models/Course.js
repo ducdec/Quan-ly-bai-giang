@@ -21,7 +21,7 @@ const schema = new mongoose.Schema(
     },
     instructor: [
       {
-        type: String,
+        name: String,
       },
     ],
     status: {

@@ -241,7 +241,7 @@ function StoredCourse() {
                     <td className={cx('name')}>{course.name}</td>
                     <td className={cx('number')}>
                       {course.instructor.map((ins, i) => (
-                        <span key={i}>{ins.name}</span>
+                        <div key={i}>{ins.name}</div>
                       ))}
                     </td>
                     <td className={cx('number')}>{course.status}</td>

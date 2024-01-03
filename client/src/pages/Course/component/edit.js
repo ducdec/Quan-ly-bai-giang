@@ -55,29 +55,35 @@ function UpdateCourse() {
   };
   //handleInstructorChange
   const handleInstructorChange = (e) => {
+    e.persist();
     const selectedInstructor = e.target.value;
-
-    // Kiểm tra xem instructor đã được chọn chưa
-    if (selectedInstructors.includes(selectedInstructor)) {
-      // Nếu đã chọn, loại bỏ khỏi danh sách
-      setSelectedInstructors((prevInstructors) =>
-        prevInstructors.filter(
-          (instructor) => instructor !== selectedInstructor,
-        ),
-      );
-    } else {
-      // Nếu chưa chọn, thêm vào danh sách
-      setSelectedInstructors((prevInstructors) => [
-        ...prevInstructors,
-        selectedInstructor,
-      ]);
-    }
 
     setFormData((prevCourse) => ({
       ...prevCourse,
-      instructor: selectedInstructors.join(', '), // Cập nhật giá trị người hướng dẫn
+      instructor: Array.isArray(formData.instructor)
+        ? selectedInstructors.join(', ')
+        : selectedInstructors[0],
     }));
+
+    setSelectedInstructors((prevIns) => {
+      if (prevIns.includes(selectedInstructor)) {
+        return prevIns.filter(
+          (instructor) => instructor !== selectedInstructor,
+        );
+      } else {
+        return [...prevIns, selectedInstructor];
+      }
+    });
   };
+
+  // useEffect
+  useEffect(() => {
+    setFormData((prevCourse) => ({
+      ...prevCourse,
+      instructor: selectedInstructors.join(', '),
+    }));
+  }, [selectedInstructors]);
+
   //option
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value);
@@ -168,7 +174,11 @@ function UpdateCourse() {
                 <div className={cx('col-md-4')}>
                   <select
                     onChange={handleInstructorChange}
-                    value={formData.instructor}
+                    value={
+                      selectedInstructors.length > 0
+                        ? selectedInstructors[0]
+                        : ''
+                    }
                     className={cx(
                       'form-select',
                       'form-select-lg',
