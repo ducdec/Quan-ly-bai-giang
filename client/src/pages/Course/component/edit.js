@@ -138,7 +138,7 @@ function UpdateCourse() {
               >
                 <option value="">Chọn Người Hướng Dẫn</option>
                 {instructors.map((instructor) => (
-                  <option key={instructor._id} value={instructor._id}>
+                  <option key={instructor._id} value={instructor.name}>
                     {instructor.name}
                   </option>
                 ))}

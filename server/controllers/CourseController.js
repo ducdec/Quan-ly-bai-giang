@@ -35,15 +35,41 @@ class CourseController {
       if (!newCourse || Object.keys(newCourse).length === 0) {
         return res
           .status(400)
-          .json({ error: 'Invalid data. Course data is required.' });
+          .json({ error: 'Dữ liệu không hợp lệ. Yêu cầu dữ liệu khóa học.' });
+      }
+
+      // Kiểm tra xem người hướng dẫn đã tồn tại hay chưa, nếu chưa thì tạo mới
+      let instructor = await Instructor.findOne({ name: newCourse.instructor });
+
+      if (!instructor) {
+        // Nếu người hướng dẫn chưa tồn tại, tạo mới một người hướng dẫn
+        instructor = await Instructor.create({
+          name: newCourse.instructor,
+          courses: [],
+        });
       }
 
       // Tạo mới khóa học
       const createdCourse = await Course.create(newCourse);
+
+      // Thêm tên khóa học vào danh sách khóa học của người hướng dẫn
+      instructor.course.push(createdCourse.name);
+      await instructor.save();
+
+      // Liên kết người hướng dẫn và khóa học trong bảng InstructorCourse
+      const instructorCourseData = {
+        instructorID: instructor._id,
+        instructor: instructor.name,
+        courseID: createdCourse._id,
+        course: createdCourse.name,
+      };
+
+      await InstructorCourse.create(instructorCourseData);
+
       res.status(201).json(createdCourse);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Lỗi máy chủ nội bộ' });
     }
   }
 

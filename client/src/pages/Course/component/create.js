@@ -38,7 +38,7 @@ function CreateCourse() {
     fetchData();
   }, []);
 
-  //hande
+  //handleInputChange
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -50,7 +50,18 @@ function CreateCourse() {
       [name]: value,
     }));
   };
+  //handleInstructorChange
+  const handleInstructorChange = (e) => {
+    const { name, value } = e.target;
 
+    const updatedErrorFields = errorFields.filter((field) => field !== name);
+    setErrorFields(updatedErrorFields);
+
+    setNewCourse((prevCourse) => ({
+      ...prevCourse,
+      [name]: value,
+    }));
+  };
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value);
   };
@@ -124,7 +135,7 @@ function CreateCourse() {
                 Người Hướng Dẫn
               </label>
               <select
-                onChange={handleInputChange}
+                onChange={handleInstructorChange} // Update to the correct handler
                 value={newCourse.instructor}
                 className={cx('form-control', {
                   'is-invalid': errorFields.includes('instructor'),
@@ -181,8 +192,8 @@ function CreateCourse() {
                   className={cx('form-control', {
                     'is-invalid': errorFields.includes('image'),
                   })}
-                  id="imageFile"
-                  name="imageFile"
+                  id="image"
+                  name="image"
                   onChange={handleInputChange}
                 />
                 {errorFields.includes('image') && (
@@ -201,8 +212,8 @@ function CreateCourse() {
                   className={cx('form-control', {
                     'is-invalid': errorFields.includes('image'),
                   })}
-                  id="imageUrl"
-                  name="imageUrl"
+                  id="image"
+                  name="image"
                   onChange={handleInputChange}
                 />
                 {errorFields.includes('image') && (
