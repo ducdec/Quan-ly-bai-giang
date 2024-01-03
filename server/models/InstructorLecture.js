@@ -2,14 +2,8 @@ import mongoose from 'mongoose';
 
 const schema = new mongoose.Schema(
   {
-    instructorID: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
-    lectureID: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
+    instructorID: { type: mongoose.Schema.Types.ObjectId, ref: 'Instructor' },
+    lectureID: { type: mongoose.Schema.Types.ObjectId, ref: 'Lecture' },
   },
   {
     timestamps: true,

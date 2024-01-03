@@ -19,10 +19,11 @@ const schema = new mongoose.Schema(
     imageUrl: {
       type: String,
     },
-    instructor: {
-      type: String,
-      required: true,
-    },
+    instructor: [
+      {
+        type: String,
+      },
+    ],
     status: {
       type: String,
       required: true,

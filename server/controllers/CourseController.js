@@ -32,52 +32,23 @@ class CourseController {
     try {
       const newCourse = req.body;
 
-      if (!newCourse || Object.keys(newCourse).length === 0) {
+      // Kiểm tra xem newCourse có tồn tại và không rỗng không
+      if (
+        !newCourse ||
+        (Array.isArray(newCourse.instructor) &&
+          newCourse.instructor.length === 0)
+      ) {
         return res
           .status(400)
-          .json({ error: 'Dữ liệu không hợp lệ. Yêu cầu dữ liệu khóa học.' });
-      }
-
-      // Kiểm tra xem người hướng dẫn đã tồn tại hay chưa, nếu chưa thì tạo mới
-      let instructor = await Instructor.findOne({ name: newCourse.instructor });
-
-      if (!instructor) {
-        // Nếu người hướng dẫn chưa tồn tại, tạo mới một người hướng dẫn với mảng courses
-        instructor = await Instructor.create({
-          name: newCourse.instructor,
-          course: [newCourse.name],
-        });
-      } else if (!instructor.courses) {
-        // Nếu người hướng dẫn tồn tại nhưng mảng courses không tồn tại, khởi tạo mảng courses
-        instructor.courses = [newCourse.name];
-        await instructor.save();
-      } else {
-        // Nếu người hướng dẫn và mảng courses đều tồn tại, thêm thủ công tên khóa học vào mảng courses
-        instructor.courses.push(newCourse.name);
-        await instructor.save();
+          .json({ error: 'Invalid data. Course data is required.' });
       }
 
       // Tạo mới khóa học
       const createdCourse = await Course.create(newCourse);
-
-      // Thực hiện updateOne trong trường hợp bản ghi InstructorCourse đã tồn tại
-      await InstructorCourse.updateOne(
-        { instructorID: instructor._id, courseID: createdCourse._id },
-        {
-          $setOnInsert: {
-            instructorID: instructor._id,
-            instructor: instructor.name,
-            courseID: createdCourse._id,
-            course: createdCourse.name,
-          },
-        },
-        { upsert: true }, // Tạo mới nếu không tồn tại
-      );
-
       res.status(201).json(createdCourse);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Lỗi máy chủ nội bộ' });
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
@@ -92,60 +63,6 @@ class CourseController {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
-
-  // async edit(req, res) {
-  //   try {
-  //     const newCourse = req.body;
-
-  //     if (!newCourse || Object.keys(newCourse).length === 0) {
-  //       return res
-  //         .status(400)
-  //         .json({ error: 'Invalid data. Course data is required.' });
-  //     }
-
-  //     console.log('New Course:', newCourse);
-
-  //     // Attempt to create a new course
-  //     const course = new Course(newCourse);
-  //     console.log('New Course Instance:', course);
-
-  //     const savedCourse = await course.save();
-  //     console.log('Saved Course:', savedCourse);
-
-  //     // Attempt to create a new instructor
-  //     const instructor = new Instructor({ name: newCourse.instructor });
-  //     console.log('New Instructor Instance:', instructor);
-  //     await instructor.save();
-
-  //     // Attempt to create a new instructor course association
-  //     const instructorCourse = new InstructorCourse({
-  //       instructorID: instructor._id,
-  //       courseID: savedCourse._id,
-  //     });
-  //     console.log('New InstructorCourse Instance:', instructorCourse);
-  //     await instructorCourse.save();
-
-  //     console.log('All data successfully saved!');
-  //     res.status(201).json(savedCourse);
-  //   } catch (error) {
-  //     console.error(error);
-
-  //     // Handle duplicate key error for the 'slug' field
-  //     if (
-  //       error.name === 'MongoError' &&
-  //       error.code === 11000 &&
-  //       error.keyPattern &&
-  //       error.keyValue
-  //     ) {
-  //       const duplicatedSlug = error.keyValue.slug;
-  //       return res.status(400).json({
-  //         error: `Duplicate key error. The slug '${duplicatedSlug}' already exists.`,
-  //       });
-  //     }
-
-  //     res.status(500).json({ error: 'Internal Server Error' });
-  //   }
-  // }
 
   // [GET] /courses/:id/edit
   async edit(req, res) {

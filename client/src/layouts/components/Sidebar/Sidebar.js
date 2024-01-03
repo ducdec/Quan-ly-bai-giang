@@ -19,7 +19,7 @@ function Sidebar() {
         />
         <MenuItem
           title="Instructor"
-          to={config.routes.CreateIns}
+          to={config.routes.storedIns}
           icon={<UserIcon />}
         />
       </Menu>

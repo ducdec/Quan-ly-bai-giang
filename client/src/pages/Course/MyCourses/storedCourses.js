@@ -239,7 +239,11 @@ function StoredCourse() {
                     </td>
                     <th scope="row">{index + 1}</th>
                     <td className={cx('name')}>{course.name}</td>
-                    <td className={cx('number')}>{course.instructor}</td>
+                    <td className={cx('number')}>
+                      {course.instructor.map((ins, i) => (
+                        <span key={i}>{ins.name}</span>
+                      ))}
+                    </td>
                     <td className={cx('number')}>{course.status}</td>
                     <td className={cx('duration')}>
                       {FormatTime(course.createdAt)}

@@ -13,12 +13,13 @@ function CreateCourse() {
   const [newCourse, setNewCourse] = useState({
     name: '',
     description: '',
-    instructor: '',
+    instructor: [],
     imageFile: '',
     imageUrl: '',
     status: '',
   });
   const [instructors, setInstructors] = useState([]);
+  const [selectedInstructors, setSelectedInstructors] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState('URL');
   const [errorFields, setErrorFields] = useState([]);
@@ -50,18 +51,31 @@ function CreateCourse() {
       [name]: value,
     }));
   };
+
   //handleInstructorChange
   const handleInstructorChange = (e) => {
-    const { name, value } = e.target;
+    e.persist();
+    const selectedInstructor = e.target.value;
 
-    const updatedErrorFields = errorFields.filter((field) => field !== name);
-    setErrorFields(updatedErrorFields);
+    setSelectedInstructors((prevIns) => {
+      if (prevIns.includes(selectedInstructor)) {
+        return prevIns.filter(
+          (instructor) => instructor !== selectedInstructor,
+        );
+      } else {
+        return [...prevIns, selectedInstructor];
+      }
+    });
+  };
 
+  // useEffect
+  useEffect(() => {
     setNewCourse((prevCourse) => ({
       ...prevCourse,
-      [name]: value,
+      instructor: selectedInstructors.join(', '),
     }));
-  };
+  }, [selectedInstructors]);
+
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value);
   };
@@ -69,8 +83,16 @@ function CreateCourse() {
   const handleCreateCourse = (e) => {
     e.preventDefault();
 
+    // Xóa đi tất cả lỗi cũ
+    setErrorFields([]);
+
     // Kiểm tra xem có trường nào chưa được nhập không
-    const requiredFields = ['name', 'instructor', 'image', 'status'];
+    const requiredFields = [
+      'name',
+      'instructor',
+      selectedOption === 'URL' ? 'imageUrl' : 'imageFile',
+      'status',
+    ];
     const missingFields = requiredFields.filter((field) => !newCourse[field]);
 
     if (missingFields.length > 0) {
@@ -87,6 +109,7 @@ function CreateCourse() {
       })
       .catch((error) => {
         console.error('Error:', error.res ? error.res.data : error.message);
+        // Xử lý lỗi nếu cần thiết
       });
   };
 
@@ -130,32 +153,54 @@ function CreateCourse() {
               ></textarea>
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="instructor" className="form-label">
-                Người Hướng Dẫn
-              </label>
-              <select
-                onChange={handleInstructorChange} // Update to the correct handler
-                value={newCourse.instructor}
-                className={cx('form-control', {
-                  'is-invalid': errorFields.includes('instructor'),
-                })}
-                id="instructor"
-                name="instructor"
-              >
-                <option value="">Chọn Người Hướng Dẫn</option>
-                {instructors.map((instructor) => (
-                  <option key={instructor._id} value={instructor.name}>
-                    {instructor.name}
-                  </option>
-                ))}
-              </select>
-              {errorFields.includes('instructor') && (
-                <div className="invalid-feedback">
-                  Vui lòng chọn người hướng dẫn.
+            <>
+              <div className={cx('form-group', 'row')}>
+                <label
+                  htmlFor="instructorSelect"
+                  className={cx('col-md-2', 'col-form-label')}
+                >
+                  Người Hướng Dẫn
+                </label>
+                <div className={cx('col-md-4')}>
+                  <select
+                    onChange={handleInstructorChange}
+                    value={newCourse.instructor}
+                    className={cx(
+                      'form-select',
+                      'form-select-lg',
+                      'ins-select-all',
+                    )}
+                    id="instructorS"
+                    name="instructorS"
+                  >
+                    <option value="">Chọn người hướng dẫn</option>
+                    {instructors.map((instructor) => (
+                      <option key={instructor._id} value={instructor.name}>
+                        {instructor.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              )}
-            </div>
+              </div>
+
+              <div className={cx('form-group', 'row', 'input_ins')}>
+                <input
+                  type="text"
+                  className={cx('form-control', {
+                    'is-invalid': errorFields.includes('instructor'),
+                  })}
+                  id="selectedInstructor"
+                  name="selectedInstructor"
+                  value={selectedInstructors.join(', ')}
+                  disabled
+                />
+                {errorFields.includes('instructor') && (
+                  <div className="invalid-feedback">
+                    Vui lòng chọn người hướng dẫn.
+                  </div>
+                )}
+              </div>
+            </>
 
             <div className={cx('form-group', 'row')}>
               <label
@@ -177,7 +222,6 @@ function CreateCourse() {
                   onChange={handleSelectChange}
                   required
                 >
-                  {/* <option>--Phương thức--</option> */}
                   <option>File</option>
                   <option>URL</option>
                 </select>
@@ -186,17 +230,17 @@ function CreateCourse() {
 
             {selectedOption === 'File' && (
               <div className={cx('form-group')}>
-                <label htmlFor="image">Chọn File</label>
+                <label htmlFor="imageFile">Chọn File</label>
                 <input
                   type="file"
                   className={cx('form-control', {
-                    'is-invalid': errorFields.includes('image'),
+                    'is-invalid': errorFields.includes('imageFile'),
                   })}
-                  id="image"
-                  name="image"
+                  id="imageFile"
+                  name="imageFile"
                   onChange={handleInputChange}
                 />
-                {errorFields.includes('image') && (
+                {errorFields.includes('imageFile') && (
                   <div className="invalid-feedback">
                     Vui lòng chọn file hình ảnh.
                   </div>
@@ -206,17 +250,17 @@ function CreateCourse() {
 
             {selectedOption === 'URL' && (
               <div className={cx('form-group')}>
-                <label htmlFor="image">Nhập URL</label>
+                <label htmlFor="imageUrl">Nhập URL</label>
                 <input
                   type="text"
                   className={cx('form-control', {
-                    'is-invalid': errorFields.includes('image'),
+                    'is-invalid': errorFields.includes('imageUrl'),
                   })}
-                  id="image"
-                  name="image"
+                  id="imageUrl"
+                  name="imageUrl"
                   onChange={handleInputChange}
                 />
-                {errorFields.includes('image') && (
+                {errorFields.includes('imageUrl') && (
                   <div className="invalid-feedback">
                     Vui lòng nhập URL hình ảnh.
                   </div>

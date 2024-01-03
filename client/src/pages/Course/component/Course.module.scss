@@ -29,6 +29,10 @@
   textarea.form-control {
     resize: vertical; 
   }
+  //instructor
+  .ins-select-all {
+    max-width: 170px;
+  }
   .checkbox-select-all {
     max-width: 130px;
     margin-left: -80px;
@@ -42,3 +46,6 @@
     }
   }
   
+  .input_ins {
+    margin-top: -16px;
+  }
