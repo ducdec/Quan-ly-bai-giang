@@ -40,6 +40,7 @@ class CourseController {
 
       // Tạo mới khóa học
       const createdCourse = await Course.create(newCourse);
+
       res.status(201).json(createdCourse);
     } catch (error) {
       console.error(error);

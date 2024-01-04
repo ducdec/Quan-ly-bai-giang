@@ -14,7 +14,7 @@ const schema = new mongoose.Schema(
     },
     courses: [
       {
-        name: String,
+        name: { type: String },
       },
     ],
   },

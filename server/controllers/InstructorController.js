@@ -4,7 +4,7 @@ import { Course } from '../models/Course.js';
 class InstructorController {
   constructor() {}
 
-  //[POST] /instructor/create
+  // [POST] /instructor/create
   async create(req, res) {
     try {
       const newInstructor = req.body;
@@ -23,11 +23,12 @@ class InstructorController {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+
   //[GET] /instructor/create
   async getCourse(req, res) {
     try {
       const courses = await Course.find(); // Lấy tất cả các khóa học từ bảng Course
-      res.status(200).json({ courses });
+      res.status(200).json(courses);
     } catch (error) {
       console.error('Error fetching courses:', error);
       res

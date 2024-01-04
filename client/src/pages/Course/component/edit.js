@@ -37,7 +37,6 @@ function UpdateCourse() {
         // Fetch the list of instructors
         const instructorsData = await courseService.storedIns();
         setInstructors(instructorsData);
-
         // Set selectedInstructors based on the result from the API
         setSelectedInstructors(result.instructor || []);
       } catch (error) {
@@ -117,8 +116,6 @@ function UpdateCourse() {
       selectedOption === 'URL' ? 'imageUrl' : 'imageFile',
       'status',
     ];
-
-    // Trong hàm handleUpdate
 
     const missingFields = requiredFields.filter((field) => !formData[field]);
 

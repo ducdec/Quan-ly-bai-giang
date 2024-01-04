@@ -29,8 +29,10 @@ function UpdateInstructor() {
       try {
         const result = await InstructorService.editInstructor(id);
         setFormData(result);
+
         const coursesData = await InstructorService.getCourse();
-        setCourses(coursesData.courses);
+        setCourses(coursesData);
+        setSelectedCourses(result.courses || []);
       } catch (error) {
         console.error('Lỗi API:', error);
       }
@@ -53,7 +55,11 @@ function UpdateInstructor() {
 
   const handleCourseChange = (e) => {
     const selectedCourse = e.target.value;
-    console.log('!!!!:', selectedCourses);
+
+    if (selectedCourse === '') {
+      setSelectedCourses([]);
+      return;
+    }
 
     setSelectedCourses((prevCourses) => {
       const isCourseSelected = prevCourses.some(
@@ -68,7 +74,15 @@ function UpdateInstructor() {
         return [...prevCourses, { name: selectedCourse }];
       }
     });
+    console.log('!!!!:', selectedCourses);
   };
+  // useEffect
+  useEffect(() => {
+    setFormData((prevCourse) => ({
+      ...prevCourse,
+      instructor: selectedCourses,
+    }));
+  }, [selectedCourses]);
 
   const handleUpdateInstructor = (e) => {
     e.preventDefault();
@@ -77,6 +91,16 @@ function UpdateInstructor() {
     //   return;
     // }
 
+    const requiredFields = ['name'];
+
+    const missingFields = requiredFields.filter((field) => !formData[field]);
+
+    if (missingFields.length > 0) {
+      setErrorFields(missingFields);
+      return;
+    }
+
+    //put
     InstructorService.updateInstructor(id, formData)
       .then((res) => {
         navigate(config.routes.storedIns);
@@ -87,6 +111,7 @@ function UpdateInstructor() {
           'Error data:',
           error.response ? error.response.data : error.message,
         );
+        setErrorFields(error.res ? Object.keys(error.res.data) : ['error']);
       });
   };
 
@@ -112,7 +137,7 @@ function UpdateInstructor() {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="courses" className="form-label">
+              <label htmlFor="coursesSelect" className="form-label">
                 Khóa học
               </label>
               <input
@@ -129,7 +154,7 @@ function UpdateInstructor() {
               />
               <select
                 onChange={handleCourseChange}
-                value={formData.courses.length > 0 ? formData.courses[0] : ''}
+                value={selectedCourses > 0 ? selectedCourses[0] : ''}
                 className={cx('form-select', 'form-select-lg')}
                 id="courseS"
                 name="courseS"

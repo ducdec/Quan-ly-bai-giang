@@ -21,7 +21,7 @@ function StoredInstructor() {
   const [selectedIns, setSelectedIns] = useState([]);
   const [showActionWarning, setShowActionWarning] = useState(false);
 
-  console.log('data', insResult);
+  //console.log('data', insResult);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
@@ -227,8 +227,8 @@ function StoredInstructor() {
                     <th scope="row">{index + 1}</th>
                     <td className={cx('name')}>{instructor.name}</td>
                     <td className={cx('number')}>
-                      {instructor.courses.map((course, i) => (
-                        <div key={i}>{course.name}</div>
+                      {instructor.courses.map((ins, i) => (
+                        <div key={i}>{ins.name}</div>
                       ))}
                     </td>
                     <td>
