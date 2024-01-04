@@ -21,9 +21,13 @@ const schema = new mongoose.Schema(
     },
     instructor: [
       {
-        name: String,
+        name: {
+          type: String,
+          required: true,
+        },
       },
     ],
+
     status: {
       type: String,
       required: true,

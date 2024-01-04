@@ -32,7 +32,6 @@ class CourseController {
     try {
       const newCourse = req.body;
 
-      console.log('newCourse:', newCourse);
       // Kiểm tra xem newCourse có tồn tại và không rỗng không
       if (
         !newCourse ||

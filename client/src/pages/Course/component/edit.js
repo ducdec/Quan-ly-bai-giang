@@ -35,6 +35,9 @@ function UpdateCourse() {
         // Fetch the list of instructors
         const instructorsData = await courseService.storedIns();
         setInstructors(instructorsData);
+
+        // Set selectedInstructors based on the result from the API
+        setSelectedInstructors(result.instructor || []);
       } catch (error) {
         console.error('Lỗi api:', error);
       }
@@ -42,7 +45,7 @@ function UpdateCourse() {
     fetchData();
   }, [id]);
 
-  // handle
+  // handleInput
   const handleInput = (e) => {
     const { name, value } = e.target;
 
@@ -53,25 +56,28 @@ function UpdateCourse() {
       [name]: value,
     }));
   };
-  //handleInstructorChange
+
   const handleInstructorChange = (e) => {
-    e.persist();
     const selectedInstructor = e.target.value;
 
-    setFormData((prevCourse) => ({
-      ...prevCourse,
-      instructor: Array.isArray(formData.instructor)
-        ? selectedInstructors.join(', ')
-        : selectedInstructors[0],
-    }));
+    if (!selectedInstructor) {
+      setSelectedInstructors([]);
+      return;
+    }
 
     setSelectedInstructors((prevIns) => {
-      if (prevIns.includes(selectedInstructor)) {
+      const isInstructorSelected = prevIns.some(
+        (instructor) => instructor.name === selectedInstructor,
+      );
+
+      if (isInstructorSelected) {
+        // Nếu đã chọn, hãy loại bỏ
         return prevIns.filter(
-          (instructor) => instructor !== selectedInstructor,
+          (instructor) => instructor.name !== selectedInstructor,
         );
       } else {
-        return [...prevIns, selectedInstructor];
+        // Nếu chưa chọn, hãy thêm vào
+        return [...prevIns, { name: selectedInstructor }];
       }
     });
   };
@@ -80,22 +86,23 @@ function UpdateCourse() {
   useEffect(() => {
     setFormData((prevCourse) => ({
       ...prevCourse,
-      instructor: selectedInstructors.join(', '),
+      instructor: selectedInstructors,
     }));
   }, [selectedInstructors]);
 
-  //option
+  // handleSelectChange
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value);
   };
 
+  // handleUpdate
   const handleUpdate = (e) => {
     e.preventDefault();
 
     // Kiểm tra xem có trường nào chưa được nhập không
     const requiredFields = [
       'name',
-      'instructor',
+      selectedInstructors.length > 0 ? 'instructor' : null,
       selectedOption === 'URL' ? 'imageUrl' : 'imageFile',
       'status',
     ];
@@ -176,7 +183,7 @@ function UpdateCourse() {
                     onChange={handleInstructorChange}
                     value={
                       selectedInstructors.length > 0
-                        ? selectedInstructors[0]
+                        ? selectedInstructors[0]?.name || '' // Kiểm tra nếu mảng không rỗng thì mới truy cập
                         : ''
                     }
                     className={cx(
@@ -187,7 +194,7 @@ function UpdateCourse() {
                     id="instructorS"
                     name="instructorS"
                   >
-                    <option value="">Chọn người hướng dẫn</option>
+                    <option value="">Xóa người hướng dẫn</option>
                     {instructors.map((instructor) => (
                       <option key={instructor._id} value={instructor.name}>
                         {instructor.name}
@@ -205,7 +212,11 @@ function UpdateCourse() {
                   })}
                   id="selectedInstructor"
                   name="selectedInstructor"
-                  value={selectedInstructors.join(', ')}
+                  value={
+                    selectedInstructors.length > 0
+                      ? selectedInstructors.map((ins) => ins.name).join('  ')
+                      : ''
+                  }
                   disabled
                 />
                 {errorFields.includes('instructor') && (
