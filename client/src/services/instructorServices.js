@@ -11,6 +11,15 @@ const InstructorService = {
         throw err;
       });
   },
+  getCourse() {
+    return request
+      .get('/instructor/create')
+      .then((res) => res.data)
+      .catch((err) => {
+        console.error('Error Axios Instructor:', err);
+        throw err;
+      });
+  },
 
   //sua
   editInstructor(insID) {

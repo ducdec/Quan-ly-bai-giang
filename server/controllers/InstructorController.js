@@ -1,4 +1,5 @@
 import { Instructor } from '../models/Instructor.js';
+import { Course } from '../models/Course.js';
 
 class InstructorController {
   constructor() {}
@@ -14,14 +15,24 @@ class InstructorController {
           .json({ error: 'Invalid data. Instructor data is required.' });
       }
 
-      const instructor = new Instructor(newInstructor);
+      const createdInstructor = await Instructor.create(newInstructor);
 
-      const savedInstructor = await instructor.save();
-
-      res.status(201).json(savedInstructor);
+      res.status(201).json(createdInstructor);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+  //[GET] /instructor/create
+  async getCourse(req, res) {
+    try {
+      const courses = await Course.find(); // Lấy tất cả các khóa học từ bảng Course
+      res.status(200).json({ courses });
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Internal Server Error' });
     }
   }
 

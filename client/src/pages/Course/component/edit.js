@@ -23,6 +23,8 @@ function UpdateCourse() {
   const [selectedInstructors, setSelectedInstructors] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState('URL');
+  // eslint-disable-next-line no-unused-vars
+  const [file, setFile] = useState(null);
   const [errorFields, setErrorFields] = useState([]);
   const navigate = useNavigate();
 
@@ -92,6 +94,14 @@ function UpdateCourse() {
     }));
   }, [selectedInstructors]);
 
+  // handleFileChange
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedOption === 'File') {
+      setFile(selectedFile);
+    }
+  };
+
   // handleSelectChange
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value);
@@ -104,19 +114,13 @@ function UpdateCourse() {
     // Kiểm tra xem có trường nào chưa được nhập không
     const requiredFields = [
       'name',
-      selectedInstructors.length > 0 ? 'instructor' : null,
       selectedOption === 'URL' ? 'imageUrl' : 'imageFile',
       'status',
     ];
 
     // Trong hàm handleUpdate
 
-    const missingFields = requiredFields.filter((field) => {
-      if (field === 'instructor') {
-        return selectedInstructors.length === 0;
-      }
-      return !formData[field];
-    });
+    const missingFields = requiredFields.filter((field) => !formData[field]);
 
     if (missingFields.length > 0) {
       setErrorFields(missingFields);
@@ -195,7 +199,7 @@ function UpdateCourse() {
                     onChange={handleInstructorChange}
                     value={
                       selectedInstructors.length > 0
-                        ? selectedInstructors[0]?.name || '' // Kiểm tra nếu mảng không rỗng thì mới truy cập
+                        ? selectedInstructors[0]
                         : ''
                     }
                     className={cx(
@@ -206,7 +210,7 @@ function UpdateCourse() {
                     id="instructorS"
                     name="instructorS"
                   >
-                    <option value="">Xóa người hướng dẫn</option>
+                    <option value="">Chọn người hướng dẫn</option>
                     {instructors.map((instructor) => (
                       <option key={instructor._id} value={instructor.name}>
                         {instructor.name}
@@ -219,9 +223,7 @@ function UpdateCourse() {
               <div className={cx('form-group', 'row', 'input_ins')}>
                 <input
                   type="text"
-                  className={cx('form-control', {
-                    'is-invalid': errorFields.includes('instructor'),
-                  })}
+                  className={cx('form-control')}
                   id="selectedInstructor"
                   name="selectedInstructor"
                   value={
@@ -231,11 +233,6 @@ function UpdateCourse() {
                   }
                   disabled
                 />
-                {errorFields.includes('instructor') && (
-                  <div className="invalid-feedback">
-                    Vui lòng chọn ít nhất một người hướng dẫn.
-                  </div>
-                )}
               </div>
             </>
 
@@ -275,8 +272,7 @@ function UpdateCourse() {
                   })}
                   id="imageFile"
                   name="imageFile"
-                  onChange={handleInput}
-                  value={formData.imageFile}
+                  onChange={handleFileChange}
                 />
                 {errorFields.includes('imageFile') && (
                   <div className="invalid-feedback">

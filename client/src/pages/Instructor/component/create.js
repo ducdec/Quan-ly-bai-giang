@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './Instructor.module.scss';
@@ -12,13 +12,30 @@ const cx = classNames.bind(styles);
 function CreateInstructor() {
   const [newInstructor, setNewInstructor] = useState({
     name: '',
+    courses: [],
     email: '',
     phone: '',
   });
 
+  const [courses, setCourses] = useState([]);
+  const [selectedCourses, setSelectedCourses] = useState([]);
+
   const [errorFields, setErrorFields] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const coursesData = await InstructorService.getCourse();
+        setCourses(coursesData.courses);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,12 +44,32 @@ function CreateInstructor() {
     const updatedErrorFields = errorFields.filter((field) => field !== name);
     setErrorFields(updatedErrorFields);
 
-    setNewInstructor((prevCourse) => ({
-      ...prevCourse,
+    setNewInstructor((prevInstructor) => ({
+      ...prevInstructor,
       [name]: value,
     }));
   };
 
+  const handleCourseChange = (e) => {
+    const selectedCourse = e.target.value;
+    console.log('!!!!:', selectedCourses);
+
+    setSelectedCourses((prevCourses) => {
+      const isCourseSelected = prevCourses.some(
+        (course) => course.name === selectedCourse,
+      );
+
+      if (isCourseSelected) {
+        // Nếu đã chọn, hãy loại bỏ
+        return prevCourses.filter((course) => course.name !== selectedCourse);
+      } else {
+        // Nếu chưa chọn, hãy thêm vào
+        return [...prevCourses, { name: selectedCourse }];
+      }
+    });
+  };
+
+  //hadle create
   const handleCreateInstructor = (e) => {
     e.preventDefault();
 
@@ -43,91 +80,135 @@ function CreateInstructor() {
     );
 
     if (missingFields.length > 0) {
-      // Nếu có trường chưa được nhập, hiển thị thông báo lỗi và cập nhật danh sách lỗi
-      console.error(`Missing required fields: ${missingFields.join(', ')}`);
       setErrorFields(missingFields);
       return;
     }
 
-    // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo khóa học
-    InstructorService.create(newInstructor)
+    setNewInstructor((prevIns) => ({
+      ...prevIns,
+      courses: selectedCourses.length > 0 ? selectedCourses : [],
+    }));
+
+    // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo giáo viên
+    InstructorService.create({
+      ...newInstructor,
+      courses: selectedCourses,
+    })
       .then((res) => {
         console.log('Success:', res.data);
         navigate(config.routes.storedIns);
       })
       .catch((error) => {
-        console.error('Error:', error.res ? error.res.data : error.message);
+        console.error(
+          'Error:',
+          error.response ? error.response.data : error.message,
+        );
       });
   };
 
   return (
-    <>
-      <div className={cx('content_wrapper')}>
-        <div className={cx('form-container')}>
-          <div className={cx('mt-5')}>
-            <h3>Thêm giảng viên</h3>
+    <div className={cx('content_wrapper')}>
+      <div className={cx('form-container')}>
+        <div className={cx('mt-5')}>
+          <h3>Thêm giảng viên</h3>
 
-            <form onSubmit={handleCreateInstructor}>
-              <div className={cx('form-group')}>
-                <div className={cx('mb-3')}>
-                  <label htmlFor="name" className="form-label">
-                    Tên giảng viên
-                  </label>
-                  <input
-                    onChange={handleInputChange}
-                    value={newInstructor.name}
-                    type="text"
-                    className={cx('form-control', {
-                      'is-invalid': errorFields.includes('name'),
-                    })}
-                    id="name"
-                    name="name"
-                  />
-                  {errorFields.includes('name') && (
-                    <div className="invalid-feedback">Vui lòng nhập tên.</div>
-                  )}
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    onChange={handleInputChange}
-                    value={newInstructor.email}
-                    type="text"
-                    className={cx('form-control', {
-                      'is-invalid': errorFields.includes('email'),
-                    })}
-                    id="email"
-                    name="email"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="phone" className="form-label">
-                    Số điện thoại
-                  </label>
-                  <input
-                    onChange={handleInputChange}
-                    value={newInstructor.phone}
-                    type="text"
-                    className={cx('form-control', {
-                      'is-invalid': errorFields.includes('phone'),
-                    })}
-                    id="phone"
-                    name="phone"
-                  />
-                </div>
-
-                <Button blue onClick={handleCreateInstructor} type="submit">
-                  Thêm
-                </Button>
+          <form onSubmit={handleCreateInstructor}>
+            <div className={cx('form-group')}>
+              <div className={cx('mb-3')}>
+                <label htmlFor="name" className="form-label">
+                  Tên giảng viên
+                </label>
+                <input
+                  onChange={handleInputChange}
+                  value={newInstructor.name}
+                  type="text"
+                  className={cx('form-control', {
+                    'is-invalid': errorFields.includes('name'),
+                  })}
+                  id="name"
+                  name="name"
+                />
+                {errorFields.includes('name') && (
+                  <div className="invalid-feedback">Vui lòng nhập tên.</div>
+                )}
               </div>
-            </form>
-          </div>
+
+              <div className="mb-3">
+                <label htmlFor="courses" className="form-label">
+                  Khóa học
+                </label>
+                <input
+                  type="text"
+                  className={cx('form-control')}
+                  id="courses"
+                  name="courses"
+                  value={selectedCourses
+                    .map((course) => course.name)
+                    .join(', ')}
+                  disabled
+                />
+                <select
+                  onChange={handleCourseChange}
+                  value={selectedCourses.length > 0 ? selectedCourses[0] : ''}
+                  className={cx(
+                    'form-select',
+                    'form-select-lg',
+                    'course-select-all',
+                  )}
+                  id="courseS"
+                  name="courseS"
+                >
+                  <option value="">Chọn khóa học</option>
+                  {courses.map((course) => (
+                    <option key={course._id} value={course.name}>
+                      {course.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">
+                  Email
+                </label>
+                <input
+                  onChange={handleInputChange}
+                  value={newInstructor.email}
+                  type="text"
+                  className={cx('form-control', {
+                    'is-invalid': errorFields.includes('email'),
+                  })}
+                  id="email"
+                  name="email"
+                />
+                {errorFields.includes('email') && (
+                  <div className="invalid-feedback">Vui lòng nhập email.</div>
+                )}
+              </div>
+              <div className="mb-3">
+                <label htmlFor="phone" className="form-label">
+                  Số điện thoại
+                </label>
+                <input
+                  onChange={handleInputChange}
+                  value={newInstructor.phone}
+                  type="text"
+                  className={cx('form-control', {
+                    'is-invalid': errorFields.includes('phone'),
+                  })}
+                  id="phone"
+                  name="phone"
+                />
+              </div>
+
+              <Button blue onClick={handleCreateInstructor} type="submit">
+                Thêm
+              </Button>
+            </div>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

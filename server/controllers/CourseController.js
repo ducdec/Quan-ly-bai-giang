@@ -32,12 +32,7 @@ class CourseController {
     try {
       const newCourse = req.body;
 
-      // Kiểm tra xem newCourse có tồn tại và không rỗng không
-      if (
-        !newCourse ||
-        (Array.isArray(newCourse.instructor) &&
-          newCourse.instructor.length === 0)
-      ) {
+      if (!newCourse || Object.keys(newCourse).length === 0) {
         return res
           .status(400)
           .json({ error: 'Invalid data. Course data is required.' });
@@ -56,7 +51,6 @@ class CourseController {
   async storeInstructor(req, res, next) {
     try {
       const instructors = await Instructor.find();
-
       res.json(instructors);
     } catch (error) {
       console.error(error);

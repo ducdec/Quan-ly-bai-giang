@@ -57,6 +57,7 @@ function CreateCourse() {
     e.persist();
     const selectedInstructor = e.target.value;
     console.log('!!!!:', selectedInstructors);
+
     setSelectedInstructors((prevIns) => {
       const isInstructorSelected = prevIns.some(
         (instructor) => instructor.name === selectedInstructor,
@@ -87,17 +88,15 @@ function CreateCourse() {
     setSelectedOption(e.target.value);
   };
 
-  //
+  //handleCreateCourse
   const handleCreateCourse = (e) => {
     e.preventDefault();
 
     // Xóa đi tất cả lỗi cũ
     setErrorFields([]);
 
-    // Kiểm tra xem có trường nào chưa được nhập không
     const requiredFields = [
       'name',
-      selectedInstructors.length > 0 ? 'instructor' : null,
       selectedOption === 'URL' ? 'imageUrl' : 'imageFile',
       'status',
     ];
@@ -108,13 +107,9 @@ function CreateCourse() {
       return;
     }
 
-    // Chuyển trường instructor về mảng như định dạng của mô hình mới
-    const formattedInstructor = selectedInstructors.map((name) => ({ name }));
-
-    // Cập nhật trường instructor trong newCourse
     setNewCourse((prevCourse) => ({
       ...prevCourse,
-      instructor: formattedInstructor,
+      instructor: selectedInstructors.length > 0 ? selectedInstructors : [],
     }));
 
     // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo khóa học
@@ -207,20 +202,12 @@ function CreateCourse() {
               <div className={cx('form-group', 'row', 'input_ins')}>
                 <input
                   type="text"
-                  className={cx('form-control', {
-                    'is-invalid': errorFields.includes('instructor'),
-                  })}
+                  className={cx('form-control')}
                   id="selectedInstructor"
                   name="selectedInstructor"
                   value={selectedInstructors.map((ins) => ins.name).join('  ')}
                   disabled
                 />
-
-                {errorFields.includes('instructor') && (
-                  <div className="invalid-feedback">
-                    Vui lòng chọn người hướng dẫn.
-                  </div>
-                )}
               </div>
             </>
 

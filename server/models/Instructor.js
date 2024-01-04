@@ -12,9 +12,11 @@ const schema = new mongoose.Schema(
     phone: {
       type: String,
     },
-    courses: {
-      type: [String],
-    },
+    courses: [
+      {
+        name: String,
+      },
+    ],
   },
   {
     timestamps: true,

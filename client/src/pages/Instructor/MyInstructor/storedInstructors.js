@@ -7,7 +7,6 @@ import Modal from 'react-bootstrap/Modal';
 import Button from '~/components/Button';
 import { useNavigate } from 'react-router-dom';
 import config from '~/config';
-import FormatTime from '~/components/FormatTime';
 import InstructorService from '~/services/instructorServices';
 
 const cx = classNames.bind(styles);
@@ -22,6 +21,7 @@ function StoredInstructor() {
   const [selectedIns, setSelectedIns] = useState([]);
   const [showActionWarning, setShowActionWarning] = useState(false);
 
+  console.log('data', insResult);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
@@ -226,8 +226,10 @@ function StoredInstructor() {
                     </td>
                     <th scope="row">{index + 1}</th>
                     <td className={cx('name')}>{instructor.name}</td>
-                    <td className={cx('duration')}>
-                      {FormatTime(instructor.createdAt)}
+                    <td className={cx('number')}>
+                      {instructor.courses.map((course, i) => (
+                        <div key={i}>{course.name}</div>
+                      ))}
                     </td>
                     <td>
                       <Button
