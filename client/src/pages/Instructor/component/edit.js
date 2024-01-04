@@ -78,9 +78,9 @@ function UpdateInstructor() {
   };
   // useEffect
   useEffect(() => {
-    setFormData((prevCourse) => ({
-      ...prevCourse,
-      instructor: selectedCourses,
+    setFormData((prevData) => ({
+      ...prevData,
+      courses: selectedCourses,
     }));
   }, [selectedCourses]);
 
@@ -154,7 +154,7 @@ function UpdateInstructor() {
               />
               <select
                 onChange={handleCourseChange}
-                value={selectedCourses > 0 ? selectedCourses[0] : ''}
+                value={selectedCourses.length > 0 ? selectedCourses[0] : ''}
                 className={cx('form-select', 'form-select-lg')}
                 id="courseS"
                 name="courseS"
