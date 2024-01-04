@@ -97,7 +97,7 @@ function CreateCourse() {
     // Kiểm tra xem có trường nào chưa được nhập không
     const requiredFields = [
       'name',
-      'instructor',
+      selectedInstructors.length > 0 ? 'instructor' : null,
       selectedOption === 'URL' ? 'imageUrl' : 'imageFile',
       'status',
     ];

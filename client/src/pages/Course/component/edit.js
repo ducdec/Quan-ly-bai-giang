@@ -51,6 +51,7 @@ function UpdateCourse() {
 
     const updatedErrorFields = errorFields.filter((field) => field !== name);
     setErrorFields(updatedErrorFields);
+
     setFormData((prevCourse) => ({
       ...prevCourse,
       [name]: value,
@@ -60,7 +61,7 @@ function UpdateCourse() {
   const handleInstructorChange = (e) => {
     const selectedInstructor = e.target.value;
 
-    if (!selectedInstructor) {
+    if (selectedInstructor === '') {
       setSelectedInstructors([]);
       return;
     }
@@ -80,6 +81,7 @@ function UpdateCourse() {
         return [...prevIns, { name: selectedInstructor }];
       }
     });
+    console.log('!!!!:', selectedInstructors);
   };
 
   // useEffect
@@ -106,12 +108,22 @@ function UpdateCourse() {
       selectedOption === 'URL' ? 'imageUrl' : 'imageFile',
       'status',
     ];
-    const missingFields = requiredFields.filter((field) => !formData[field]);
+
+    // Trong hàm handleUpdate
+
+    const missingFields = requiredFields.filter((field) => {
+      if (field === 'instructor') {
+        return selectedInstructors.length === 0;
+      }
+      return !formData[field];
+    });
 
     if (missingFields.length > 0) {
       setErrorFields(missingFields);
       return;
     }
+    console.log('missingFields:', missingFields);
+    console.log('errorFields:', errorFields);
 
     // Put
     courseService
@@ -221,7 +233,7 @@ function UpdateCourse() {
                 />
                 {errorFields.includes('instructor') && (
                   <div className="invalid-feedback">
-                    Vui lòng chọn người hướng dẫn.
+                    Vui lòng chọn ít nhất một người hướng dẫn.
                   </div>
                 )}
               </div>
@@ -264,6 +276,7 @@ function UpdateCourse() {
                   id="imageFile"
                   name="imageFile"
                   onChange={handleInput}
+                  value={formData.imageFile}
                 />
                 {errorFields.includes('imageFile') && (
                   <div className="invalid-feedback">
@@ -284,6 +297,7 @@ function UpdateCourse() {
                   id="imageUrl"
                   name="imageUrl"
                   onChange={handleInput}
+                  value={formData.imageUrl}
                 />
                 {errorFields.includes('imageUrl') && (
                   <div className="invalid-feedback">
