@@ -15,7 +15,7 @@ function UpdateCourse() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    instructor: [],
+    instructors: [],
     imageFile: '',
     imageUrl: '',
     status: '',
@@ -55,18 +55,16 @@ function UpdateCourse() {
   };
 
   const handleInstructorChange = (value) => {
-    setFormData((prevCourse) => ({
-      ...prevCourse,
-      instructors: value,
-    }));
+    setSelectedInstructors(value);
   };
 
   useEffect(() => {
     setFormData((prevCourse) => ({
       ...prevCourse,
-      instructor: selectedInstructors,
+      instructors: selectedInstructors,
     }));
   }, [selectedInstructors]);
+
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value);
   };
@@ -74,6 +72,7 @@ function UpdateCourse() {
   const handleUpdate = (e) => {
     e.preventDefault();
 
+    console.log('Dữ liệu trước khi cập nhật:', formData);
     const requiredFields = [
       'name',
       selectedInstructors.length > 0 ? 'instructor' : null,
@@ -93,7 +92,7 @@ function UpdateCourse() {
       return;
     }
 
-    formData.instructor = selectedInstructors;
+    formData.instructors = selectedInstructors;
 
     const fileData =
       selectedOption === 'URL'
@@ -103,6 +102,7 @@ function UpdateCourse() {
     courseService
       .updateCourse(id, { ...formData, ...fileData })
       .then((res) => {
+        console.log('Dữ liệu sau khi cập nhật:', res.data);
         navigate(config.routes.storedCourse);
         console.log('Success:', res.data);
       })
@@ -113,14 +113,6 @@ function UpdateCourse() {
         );
         setErrorFields(error.res ? Object.keys(error.res.data) : ['error']);
       });
-  };
-  // Tạo hàm để lấy tên của instructor dựa trên id
-  const getInstructorNameById = (instructorId) => {
-    const matchingInstructors = instructors.filter(
-      (ins) => ins._id === instructorId,
-    );
-
-    return matchingInstructors.length > 0 ? matchingInstructors[0].name : null;
   };
 
   const instructorOptions = instructors.map((ins) => ({
@@ -184,9 +176,7 @@ function UpdateCourse() {
                     mode="tags"
                     style={{ width: '100%' }}
                     placeholder="Chọn người hướng dẫn"
-                    value={selectedInstructors.map((instructor) =>
-                      getInstructorNameById(instructor),
-                    )}
+                    value={selectedInstructors.map((instructor) => instructor)}
                     onChange={handleInstructorChange}
                     options={instructorOptions}
                   />

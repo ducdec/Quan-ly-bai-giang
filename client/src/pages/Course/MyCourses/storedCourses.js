@@ -242,10 +242,10 @@ function StoredCourse() {
                     <td className={cx('name')}>{course.name}</td>
                     <td className={cx('number')}>
                       {course.instructors != null
-                        ? course.instructors.map((item, i) => (
-                            <div key={item.i}>{item.name}</div>
+                        ? course.instructors.map((item) => (
+                            <div key={item._id}>{item.name}</div>
                           ))
-                        : 'chua co giang vien'}
+                        : 'Chưa có giảng viên'}
                     </td>
                     <td className={cx('number')}>{course.status}</td>
                     <td className={cx('duration')}>

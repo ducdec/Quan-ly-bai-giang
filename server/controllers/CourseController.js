@@ -107,8 +107,22 @@ class CourseController {
   //[PUT] /courses/:id
   async update(req, res, next) {
     try {
-      await Course.updateOne({ _id: req.params.id }, req.body);
-      res.json({ success: true, message: 'Course updated successfully' });
+      const courseId = req.params.id;
+
+      // Cập nhật thông tin khóa học
+      const updatedCourse = await Course.findByIdAndUpdate(courseId, req.body, {
+        new: true,
+      });
+
+      // Cập nhật danh sách instructors
+      updatedCourse.instructors = req.body.instructors;
+      await updatedCourse.save();
+
+      res.json({
+        success: true,
+        message: 'Course updated successfully',
+        data: updatedCourse,
+      });
     } catch (error) {
       console.error('Error in update:', error);
       next(error);
@@ -135,24 +149,42 @@ class CourseController {
     }
   }
 
-  //[DELETE] /courses/:id (Xoa me'm)
+  //[DELETE] /courses/:id (Xóa mềm)
   async destroy(req, res, next) {
     try {
-      // Sử dụng findOneAndUpdate để cập nhật giá trị deleted từ false thành true
-      const result = await Course.findOneAndUpdate(
-        { _id: req.params.id, deleted: false },
-        { $set: { deleted: true } },
-        { new: true },
-      );
-      // Kiểm tra xem có bản ghi nào được cập nhật không
-      if (!result) {
+      const courseId = req.params.id;
+
+      // Tìm khóa học để xóa mềm
+      const courseToDelete = await Course.findOne({
+        _id: courseId,
+        deleted: false,
+      });
+
+      // Kiểm tra xem khóa học có tồn tại không
+      if (!courseToDelete) {
         return res.status(404).json({
           success: false,
-          message: 'Bản ghi không tồn tại hoặc đã bị xóa trước đó.',
+          message: 'Khóa học không tồn tại hoặc đã bị xóa trước đó.',
         });
       }
 
-      console.log('Xoa success!!!');
+      // Cập nhật giá trị deleted từ false thành true
+      const result = await Course.findByIdAndUpdate(
+        courseId,
+        { deleted: true },
+        { new: true },
+      );
+
+      // Lấy danh sách instructors của khóa học
+      const instructorsToUpdate = result.instructors;
+
+      // Cập nhật thông tin trong bảng Instructor
+      await Instructor.updateMany(
+        { _id: { $in: instructorsToUpdate } },
+        { $pull: { courses: courseId } },
+      );
+
+      console.log('Xóa thành công!!!');
       res.json({ success: true, message: 'Xóa thành công.' });
     } catch (error) {
       console.error('Error in Destroy:', error);
