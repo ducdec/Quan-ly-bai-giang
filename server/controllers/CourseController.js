@@ -32,32 +32,54 @@ class CourseController {
     try {
       const newCourse = req.body;
 
-      // Kiểm tra xem newCourse có tồn tại và không rỗng không
-      if (
-        !newCourse ||
-        (Array.isArray(newCourse.instructor) &&
-          newCourse.instructor.length === 0)
-      ) {
-        return res
-          .status(400)
-          .json({ error: 'Invalid data. Course data is required.' });
+      if (!newCourse) {
+        return res.status(400).json({
+          error: 'Dữ liệu không hợp lệ. Thông tin khóa học là bắt buộc.',
+        });
       }
 
-      // Tạo mới khóa học
       const createdCourse = await Course.create(newCourse);
+
+      // Trích xuất ID của giảng viên
+      const idInstructors = createdCourse.instructors.map((ins) => ins._id);
+
+      // Kiểm tra xem khóa học đã tồn tại cho giảng viên hay chưa
+      const instructorUpdatePromises = idInstructors.map(
+        async (instructorId) => {
+          const instructor = await Instructor.findOne({
+            _id: instructorId,
+            courses: createdCourse._id,
+          });
+
+          if (!instructor) {
+            // Nếu khóa học chưa tồn tại, thực hiện cập nhật
+            return Instructor.updateOne(
+              { _id: instructorId },
+              { $addToSet: { courses: createdCourse._id } },
+            );
+          }
+
+          // Nếu khóa học đã tồn tại, không cần thực hiện cập nhật
+          return Promise.resolve();
+        },
+      );
+
+      // Chờ tất cả các promises hoàn thành trước khi trả về response
+      await Promise.all(instructorUpdatePromises);
+
       res.status(201).json(createdCourse);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Lỗi Nội bộ của máy chủ' });
     }
   }
 
   //[GET] courses/store
   async storeInstructor(req, res, next) {
     try {
-      const instructors = await Instructor.find();
+      const insCourse = await Instructor.find();
 
-      res.json(instructors);
+      res.json(insCourse);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
@@ -154,7 +176,15 @@ class CourseController {
   async storeCourses(req, res, next) {
     try {
       const [storedCourses, countDeletedCourses] = await Promise.all([
-        Course.find(),
+        // Course.find().populate({
+        //   path: 'course_id', // Tên trường chứa ID của bảng trung gian
+        //   model: 'InstructorCourse', // Tên mô hình bảng trung gian
+        //   populate: {
+        //     path: 'instructor_id', // Tên trường chứa ID của giáo viên trong bảng trung gian
+        //     model: 'Instructor', // Tên mô hình giáo viên
+        //   },
+        // }),
+        Course.find().populate('instructors'),
         Course.countDocumentsWithDeleted({ deleted: true }),
       ]);
 

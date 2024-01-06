@@ -12,9 +12,12 @@ const schema = new mongoose.Schema(
     phone: {
       type: String,
     },
-    courses: {
-      type: [String],
-    },
+    courses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course',
+      },
+    ],
   },
   {
     timestamps: true,

@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './Course.module.scss';
 import Button from '~/components/Button';
+import { Select } from 'antd';
 
 import { useEffect, useState } from 'react';
 import courseService from '~/services/courseServices';
@@ -21,7 +22,6 @@ function UpdateCourse() {
   });
   const [instructors, setInstructors] = useState([]);
   const [selectedInstructors, setSelectedInstructors] = useState([]);
-
   const [selectedOption, setSelectedOption] = useState('URL');
   const [errorFields, setErrorFields] = useState([]);
   const navigate = useNavigate();
@@ -30,25 +30,21 @@ function UpdateCourse() {
     const fetchData = async () => {
       try {
         const result = await courseService.editCourse(id);
+        setSelectedInstructors(result.instructors || []);
         setFormData(result);
 
-        // Fetch the list of instructors
         const instructorsData = await courseService.storedIns();
         setInstructors(instructorsData);
-
-        // Set selectedInstructors based on the result from the API
-        setSelectedInstructors(result.instructor || []);
       } catch (error) {
         console.error('Lỗi api:', error);
       }
     };
-    fetchData();
-  }, [id]);
 
-  // handleInput
+    fetchData();
+  }, [id]); // Thêm instructors vào dependency array
+
   const handleInput = (e) => {
     const { name, value } = e.target;
-
     const updatedErrorFields = errorFields.filter((field) => field !== name);
     setErrorFields(updatedErrorFields);
 
@@ -58,58 +54,32 @@ function UpdateCourse() {
     }));
   };
 
-  const handleInstructorChange = (e) => {
-    const selectedInstructor = e.target.value;
-
-    if (selectedInstructor === '') {
-      setSelectedInstructors([]);
-      return;
-    }
-
-    setSelectedInstructors((prevIns) => {
-      const isInstructorSelected = prevIns.some(
-        (instructor) => instructor.name === selectedInstructor,
-      );
-
-      if (isInstructorSelected) {
-        // Nếu đã chọn, hãy loại bỏ
-        return prevIns.filter(
-          (instructor) => instructor.name !== selectedInstructor,
-        );
-      } else {
-        // Nếu chưa chọn, hãy thêm vào
-        return [...prevIns, { name: selectedInstructor }];
-      }
-    });
-    console.log('!!!!:', selectedInstructors);
+  const handleInstructorChange = (value) => {
+    setFormData((prevCourse) => ({
+      ...prevCourse,
+      instructors: value,
+    }));
   };
 
-  // useEffect
   useEffect(() => {
     setFormData((prevCourse) => ({
       ...prevCourse,
       instructor: selectedInstructors,
     }));
   }, [selectedInstructors]);
-
-  // handleSelectChange
   const handleSelectChange = (e) => {
     setSelectedOption(e.target.value);
   };
 
-  // handleUpdate
   const handleUpdate = (e) => {
     e.preventDefault();
 
-    // Kiểm tra xem có trường nào chưa được nhập không
     const requiredFields = [
       'name',
       selectedInstructors.length > 0 ? 'instructor' : null,
       selectedOption === 'URL' ? 'imageUrl' : 'imageFile',
       'status',
     ];
-
-    // Trong hàm handleUpdate
 
     const missingFields = requiredFields.filter((field) => {
       if (field === 'instructor') {
@@ -122,12 +92,16 @@ function UpdateCourse() {
       setErrorFields(missingFields);
       return;
     }
-    console.log('missingFields:', missingFields);
-    console.log('errorFields:', errorFields);
 
-    // Put
+    formData.instructor = selectedInstructors;
+
+    const fileData =
+      selectedOption === 'URL'
+        ? { imageUrl: formData.imageUrl }
+        : { imageFile: formData.imageFile };
+
     courseService
-      .updateCourse(id, formData)
+      .updateCourse(id, { ...formData, ...fileData })
       .then((res) => {
         navigate(config.routes.storedCourse);
         console.log('Success:', res.data);
@@ -137,10 +111,22 @@ function UpdateCourse() {
           'Error data:',
           error.res ? error.res.data : error.message,
         );
-
         setErrorFields(error.res ? Object.keys(error.res.data) : ['error']);
       });
   };
+  // Tạo hàm để lấy tên của instructor dựa trên id
+  const getInstructorNameById = (instructorId) => {
+    const matchingInstructors = instructors.filter(
+      (ins) => ins._id === instructorId,
+    );
+
+    return matchingInstructors.length > 0 ? matchingInstructors[0].name : null;
+  };
+
+  const instructorOptions = instructors.map((ins) => ({
+    value: ins._id,
+    label: ins.name,
+  }));
 
   return (
     <div className={cx('form-container')}>
@@ -191,46 +177,23 @@ function UpdateCourse() {
                   Người Hướng Dẫn
                 </label>
                 <div className={cx('col-md-4')}>
-                  <select
-                    onChange={handleInstructorChange}
-                    value={
-                      selectedInstructors.length > 0
-                        ? selectedInstructors[0]?.name || '' // Kiểm tra nếu mảng không rỗng thì mới truy cập
-                        : ''
-                    }
-                    className={cx(
-                      'form-select',
-                      'form-select-lg',
-                      'ins-select-all',
+                  <Select
+                    className={cx({
+                      'is-invalid': errorFields.includes('instructor'),
+                    })}
+                    mode="tags"
+                    style={{ width: '100%' }}
+                    placeholder="Chọn người hướng dẫn"
+                    value={selectedInstructors.map((instructor) =>
+                      getInstructorNameById(instructor),
                     )}
-                    id="instructorS"
-                    name="instructorS"
-                  >
-                    <option value="">Xóa người hướng dẫn</option>
-                    {instructors.map((instructor) => (
-                      <option key={instructor._id} value={instructor.name}>
-                        {instructor.name}
-                      </option>
-                    ))}
-                  </select>
+                    onChange={handleInstructorChange}
+                    options={instructorOptions}
+                  />
                 </div>
               </div>
 
               <div className={cx('form-group', 'row', 'input_ins')}>
-                <input
-                  type="text"
-                  className={cx('form-control', {
-                    'is-invalid': errorFields.includes('instructor'),
-                  })}
-                  id="selectedInstructor"
-                  name="selectedInstructor"
-                  value={
-                    selectedInstructors.length > 0
-                      ? selectedInstructors.map((ins) => ins.name).join('  ')
-                      : ''
-                  }
-                  disabled
-                />
                 {errorFields.includes('instructor') && (
                   <div className="invalid-feedback">
                     Vui lòng chọn ít nhất một người hướng dẫn.

@@ -2,8 +2,16 @@ import mongoose from 'mongoose';
 
 const schema = new mongoose.Schema(
   {
-    instructorID: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
-    courseID: { type: mongoose.Schema.Types.ObjectId, ref: 'Instructor' },
+    instructor_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Instructor',
+      default: null,
+    },
+    course_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Course',
+      default: null,
+    },
   },
   {
     timestamps: true,

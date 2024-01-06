@@ -19,12 +19,10 @@ const schema = new mongoose.Schema(
     imageUrl: {
       type: String,
     },
-    instructor: [
+    instructors: [
       {
-        name: {
-          type: String,
-          required: true,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Instructor',
       },
     ],
 
@@ -35,7 +33,6 @@ const schema = new mongoose.Schema(
     slug: {
       type: String,
       slug: 'name',
-      unique: true,
     },
   },
   {
