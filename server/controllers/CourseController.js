@@ -245,14 +245,6 @@ class CourseController {
   async storeCourses(req, res, next) {
     try {
       const [storedCourses, countDeletedCourses] = await Promise.all([
-        // Course.find().populate({
-        //   path: 'course_id', // Tên trường chứa ID của bảng trung gian
-        //   model: 'InstructorCourse', // Tên mô hình bảng trung gian
-        //   populate: {
-        //     path: 'instructor_id', // Tên trường chứa ID của giáo viên trong bảng trung gian
-        //     model: 'Instructor', // Tên mô hình giáo viên
-        //   },
-        // }),
         Course.find().populate('instructors'),
         Course.countDocumentsWithDeleted({ deleted: true }),
       ]);
@@ -270,6 +262,7 @@ class CourseController {
   // [GET] me/trash/courses
   trashCourses(req, res, next) {
     Course.findWithDeleted({ deleted: true })
+      .populate('instructors')
       .then((courses) => res.json(courses))
       .catch(next);
   }

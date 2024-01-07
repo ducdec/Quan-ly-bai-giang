@@ -32,17 +32,17 @@ function UpdateCourse() {
         const result = await courseService.editCourse(id);
         setSelectedInstructors(result.instructors || []);
         setFormData(result);
-        console.log('line 35:', formData);
+        //console.log('line 35:', formData);
         const instructorsData = await courseService.storedIns();
         setInstructors(instructorsData);
-        console.log('line 38:', instructors);
       } catch (error) {
         console.error('Lỗi api:', error);
       }
     };
 
     fetchData();
-  }, [id]); // Thêm instructors vào dependency array
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -73,7 +73,7 @@ function UpdateCourse() {
   const handleUpdate = (e) => {
     e.preventDefault();
 
-    console.log('Dữ liệu trước khi cập nhật:', formData);
+    //console.log('Dữ liệu trước khi cập nhật:', formData);
     const requiredFields = [
       'name',
       selectedInstructors.length > 0 ? 'instructor' : null,
@@ -103,7 +103,7 @@ function UpdateCourse() {
     courseService
       .updateCourse(id, { ...formData, ...fileData })
       .then((res) => {
-        console.log('Dữ liệu sau khi cập nhật:', res.data);
+        //console.log('Dữ liệu sau khi cập nhật:', res.data);
         navigate(config.routes.storedCourse);
         console.log('Success:', res.data);
       })
