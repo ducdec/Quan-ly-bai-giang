@@ -239,8 +239,8 @@ function StoredCourse() {
                       </div>
                     </td>
                     <th scope="row">{index + 1}</th>
-                    <td className={cx('name')}>{course.name}</td>
-                    <td className={cx('number')}>
+                    <td className={cx('name', 'th_col')}>{course.name}</td>
+                    <td className={cx('number', 'th_col')}>
                       {course.instructors != null &&
                       course.instructors.length > 0
                         ? course.instructors.map((item, i) => (
@@ -249,8 +249,8 @@ function StoredCourse() {
                         : 'Chưa có giảng viên'}
                     </td>
 
-                    <td className={cx('number')}>{course.status}</td>
-                    <td className={cx('duration')}>
+                    <td className={cx('number', 'th_col')}>{course.status}</td>
+                    <td className={cx('duration', 'th_col')}>
                       {FormatTime(course.updatedAt)}
                     </td>
                     <td>

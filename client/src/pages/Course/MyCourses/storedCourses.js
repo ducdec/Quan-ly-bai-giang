@@ -198,14 +198,17 @@ function StoredCourse() {
           <table className={cx('table', 'mt-4')}>
             <thead>
               <tr>
-                <th scope="col">#</th>
+                <th scope="col" className={cx('th_col')}>
+                  #
+                </th>
                 <th scope="col">Stt</th>
-                <th scope="col">Tên</th>
+                <th scope="col" className={cx('th_col')}>
+                  Tên
+                </th>
                 <th scope="col">Người hướng dẫn</th>
                 <th scope="col">Trạng thái</th>
-                <th scope="col" colSpan="2">
-                  Thời gian tạo
-                </th>
+                <th scope="col">Thời gian tạo</th>
+                <th></th>
               </tr>
             </thead>
 
@@ -239,16 +242,17 @@ function StoredCourse() {
                       </div>
                     </td>
                     <th scope="row">{index + 1}</th>
-                    <td className={cx('name')}>{course.name}</td>
-                    <td className={cx('number')}>
-                      {course.instructors != null
+                    <td className={cx('name', 'th_col')}>{course.name}</td>
+                    <td className={cx('number', 'th_col')}>
+                      {course.instructors != null &&
+                      course.instructors.length > 0
                         ? course.instructors.map((item, i) => (
                             <div key={i}>{item.name}</div>
                           ))
                         : 'Chưa có giảng viên'}
                     </td>
-                    <td className={cx('number')}>{course.status}</td>
-                    <td className={cx('duration')}>
+                    <td className={cx('number', 'th_col')}>{course.status}</td>
+                    <td className={cx('duration', 'th_col')}>
                       {FormatTime(course.createdAt)}
                     </td>
                     <td>

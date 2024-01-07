@@ -189,9 +189,8 @@ function StoredInstructor() {
                 <th scope="col">#</th>
                 <th scope="col">Stt</th>
                 <th scope="col">Tên</th>
-                <th scope="col" colSpan="2">
-                  Khóa học
-                </th>
+                <th scope="col">Khóa học giảng dạy</th>
+                <th></th>
               </tr>
             </thead>
 
@@ -225,8 +224,8 @@ function StoredInstructor() {
                       </div>
                     </td>
                     <th scope="row">{index + 1}</th>
-                    <td className={cx('name')}>{instructor.name}</td>
-                    <td className={cx('number')}>
+                    <td className={cx('name', 'th_col')}>{instructor.name}</td>
+                    <td className={cx('number', 'th_col')}>
                       {instructor.courses.map((ins, i) => (
                         <div key={i}>{ins.name}</div>
                       ))}

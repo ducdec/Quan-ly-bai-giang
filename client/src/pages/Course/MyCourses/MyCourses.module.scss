@@ -7,6 +7,12 @@
 thead {
     height: 50px;
 }
+.th_col {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .mt-5 h3 {
     font-size: 1.75em;

@@ -83,7 +83,7 @@ class InstructorController {
   async storedInstructor(req, res, next) {
     try {
       // Sử dụng await để đợi kết quả trả về từ hàm find()
-      const storedinstructors = await Instructor.find();
+      const storedinstructors = await Instructor.find().populate('courses');
 
       // Trả về JSON chứa danh sách instructor
       res.json(storedinstructors);
