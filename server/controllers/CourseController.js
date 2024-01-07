@@ -124,22 +124,17 @@ class CourseController {
       );
 
       // TODO: Thêm logic cập nhật bảng Instructor ở đây
-      const updatedInstructors = updatedCourseData.instructors || [];
+      const updatedInstructors = updatedCourseData.instructors;
+      // Lấy danh sách instructors của khóa học trước khi cập nhật
+      const previousInstructors = await Instructor.find({ courses: courseId });
 
       // Tìm instructors đã bị loại bỏ
-      const removedInstructors = previousCourse.instructors.filter(
-        (instructorId) => !updatedInstructors.includes(instructorId.toString()),
-      );
-
-      // Tìm instructors mới được thêm vào
-      const addedInstructors = updatedInstructors.filter(
-        (instructorId) =>
-          !previousCourse.instructors.includes(instructorId.toString()),
+      const removedInstructors = previousInstructors.filter(
+        (instructor) => !updatedInstructors.includes(instructor._id.toString()),
       );
 
       // Xóa khóa học cho instructors bị loại bỏ
-      for (const instructorId of removedInstructors) {
-        const instructor = await Instructor.findById(instructorId);
+      for (const instructor of removedInstructors) {
         if (instructor && instructor.courses) {
           instructor.courses = instructor.courses.filter(
             (course) => course.toString() !== courseId.toString(),
@@ -148,15 +143,22 @@ class CourseController {
         }
       }
 
+      // Tìm instructors mới được thêm vào
+      const addedInstructors = updatedInstructors.filter(
+        (instructorId) =>
+          !previousCourse.instructors.includes(instructorId.toString()),
+      );
+
       // Thêm khóa học cho instructors mới được thêm vào
       for (const instructorId of addedInstructors) {
         const instructor = await Instructor.findById(instructorId);
         if (instructor) {
+          // Đảm bảo rằng instructor.courses là một mảng
+          instructor.courses = instructor.courses || [];
           instructor.courses.push(courseId);
           await instructor.save();
         }
       }
-
       res.status(200).json(updatedCourse);
     } catch (error) {
       console.error(error);
