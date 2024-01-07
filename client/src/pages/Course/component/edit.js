@@ -32,9 +32,10 @@ function UpdateCourse() {
         const result = await courseService.editCourse(id);
         setSelectedInstructors(result.instructors || []);
         setFormData(result);
-
+        console.log('line 35:', formData);
         const instructorsData = await courseService.storedIns();
         setInstructors(instructorsData);
+        console.log('line 38:', instructors);
       } catch (error) {
         console.error('Lỗi api:', error);
       }
@@ -118,6 +119,7 @@ function UpdateCourse() {
   const instructorOptions = instructors.map((ins) => ({
     value: ins._id,
     label: ins.name,
+    key: ins._id,
   }));
 
   return (
@@ -179,6 +181,7 @@ function UpdateCourse() {
                     value={selectedInstructors.map((instructor) => instructor)}
                     onChange={handleInstructorChange}
                     options={instructorOptions}
+                    key={id}
                   />
                 </div>
               </div>

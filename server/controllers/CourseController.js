@@ -103,29 +103,64 @@ class CourseController {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
-
-  //[PUT] /courses/:id
-  async update(req, res, next) {
+  // [PATCH] /courses/:id
+  async update(req, res) {
     try {
       const courseId = req.params.id;
+      const updatedCourseData = req.body; // Giả sử dữ liệu cập nhật được gửi từ client
 
-      // Cập nhật thông tin khóa học
-      const updatedCourse = await Course.findByIdAndUpdate(courseId, req.body, {
-        new: true,
-      });
+      // Lấy thông tin khóa học trước khi cập nhật
+      const previousCourse = await Course.findById(courseId);
 
-      // Cập nhật danh sách instructors
-      updatedCourse.instructors = req.body.instructors;
-      await updatedCourse.save();
+      if (!previousCourse) {
+        return res.status(404).json({ error: 'Không tìm thấy khóa học' });
+      }
 
-      res.json({
-        success: true,
-        message: 'Course updated successfully',
-        data: updatedCourse,
-      });
+      // Thực hiện cập nhật thông tin khóa học
+      const updatedCourse = await Course.findByIdAndUpdate(
+        courseId,
+        updatedCourseData,
+        { new: true },
+      );
+
+      // TODO: Thêm logic cập nhật bảng Instructor ở đây
+      const updatedInstructors = updatedCourseData.instructors || [];
+
+      // Tìm instructors đã bị loại bỏ
+      const removedInstructors = previousCourse.instructors.filter(
+        (instructorId) => !updatedInstructors.includes(instructorId.toString()),
+      );
+
+      // Tìm instructors mới được thêm vào
+      const addedInstructors = updatedInstructors.filter(
+        (instructorId) =>
+          !previousCourse.instructors.includes(instructorId.toString()),
+      );
+
+      // Xóa khóa học cho instructors bị loại bỏ
+      for (const instructorId of removedInstructors) {
+        const instructor = await Instructor.findById(instructorId);
+        if (instructor && instructor.courses) {
+          instructor.courses = instructor.courses.filter(
+            (course) => course.toString() !== courseId.toString(),
+          );
+          await instructor.save();
+        }
+      }
+
+      // Thêm khóa học cho instructors mới được thêm vào
+      for (const instructorId of addedInstructors) {
+        const instructor = await Instructor.findById(instructorId);
+        if (instructor) {
+          instructor.courses.push(courseId);
+          await instructor.save();
+        }
+      }
+
+      res.status(200).json(updatedCourse);
     } catch (error) {
-      console.error('Error in update:', error);
-      next(error);
+      console.error(error);
+      res.status(500).json({ error: 'Lỗi Nội Server' });
     }
   }
 
