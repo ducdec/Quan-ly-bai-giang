@@ -32,27 +32,54 @@ class CourseController {
     try {
       const newCourse = req.body;
 
-      if (!newCourse || Object.keys(newCourse).length === 0) {
-        return res
-          .status(400)
-          .json({ error: 'Invalid data. Course data is required.' });
+      if (!newCourse) {
+        return res.status(400).json({
+          error: 'Dữ liệu không hợp lệ. Thông tin khóa học là bắt buộc.',
+        });
       }
 
-      // Tạo mới khóa học
       const createdCourse = await Course.create(newCourse);
+
+      // Trích xuất ID của giảng viên
+      const idInstructors = createdCourse.instructors.map((ins) => ins._id);
+
+      // Kiểm tra xem khóa học đã tồn tại cho giảng viên hay chưa
+      const instructorUpdatePromises = idInstructors.map(
+        async (instructorId) => {
+          const instructor = await Instructor.findOne({
+            _id: instructorId,
+            courses: createdCourse._id,
+          });
+
+          if (!instructor) {
+            // Nếu khóa học chưa tồn tại, thực hiện cập nhật
+            return Instructor.updateOne(
+              { _id: instructorId },
+              { $addToSet: { courses: createdCourse._id } },
+            );
+          }
+
+          // Nếu khóa học đã tồn tại, không cần thực hiện cập nhật
+          return Promise.resolve();
+        },
+      );
+
+      // Chờ tất cả các promises hoàn thành trước khi trả về response
+      await Promise.all(instructorUpdatePromises);
 
       res.status(201).json(createdCourse);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Lỗi Nội bộ của máy chủ' });
     }
   }
 
   //[GET] courses/store
   async storeInstructor(req, res, next) {
     try {
-      const instructors = await Instructor.find();
-      res.json(instructors);
+      const insCourse = await Instructor.find();
+
+      res.json(insCourse);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
@@ -76,15 +103,66 @@ class CourseController {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
-
-  //[PUT] /courses/:id
-  async update(req, res, next) {
+  // [PATCH] /courses/:id
+  async update(req, res) {
     try {
-      await Course.updateOne({ _id: req.params.id }, req.body);
-      res.json({ success: true, message: 'Course updated successfully' });
+      const courseId = req.params.id;
+      const updatedCourseData = req.body; // Giả sử dữ liệu cập nhật được gửi từ client
+
+      // Lấy thông tin khóa học trước khi cập nhật
+      const previousCourse = await Course.findById(courseId);
+
+      if (!previousCourse) {
+        return res.status(404).json({ error: 'Không tìm thấy khóa học' });
+      }
+
+      // Thực hiện cập nhật thông tin khóa học
+      const updatedCourse = await Course.findByIdAndUpdate(
+        courseId,
+        updatedCourseData,
+        { new: true },
+      );
+
+      // TODO: Thêm logic cập nhật bảng Instructor ở đây
+      const updatedInstructors = updatedCourseData.instructors;
+      // Lấy danh sách instructors của khóa học trước khi cập nhật
+      const previousInstructors = await Instructor.find({ courses: courseId });
+
+      // Tìm instructors đã bị loại bỏ
+      const removedInstructors = previousInstructors.filter(
+        (instructor) => !updatedInstructors.includes(instructor._id.toString()),
+      );
+
+      // Xóa khóa học cho instructors bị loại bỏ
+      for (const instructor of removedInstructors) {
+        if (instructor && instructor.courses) {
+          instructor.courses = instructor.courses.filter(
+            (course) => course.toString() !== courseId.toString(),
+          );
+          await instructor.save();
+        }
+      }
+
+      // Tìm instructors mới được thêm vào
+      const addedInstructors = updatedInstructors.filter(
+        (instructorId) =>
+          !previousCourse.instructors.includes(instructorId.toString()),
+      );
+
+      // Thêm khóa học cho instructors mới được thêm vào
+      for (const instructorId of addedInstructors) {
+        const instructor = await Instructor.findById(instructorId);
+        if (instructor) {
+          // Đảm bảo rằng instructor.courses là một mảng
+          instructor.courses = instructor.courses || [];
+          instructor.courses.push(courseId);
+          await instructor.save();
+        }
+      }
+      res.status(200).json(updatedCourse);
     } catch (error) {
-      console.error('Error in update:', error);
-      next(error);
+      console.error(error);
+      res.status(500).json({ error: 'Lỗi Nội Server' });
     }
   }
 
@@ -108,24 +186,42 @@ class CourseController {
     }
   }
 
-  //[DELETE] /courses/:id (Xoa me'm)
+  //[DELETE] /courses/:id (Xóa mềm)
   async destroy(req, res, next) {
     try {
-      // Sử dụng findOneAndUpdate để cập nhật giá trị deleted từ false thành true
-      const result = await Course.findOneAndUpdate(
-        { _id: req.params.id, deleted: false },
-        { $set: { deleted: true } },
-        { new: true },
-      );
-      // Kiểm tra xem có bản ghi nào được cập nhật không
-      if (!result) {
+      const courseId = req.params.id;
+
+      // Tìm khóa học để xóa mềm
+      const courseToDelete = await Course.findOne({
+        _id: courseId,
+        deleted: false,
+      });
+
+      // Kiểm tra xem khóa học có tồn tại không
+      if (!courseToDelete) {
         return res.status(404).json({
           success: false,
-          message: 'Bản ghi không tồn tại hoặc đã bị xóa trước đó.',
+          message: 'Khóa học không tồn tại hoặc đã bị xóa trước đó.',
         });
       }
 
-      console.log('Xoa success!!!');
+      // Cập nhật giá trị deleted từ false thành true
+      const result = await Course.findByIdAndUpdate(
+        courseId,
+        { deleted: true },
+        { new: true },
+      );
+
+      // Lấy danh sách instructors của khóa học
+      const instructorsToUpdate = result.instructors;
+
+      // Cập nhật thông tin trong bảng Instructor
+      await Instructor.updateMany(
+        { _id: { $in: instructorsToUpdate } },
+        { $pull: { courses: courseId } },
+      );
+
+      console.log('Xóa thành công!!!');
       res.json({ success: true, message: 'Xóa thành công.' });
     } catch (error) {
       console.error('Error in Destroy:', error);
@@ -149,7 +245,7 @@ class CourseController {
   async storeCourses(req, res, next) {
     try {
       const [storedCourses, countDeletedCourses] = await Promise.all([
-        Course.find(),
+        Course.find().populate('instructors'),
         Course.countDocumentsWithDeleted({ deleted: true }),
       ]);
 
@@ -166,6 +262,7 @@ class CourseController {
   // [GET] me/trash/courses
   trashCourses(req, res, next) {
     Course.findWithDeleted({ deleted: true })
+      .populate('instructors')
       .then((courses) => res.json(courses))
       .catch(next);
   }

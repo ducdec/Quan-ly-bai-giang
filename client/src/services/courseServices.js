@@ -8,7 +8,7 @@ const courseService = {
       .then((res) => res.data)
       .catch((error) => {
         console.error('Error create courses:', error);
-        throw error; // bạn có thể xử lý lỗi hoặc chuyển tiếp nó
+        throw error;
       });
   },
 

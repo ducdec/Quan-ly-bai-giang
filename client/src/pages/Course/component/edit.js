@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './Course.module.scss';
 import Button from '~/components/Button';
+import { Select } from 'antd';
 
 import { useEffect, useState } from 'react';
 import courseService from '~/services/courseServices';
@@ -14,14 +15,13 @@ function UpdateCourse() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    instructor: [],
+    instructors: [],
     imageFile: '',
     imageUrl: '',
     status: '',
   });
   const [instructors, setInstructors] = useState([]);
   const [selectedInstructors, setSelectedInstructors] = useState([]);
-
   const [selectedOption, setSelectedOption] = useState('URL');
   // eslint-disable-next-line no-unused-vars
   const [file, setFile] = useState(null);
@@ -32,24 +32,22 @@ function UpdateCourse() {
     const fetchData = async () => {
       try {
         const result = await courseService.editCourse(id);
+        setSelectedInstructors(result.instructors || []);
         setFormData(result);
-
-        // Fetch the list of instructors
+        //console.log('line 35:', formData);
         const instructorsData = await courseService.storedIns();
         setInstructors(instructorsData);
-        // Set selectedInstructors based on the result from the API
-        setSelectedInstructors(result.instructor || []);
       } catch (error) {
         console.error('Lỗi api:', error);
       }
     };
+
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  // handleInput
   const handleInput = (e) => {
     const { name, value } = e.target;
-
     const updatedErrorFields = errorFields.filter((field) => field !== name);
     setErrorFields(updatedErrorFields);
 
@@ -59,37 +57,14 @@ function UpdateCourse() {
     }));
   };
 
-  const handleInstructorChange = (e) => {
-    const selectedInstructor = e.target.value;
-
-    if (selectedInstructor === '') {
-      setSelectedInstructors([]);
-      return;
-    }
-
-    setSelectedInstructors((prevIns) => {
-      const isInstructorSelected = prevIns.some(
-        (instructor) => instructor.name === selectedInstructor,
-      );
-
-      if (isInstructorSelected) {
-        // Nếu đã chọn, hãy loại bỏ
-        return prevIns.filter(
-          (instructor) => instructor.name !== selectedInstructor,
-        );
-      } else {
-        // Nếu chưa chọn, hãy thêm vào
-        return [...prevIns, { name: selectedInstructor }];
-      }
-    });
-    console.log('!!!!:', selectedInstructors);
+  const handleInstructorChange = (value) => {
+    setSelectedInstructors(value);
   };
 
-  // useEffect
   useEffect(() => {
     setFormData((prevCourse) => ({
       ...prevCourse,
-      instructor: selectedInstructors,
+      instructors: selectedInstructors,
     }));
   }, [selectedInstructors]);
 
@@ -106,30 +81,39 @@ function UpdateCourse() {
     setSelectedOption(e.target.value);
   };
 
-  // handleUpdate
   const handleUpdate = (e) => {
     e.preventDefault();
 
-    // Kiểm tra xem có trường nào chưa được nhập không
+    //console.log('Dữ liệu trước khi cập nhật:', formData);
     const requiredFields = [
       'name',
       selectedOption === 'URL' ? 'imageUrl' : 'imageFile',
       'status',
     ];
 
-    const missingFields = requiredFields.filter((field) => !formData[field]);
+    const missingFields = requiredFields.filter((field) => {
+      if (field === 'instructor') {
+        return selectedInstructors.length === 0;
+      }
+      return !formData[field];
+    });
 
     if (missingFields.length > 0) {
       setErrorFields(missingFields);
       return;
     }
-    console.log('missingFields:', missingFields);
-    console.log('errorFields:', errorFields);
 
-    // Put
+    formData.instructors = selectedInstructors;
+
+    const fileData =
+      selectedOption === 'URL'
+        ? { imageUrl: formData.imageUrl }
+        : { imageFile: formData.imageFile };
+
     courseService
-      .updateCourse(id, formData)
+      .updateCourse(id, { ...formData, ...fileData })
       .then((res) => {
+        //console.log('Dữ liệu sau khi cập nhật:', res.data);
         navigate(config.routes.storedCourse);
         console.log('Success:', res.data);
       })
@@ -138,10 +122,15 @@ function UpdateCourse() {
           'Error data:',
           error.res ? error.res.data : error.message,
         );
-
         setErrorFields(error.res ? Object.keys(error.res.data) : ['error']);
       });
   };
+
+  const instructorOptions = instructors.map((ins) => ({
+    value: ins._id,
+    label: ins.name,
+    key: ins._id,
+  }));
 
   return (
     <div className={cx('form-container')}>
@@ -192,44 +181,27 @@ function UpdateCourse() {
                   Người Hướng Dẫn
                 </label>
                 <div className={cx('col-md-4')}>
-                  <select
+                  <Select
+                    className={cx({
+                      'is-invalid': errorFields.includes('instructor'),
+                    })}
+                    mode="tags"
+                    style={{ width: '100%' }}
+                    placeholder="Chọn người hướng dẫn"
+                    value={selectedInstructors.map((instructor) => instructor)}
                     onChange={handleInstructorChange}
-                    value={
-                      selectedInstructors.length > 0
-                        ? selectedInstructors[0]
-                        : ''
-                    }
-                    className={cx(
-                      'form-select',
-                      'form-select-lg',
-                      'ins-select-all',
-                    )}
-                    id="instructorS"
-                    name="instructorS"
-                  >
-                    <option value="">Chọn người hướng dẫn</option>
-                    {instructors.map((instructor) => (
-                      <option key={instructor._id} value={instructor.name}>
-                        {instructor.name}
-                      </option>
-                    ))}
-                  </select>
+                    options={instructorOptions}
+                    key={id}
+                  />
                 </div>
               </div>
 
               <div className={cx('form-group', 'row', 'input_ins')}>
-                <input
-                  type="text"
-                  className={cx('form-control')}
-                  id="selectedInstructor"
-                  name="selectedInstructor"
-                  value={
-                    selectedInstructors.length > 0
-                      ? selectedInstructors.map((ins) => ins.name).join('  ')
-                      : ''
-                  }
-                  disabled
-                />
+                {errorFields.includes('instructor') && (
+                  <div className="invalid-feedback">
+                    Vui lòng chọn ít nhất một người hướng dẫn.
+                  </div>
+                )}
               </div>
             </>
 

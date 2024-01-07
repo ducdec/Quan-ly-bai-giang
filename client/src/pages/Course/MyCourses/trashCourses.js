@@ -14,6 +14,7 @@ const cx = classNames.bind(styles);
 
 function StoredCourse() {
   const [courseResult, setCourseResult] = useState({});
+  //console.log('line 17 course:', courseResult);
   const [deleteCourseId, setDeleteCourseId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDelete, setIsDelete] = useState(false);
@@ -240,10 +241,14 @@ function StoredCourse() {
                     <th scope="row">{index + 1}</th>
                     <td className={cx('name')}>{course.name}</td>
                     <td className={cx('number')}>
-                      {course.instructor.map((ins, i) => (
-                        <div key={i}>{ins.name}</div>
-                      ))}
+                      {course.instructors != null &&
+                      course.instructors.length > 0
+                        ? course.instructors.map((item, i) => (
+                            <div key={i}>{item.name}</div>
+                          ))
+                        : 'Chưa có giảng viên'}
                     </td>
+
                     <td className={cx('number')}>{course.status}</td>
                     <td className={cx('duration')}>
                       {FormatTime(course.updatedAt)}
