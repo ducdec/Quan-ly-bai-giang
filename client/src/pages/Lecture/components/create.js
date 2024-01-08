@@ -1,10 +1,11 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Select } from 'antd';
 
-import styles from './MyLecture.module.scss';
-import TrackItem from '../component/TrackItem';
-import { XIcon } from '~/components/Icons';
+import styles from './Lecture.module.scss';
+import TrackItem from '../MyLecture/TrackItem';
+//import { XIcon } from '~/components/Icons';
 import config from '~/config';
 import Button from '~/components/Button';
 import lectureService from '~/services/lectureServices';
@@ -12,26 +13,56 @@ import lectureService from '~/services/lectureServices';
 const cx = classNames.bind(styles);
 
 function CreateLecture() {
+  const { slug } = useParams();
+
   const [newLecture, setNewLecture] = useState({
     name: '',
+    instructor: '',
     description: '',
     videoID: '',
   });
+
+  const [instructors, setInstructors] = useState([]);
+  const [lectures, setlectures] = useState([]);
+  const [course, setCourse] = useState('');
 
   const [errorFields, setErrorFields] = useState([]);
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await lectureService.courseSlug(slug);
+        console.log('Line 34 ', result.lectures);
+        console.log('Data from API:', result);
+        setInstructors(result.instructors);
+        setlectures(result.lectures);
+        setCourse(result.courseInfo);
+      } catch (error) {
+        console.error('API:', error);
+      }
+    };
+
+    fetchData();
+  }, [slug]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Xóa trường đó khỏi danh sách lỗi khi người dùng bắt đầu nhập
     const updatedErrorFields = errorFields.filter((field) => field !== name);
     setErrorFields(updatedErrorFields);
 
-    setNewLecture((prevCourse) => ({
-      ...prevCourse,
+    setNewLecture((prevLec) => ({
+      ...prevLec,
       [name]: value,
+    }));
+  };
+
+  const handleInstructorChange = (value) => {
+    setNewLecture((prevLec) => ({
+      ...prevLec,
+      instructor: value,
     }));
   };
 
@@ -39,7 +70,7 @@ function CreateLecture() {
     e.preventDefault();
 
     // Kiểm tra xem có trường nào chưa được nhập không
-    const requiredFields = ['name', 'description', 'videoID'];
+    const requiredFields = ['name', 'videoID'];
     const missingFields = requiredFields.filter((field) => !newLecture[field]);
 
     if (missingFields.length > 0) {
@@ -51,7 +82,7 @@ function CreateLecture() {
 
     // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo khóa học
     lectureService
-      .create(newLecture)
+      .create(newLecture, slug)
       .then((res) => {
         console.log('Success:', res.data);
         navigate(config.routes.createLec);
@@ -61,19 +92,32 @@ function CreateLecture() {
       });
   };
 
+  console.log('107:', newLecture);
+  const instructorOptions = instructors.map((ins) => ({
+    value: ins._id,
+    label: ins.name,
+    key: ins._id,
+  }));
+  const first = instructors[0] ? instructors[0].name : 'Chọn người hướng dẫn';
+
   return (
     <>
       <div className={cx('tracks_wrapper')}>
         <div className={cx('tracks_container')}>
           <header className={cx('Tracks_header')}>
             <h1 className={cx('Tracks_heading')}>Nội dung khóa học</h1>
-            <button className={cx('Tracks_close-btn')}>
+            {/* <button className={cx('Tracks_close-btn')}>
               <XIcon />
-            </button>
+            </button> */}
           </header>
 
           <div className={cx('tracks_body')}>
-            <TrackItem />
+            <TrackItem
+              lectures={lectures}
+              nameCourse={course.name}
+              index={lectures.length}
+              slug={course.slug}
+            />
           </div>
         </div>
       </div>
@@ -103,6 +147,28 @@ function CreateLecture() {
                     <div className="invalid-feedback">Vui lòng nhập tên.</div>
                   )}
                 </div>
+
+                <>
+                  <div className={cx('form-group', 'row')}>
+                    <label
+                      htmlFor="instructorSelect"
+                      className={cx('col-md-2', 'col-form-label')}
+                    >
+                      Người Hướng Dẫn
+                    </label>
+                    <div className={cx('col-md-4')}>
+                      <Select
+                        defaultValue={first}
+                        placeholder="Chọn người hướng dẫn"
+                        style={{ width: '100%' }}
+                        onChange={handleInstructorChange}
+                        options={instructorOptions}
+                        showSearch
+                        optionFilterProp="children"
+                      />
+                    </div>
+                  </div>
+                </>
 
                 <div className="mb-3">
                   <label htmlFor="description" className="form-label">

@@ -25,7 +25,12 @@ const schema = new mongoose.Schema(
         ref: 'Instructor',
       },
     ],
-
+    lectures: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Lecture',
+      },
+    ],
     status: {
       type: String,
       required: true,
@@ -39,17 +44,6 @@ const schema = new mongoose.Schema(
     timestamps: true,
   },
 );
-// Middleware để loại bỏ các tham chiếu đến khóa học đã bị xóa trong instructors
-schema.pre('remove', async function (next) {
-  const courseId = this._id;
-
-  // Cập nhật instructors tham chiếu đến khóa học này
-  await mongoose
-    .model('Instructor')
-    .updateMany({ courses: courseId }, { $pull: { courses: courseId } });
-
-  next();
-});
 
 schema.plugin(mongooseDelete, {
   deletedAt: true,

@@ -12,20 +12,22 @@ const schema = new mongoose.Schema(
     description: {
       type: String,
     },
-    instructor: {
-      type: String,
-    },
     course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Courses',
+    },
+    instructor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Instructor',
+    },
+    videoID: {
       type: String,
+      required: true,
     },
     slug: {
       type: String,
       slug: 'name',
       unique: true,
-    },
-    videoID: {
-      type: String,
-      required: true,
     },
   },
   {

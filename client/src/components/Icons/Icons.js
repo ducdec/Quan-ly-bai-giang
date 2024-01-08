@@ -182,7 +182,7 @@ export const ProfileIcon = ({
 
 export const XIcon = ({ width = '1.4rem', height = '1.4rem', className }) => (
   <svg
-    className={className}
+    className={`${className}`}
     width={width}
     height={height}
     aria-hidden="true"
@@ -203,7 +203,7 @@ export const XIcon = ({ width = '1.4rem', height = '1.4rem', className }) => (
 
 export const CheckIcon = ({ className }) => (
   <svg
-    className={className}
+    className={`${className}`}
     aria-hidden="true"
     focusable="false"
     data-prefix="fas"
@@ -221,7 +221,7 @@ export const CheckIcon = ({ className }) => (
 );
 export const LeftIcon = ({ className }) => (
   <svg
-    className={className}
+    className={`${className}`}
     aria-hidden="true"
     focusable="false"
     data-prefix="fas"
@@ -239,7 +239,7 @@ export const LeftIcon = ({ className }) => (
 );
 export const RightIcon = ({ className }) => (
   <svg
-    className={className}
+    className={`${className}`}
     aria-hidden="true"
     focusable="false"
     data-prefix="fas"

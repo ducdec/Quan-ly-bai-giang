@@ -7,6 +7,7 @@ import { Select } from 'antd';
 
 import config from '~/config';
 import courseService from '~/services/courseServices';
+import InstructorService from '~/services/instructorServices';
 
 const cx = classNames.bind(styles);
 
@@ -20,7 +21,6 @@ function CreateCourse() {
     instructors: [],
   });
   const [instructors, setInstructors] = useState([]);
-  const [selectedInstructors] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState('URL');
   const [errorFields, setErrorFields] = useState([]);
@@ -31,7 +31,7 @@ function CreateCourse() {
     const fetchData = async () => {
       try {
         const result = await courseService.storedIns();
-        //console.log('Line 34 ', result);
+        console.log('Line 34 ', result);
         setInstructors(result);
       } catch (error) {
         console.error('API:', error);
@@ -79,12 +79,6 @@ function CreateCourse() {
       'status',
     ];
     const missingFields = requiredFields.filter((field) => {
-      if (field === 'instructor') {
-        return (
-          selectedInstructors.filter((instructor) => instructor._id).length ===
-          0
-        );
-      }
       return !newCourse[field];
     });
 
@@ -115,6 +109,7 @@ function CreateCourse() {
     label: ins.name,
   }));
 
+  console.log('asd', instructorOptions);
   return (
     <div className={cx('form-container')}>
       <div className={cx('mt-5')}>
@@ -175,11 +170,6 @@ function CreateCourse() {
                     options={instructorOptions}
                   />
                 </div>
-                {errorFields.includes('instructor') && (
-                  <div className="invalid-feedback">
-                    Vui lòng chọn người hướng dẫn.
-                  </div>
-                )}
               </div>
             </>
 

@@ -16,7 +16,8 @@ import TrashCourse from '~/pages/Course/MyCourses/trashCourses';
 import Profile from '~/pages/Profile/Profile';
 //Lecture
 import Lecture from '~/pages/Lecture';
-import CreateLecture from '~/pages/Lecture/MyLecture/create';
+import CreateLecture from '~/pages/Lecture/components/create';
+//
 import learning from '~/pages/Lecture/learning';
 //instructor
 import CreateInstructor from '~/pages/Instructor/component/create';
@@ -71,6 +72,7 @@ const publicRoutes = [
     component: CreateLecture,
     layout: HeaderOnly,
   },
+  //
   { path: config.routes.learning, component: learning, layout: HeaderOnly },
 
   //instructors

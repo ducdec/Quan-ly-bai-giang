@@ -34,7 +34,6 @@ function UpdateCourse() {
         const result = await courseService.editCourse(id);
         setSelectedInstructors(result.instructors || []);
         setFormData(result);
-        //console.log('line 35:', formData);
         const instructorsData = await courseService.storedIns();
         setInstructors(instructorsData);
       } catch (error) {
@@ -46,6 +45,7 @@ function UpdateCourse() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+  console.log('line 47', selectedInstructors);
   const handleInput = (e) => {
     const { name, value } = e.target;
     const updatedErrorFields = errorFields.filter((field) => field !== name);
@@ -92,9 +92,6 @@ function UpdateCourse() {
     ];
 
     const missingFields = requiredFields.filter((field) => {
-      if (field === 'instructor') {
-        return selectedInstructors.length === 0;
-      }
       return !formData[field];
     });
 
