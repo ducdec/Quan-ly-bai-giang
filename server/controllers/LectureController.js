@@ -162,5 +162,17 @@ class LectureController {
       res.status(500).json({ error: 'Lỗi Nội Server' });
     }
   }
+
+  //[DELETE] /instructor/:id/force (Xo'a that)
+  async forceDestroy(req, res, next) {
+    try {
+      await Lecture.deleteOne({ _id: req.params.id });
+      console.log('Lecture deleted successfully');
+      res.json({ success: true, message: 'Lecture deleted successfully' });
+    } catch (error) {
+      console.error('Error in forceDestroy:', error);
+      next(error);
+    }
+  }
 }
 export default new LectureController();

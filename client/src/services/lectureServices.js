@@ -36,5 +36,10 @@ const lectureService = {
   updateLec(slug, LecID, newLec) {
     return request.put(`/lecture/${slug}/${LecID}`, newLec);
   },
+
+  //xóa thật
+  DeleteLec(slug, lecID) {
+    return request.delete(`/lecture/${slug}/${lecID}/delete`);
+  },
 };
 export default lectureService;
