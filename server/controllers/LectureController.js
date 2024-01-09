@@ -163,14 +163,47 @@ class LectureController {
     }
   }
 
-  //[DELETE] /instructor/:id/force (Xo'a that)
+  //[DELETE] /lecture/:slug/:id/force (Xóa hết)
   async forceDestroy(req, res, next) {
     try {
-      await Lecture.deleteOne({ _id: req.params.id });
-      console.log('Lecture deleted successfully');
-      res.json({ success: true, message: 'Lecture deleted successfully' });
+      const lectureId = req.params.id;
+      const courseSlug = req.params.slug;
+
+      // Xóa tiết học
+      await Lecture.deleteOne({ _id: lectureId });
+
+      // Lấy thông tin khóa học dựa trên slug
+      const course = await Course.findOne({ slug: courseSlug });
+
+      if (!course) {
+        return res.status(404).json({ error: 'Khóa học không tồn tại' });
+      }
+
+      // Cập nhật thông tin trong bảng Course
+      course.lectures = course.lectures.filter(
+        (lec) => lec.toString() !== lectureId.toString(),
+      );
+      await course.save();
+
+      // Lấy danh sách instructor của tiết học
+      const instructorsToUpdate = await Instructor.find({
+        lectures: lectureId,
+      });
+
+      // Cập nhật thông tin trong bảng Instructor
+      await Instructor.updateMany(
+        {
+          _id: { $in: instructorsToUpdate.map((instructor) => instructor._id) },
+        },
+        { $pull: { lectures: lectureId } },
+      );
+
+      res.json({
+        success: true,
+        message: 'Tiết học và thông tin khóa học đã được cập nhật',
+      });
     } catch (error) {
-      console.error('Error in forceDestroy:', error);
+      console.error('Lỗi khi xóa và cập nhật tiết học:', error);
       next(error);
     }
   }
