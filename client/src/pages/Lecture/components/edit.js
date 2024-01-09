@@ -23,7 +23,7 @@ function UpdateLecture() {
 
   const [instructors, setInstructors] = useState([]);
   const [selectedInstructors, setSelectedInstructors] = useState([]);
-  const [lectures, setlectures] = useState([]);
+  const [lectures, setLectures] = useState([]);
   const [course, setCourse] = useState('');
 
   const [errorFields, setErrorFields] = useState([]);
@@ -33,18 +33,17 @@ function UpdateLecture() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const Data = await lectureService.courseSlug(slug);
-        console.log('Line 34 ', Data.lectures);
-        console.log('Data from API 1:', Data);
-        setInstructors(Data.instructors);
-        setlectures(Data.lectures);
-        setCourse(Data.courseInfo);
+        // const result = await lectureService.courseSlug(id);
 
         const result = await lectureService.editLec(slug, id);
-        console.log('Data from API 2:', result);
+        console.log('Line 34 ', result.lecture.instructor);
+        console.log('Data from API:', result);
 
-        setSelectedInstructors(result.instructor || []);
-        setFormData(result);
+        setInstructors(result.instructors);
+        setLectures(result.lecturesCourse);
+        setCourse(result.courseInfo);
+        setSelectedInstructors(result.lecture.instructor || '');
+        setFormData(result.lecture);
       } catch (error) {
         console.error('API:', error);
       }
@@ -71,7 +70,7 @@ function UpdateLecture() {
   useEffect(() => {
     setFormData((prevCourse) => ({
       ...prevCourse,
-      instructors: selectedInstructors,
+      instructor: selectedInstructors,
     }));
   }, [selectedInstructors]);
 
@@ -91,19 +90,19 @@ function UpdateLecture() {
 
     formData.instructor = selectedInstructors;
 
+    const idCourse = course.id;
     // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo khóa học
     lectureService
-      .updateLec(slug, id, formData)
+      .updateLec(slug, id, idCourse, formData)
       .then((res) => {
         console.log('Success:', res.data);
-        navigate(`/lecture/${slug}/create`);
+        navigate(`/lecture/${idCourse}/create`);
       })
       .catch((error) => {
         console.error('Error:', error.res ? error.res.data : error.message);
       });
   };
 
-  //console.log('107:', formData);
   const instructorOptions = instructors.map((ins) => ({
     value: ins._id,
     label: ins.name,
@@ -125,6 +124,7 @@ function UpdateLecture() {
               lectures={lectures}
               nameCourse={course.name}
               index={lectures.length}
+              id={course._id}
               slug={course.slug}
             />
           </div>

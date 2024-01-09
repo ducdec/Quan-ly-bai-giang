@@ -5,14 +5,13 @@ import { Select } from 'antd';
 
 import styles from './Lecture.module.scss';
 import TrackItemCreate from '../MyLecture/TrackItemCreate';
-import config from '~/config';
 import Button from '~/components/Button';
 import lectureService from '~/services/lectureServices';
 
 const cx = classNames.bind(styles);
 
 function CreateLecture() {
-  const { slug } = useParams();
+  const { id } = useParams();
 
   const [newLecture, setNewLecture] = useState({
     name: '',
@@ -32,7 +31,7 @@ function CreateLecture() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await lectureService.courseSlug(slug);
+        const result = await lectureService.courseSlug(id);
         console.log('Line 34 ', result.lectures);
         console.log('Data from API:', result);
         setInstructors(result.instructors);
@@ -44,7 +43,7 @@ function CreateLecture() {
     };
 
     fetchData();
-  }, [slug]);
+  }, [id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -81,14 +80,14 @@ function CreateLecture() {
 
     // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo khóa học
     lectureService
-      .create(slug, newLecture)
+      .createLec(id, newLecture)
       .then((res) => {
         console.log('Success:', res.data);
 
         // Cập nhật danh sách bài giảng để hiển thị bài giảng mới
         setlectures((prevLectures) => [...prevLectures, res.data]);
 
-        navigate(config.routes.createLec);
+        navigate(`/lecture/${id}/create`);
       })
       .catch((error) => {
         console.error('Error:', error.res ? error.res.data : error.message);
@@ -116,6 +115,7 @@ function CreateLecture() {
               lectures={lectures}
               nameCourse={course.name}
               index={lectures.length}
+              id={course._id}
               slug={course.slug}
             />
           </div>

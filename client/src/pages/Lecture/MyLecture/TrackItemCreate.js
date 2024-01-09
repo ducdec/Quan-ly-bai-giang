@@ -13,7 +13,7 @@ import lectureService from '~/services/lectureServices';
 
 const cx = classNames.bind(styles);
 
-function TrackItemCreate({ lectures, nameCourse, index, slug }) {
+function TrackItemCreate({ lectures, nameCourse, index, id, slug }) {
   //console.log(courseResult);
   const [deleteCourseId, setDeleteCourseId] = useState(null);
   const [isDelete, setIsDelete] = useState(false);
@@ -35,7 +35,7 @@ function TrackItemCreate({ lectures, nameCourse, index, slug }) {
       try {
         await lectureService.DeleteLec(slug, deleteCourseId);
         console.log('Xóa thành công');
-        navigate(`/lecture/${slug}/create`);
+        navigate(`/lecture/${id}/create`);
 
         const result = await lectureService.courseSlug(slug);
         setUpdatedLectures(result.lectures);

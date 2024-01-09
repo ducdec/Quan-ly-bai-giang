@@ -5,13 +5,13 @@ import { Instructor } from '../models/Instructor.js';
 class LectureController {
   constructor() {}
 
-  // [POST] /lecture/:slug/create
+  // [POST] /lecture/:id/create
   async create(req, res) {
     try {
-      const slug = req.params.slug;
+      const id = req.params.id;
 
-      // Lấy thông tin khóa học từ slug
-      const course = await Course.findOne({ slug });
+      // Lấy thông tin khóa học từ id
+      const course = await Course.findOne({ _id: id });
 
       if (!course) {
         return res.status(404).json({ error: 'Course not found' });
@@ -19,6 +19,7 @@ class LectureController {
 
       // Truy cập newLectureData từ req.body
       const { instructor, ...newLectureData } = req.body;
+
       // Tạo bài giảng với thông tin từ req.body và khóa học đã lấy
       const lecture = new Lecture({
         ...newLectureData,
@@ -26,7 +27,7 @@ class LectureController {
         course: course._id, // Gán ID của khóa học vào bài giảng
       });
 
-      //console.log(instructor, lecture);
+      //console.log(instructor, 'vaf', lecture);
       const savedLecture = await lecture.save();
 
       // Cập nhật trường lecture vào bảng course
@@ -35,7 +36,7 @@ class LectureController {
 
       // Cập nhật bảng instructor để liên kết bài giảng với giảng viên
       if (instructor) {
-        const instructorId = instructor._id || instructor; // Giả sử bạn có thể truyền trực tiếp ID của giảng viên hoặc đối tượng giảng viên
+        const instructorId = instructor._id || instructor;
         const instructorToUpdate = await Instructor.findById(instructorId);
 
         if (instructorToUpdate) {
@@ -51,14 +52,14 @@ class LectureController {
     }
   }
 
-  // [GET] /lecture/:slug/create
+  // [GET] /lecture/:id/create
   async courseSlug(req, res) {
     try {
       // Lấy giá trị slug từ tham số trong request
-      const slug = req.params.slug;
+      const id = req.params.id;
 
-      // Sử dụng Mongoose để tìm kiếm khóa học dựa trên slug
-      const course = await Course.findOne({ slug })
+      // Sử dụng Mongoose để tìm kiếm khóa học dựa trên id
+      const course = await Course.findOne({ _id: id })
         .populate('instructors')
         .populate('lectures');
 
@@ -69,10 +70,16 @@ class LectureController {
       // Lấy toàn bộ thông tin của giảng viên và các bài giảng
       const instructors = course.instructors;
       const lectures = course.lectures;
+      const lecturesId = course.lectures.map((lec) => lec._id);
 
       // Trả về đối tượng chứa thông tin cả về giảng viên và các bài giảng
       res.status(200).json({
-        courseInfo: { name: course.name, slug: course.slug },
+        courseInfo: {
+          name: course.name,
+          id: course._id,
+          slug: course.slug,
+          lecture: lecturesId,
+        },
         instructors,
         lectures,
       });
@@ -92,8 +99,32 @@ class LectureController {
       if (!lecture) {
         return res.status(404).json({ error: 'Lecture not found' });
       }
+      // Lấy giá trị slug từ tham số trong request
+      const slug = req.params.slug;
 
-      res.status(201).json(lecture);
+      // Sử dụng Mongoose để tìm kiếm khóa học dựa trên id
+      const course = await Course.findOne({ slug })
+        .populate('instructors')
+        .populate('lectures');
+
+      if (!course) {
+        return res.status(404).json({ error: 'Course not found' });
+      }
+
+      // Lấy toàn bộ thông tin của giảng viên và các bài giảng
+      const instructors = course.instructors;
+      const lecturesCourse = course.lectures;
+
+      res.status(201).json({
+        lecture,
+        courseInfo: {
+          name: course.name,
+          id: course._id,
+          slug: course.slug,
+        },
+        instructors,
+        lecturesCourse,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });

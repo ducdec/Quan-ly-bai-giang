@@ -2,9 +2,9 @@ import request from '~/utils/axios';
 
 const lectureService = {
   //creare
-  create(slug, newLecture) {
+  createLec(id, newLecture) {
     return request
-      .post(`/lecture/${slug}/create`, newLecture)
+      .post(`/lecture/${id}/create`, newLecture)
       .then((res) => res.data)
       .catch((err) => {
         console.error('Error Axios lecture:', err);
@@ -12,9 +12,9 @@ const lectureService = {
       });
   },
 
-  courseSlug(slug) {
+  courseSlug(id) {
     return request
-      .get(`/lecture/${slug}/create`)
+      .get(`/lecture/${id}/create`)
       .then((res) => res.data)
       .catch((err) => {
         console.error('Error Axios lecture:', err);
@@ -33,7 +33,7 @@ const lectureService = {
       });
   },
 
-  updateLec(slug, LecID, newLec) {
+  updateLec(slug, LecID, idCourse, newLec) {
     return request.put(`/lecture/${slug}/${LecID}`, newLec);
   },
 
