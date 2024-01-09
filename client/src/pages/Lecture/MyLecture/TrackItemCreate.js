@@ -4,12 +4,11 @@ import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
-
-import courseService from '~/services/courseServices';
-import Button from '~/components/Button';
 import { useNavigate } from 'react-router-dom';
 
+import Button from '~/components/Button';
 import { XIcon } from '~/components/Icons';
+//import courseService from '~/services/courseServices';
 import lectureService from '~/services/lectureServices';
 
 const cx = classNames.bind(styles);
@@ -20,6 +19,7 @@ function TrackItemCreate({ lectures, nameCourse, index, slug }) {
   const [isDelete, setIsDelete] = useState(false);
   const [updatedLectures, setUpdatedLectures] = useState([]);
   //
+  const navigate = useNavigate();
 
   //course
   const handleDeleteButtonClick = (id, e) => {
@@ -35,13 +35,10 @@ function TrackItemCreate({ lectures, nameCourse, index, slug }) {
       try {
         await lectureService.DeleteLec(slug, deleteCourseId);
         console.log('Xóa thành công');
+        navigate(`/lecture/${slug}/create`);
 
-        // Fetch the updated data after successful deletion
-        await courseService.storedCourse();
-        // Cập nhật state với danh sách bài giảng mới
-        setUpdatedLectures(
-          lectures.filter((lec) => lec._id !== deleteCourseId),
-        );
+        const result = await lectureService.courseSlug(slug);
+        setUpdatedLectures(result.lectures);
       } catch (error) {
         console.error('Xóa thất bại:', error);
       } finally {
@@ -50,11 +47,11 @@ function TrackItemCreate({ lectures, nameCourse, index, slug }) {
       }
     }
   };
-
-  // useEffect để re-render khi updatedLectures thay đổi
+  console.log('52:', updatedLectures);
+  //useEffect để re-render khi updatedLectures thay đổi
   useEffect(() => {
-    // Cập nhật state, có thể thêm logic xử lý khác ở đây nếu cần
-    setUpdatedLectures(lectures);
+    const filteredLectures = lectures.filter((lec) => lec !== undefined);
+    setUpdatedLectures(filteredLectures);
   }, [lectures]);
   return (
     <>
@@ -64,27 +61,28 @@ function TrackItemCreate({ lectures, nameCourse, index, slug }) {
         <span className={cx('TrackItem_icon')}></span>
       </div>
       <div className={cx('trackItem_list')}>
-        {updatedLectures.map((lec) => (
-          <Link
-            to={`/lecture/${slug}/${lec._id}/edit`}
-            key={lec._id}
-            className={cx('StepItem_wrapper', 'learn-item-1')}
-          >
-            <div className={cx('StepItem_info')}>
-              <h3 className={cx('StepItem_title')}>{lec.name}</h3>
-              <p className={cx('StepItem_desc')}>
-                <StartIcon className={cx('lesson-icon')} />
-                <span>03:15</span>
-              </p>
-            </div>
-            <div
-              onClick={(e) => handleDeleteButtonClick(lec._id, e)}
-              className={cx('StepItem_icon-box')}
+        {Array.isArray(updatedLectures) &&
+          updatedLectures.map((lec) => (
+            <Link
+              to={`/lecture/${slug}/${lec._id}/edit`}
+              key={lec._id}
+              className={cx('StepItem_wrapper', 'learn-item-1')}
             >
-              <XIcon />
-            </div>
-          </Link>
-        ))}
+              <div className={cx('StepItem_info')}>
+                <h3 className={cx('StepItem_title')}>{lec.name}</h3>
+                <p className={cx('StepItem_desc')}>
+                  <StartIcon className={cx('lesson-icon')} />
+                  <span>03:15</span>
+                </p>
+              </div>
+              <div
+                onClick={(e) => handleDeleteButtonClick(lec._id, e)}
+                className={cx('StepItem_icon-box')}
+              >
+                <XIcon />
+              </div>
+            </Link>
+          ))}
       </div>
       {/* Modal */}
       <Modal show={isDelete} onHide={() => setIsDelete(false)}>

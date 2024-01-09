@@ -5,7 +5,6 @@ import { Select } from 'antd';
 
 import styles from './Lecture.module.scss';
 //import { XIcon } from '~/components/Icons';
-import config from '~/config';
 import Button from '~/components/Button';
 import lectureService from '~/services/lectureServices';
 import TrackItemCreate from '../MyLecture/TrackItemCreate';
@@ -97,7 +96,7 @@ function UpdateLecture() {
       .updateLec(slug, id, formData)
       .then((res) => {
         console.log('Success:', res.data);
-        navigate(config.routes.createLec);
+        navigate(`/lecture/${slug}/create`);
       })
       .catch((error) => {
         console.error('Error:', error.res ? error.res.data : error.message);

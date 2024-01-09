@@ -180,16 +180,15 @@ export const ProfileIcon = ({
   </svg>
 );
 
-export const XIcon = ({ width = '1.4rem', height = '1.4rem', className }) => (
+export const XIcon = ({ width = '1.4rem', height = '1.4rem' }) => (
   <svg
-    className={`${className}`}
     width={width}
     height={height}
     aria-hidden="true"
     focusable="false"
     data-prefix="fas"
     data-icon="xmark"
-    class="svg-inline--fa fa-xmark "
+    className="svg-inline--fa fa-xmark "
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 320 512"

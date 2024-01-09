@@ -8,10 +8,10 @@ class LectureController {
   // [POST] /lecture/:slug/create
   async create(req, res) {
     try {
-      const slugCourse = req.params.slug;
+      const slug = req.params.slug;
 
       // Lấy thông tin khóa học từ slug
-      const course = await Course.findOne({ slug: slugCourse });
+      const course = await Course.findOne({ slug });
 
       if (!course) {
         return res.status(404).json({ error: 'Course not found' });

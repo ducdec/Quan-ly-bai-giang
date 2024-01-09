@@ -2,7 +2,7 @@ import request from '~/utils/axios';
 
 const lectureService = {
   //creare
-  create(newLecture, slug) {
+  create(slug, newLecture) {
     return request
       .post(`/lecture/${slug}/create`, newLecture)
       .then((res) => res.data)

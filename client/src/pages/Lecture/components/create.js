@@ -5,7 +5,6 @@ import { Select } from 'antd';
 
 import styles from './Lecture.module.scss';
 import TrackItemCreate from '../MyLecture/TrackItemCreate';
-//import { XIcon } from '~/components/Icons';
 import config from '~/config';
 import Button from '~/components/Button';
 import lectureService from '~/services/lectureServices';
@@ -82,9 +81,13 @@ function CreateLecture() {
 
     // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo khóa học
     lectureService
-      .create(newLecture, slug)
+      .create(slug, newLecture)
       .then((res) => {
         console.log('Success:', res.data);
+
+        // Cập nhật danh sách bài giảng để hiển thị bài giảng mới
+        setlectures((prevLectures) => [...prevLectures, res.data]);
+
         navigate(config.routes.createLec);
       })
       .catch((error) => {
@@ -106,9 +109,6 @@ function CreateLecture() {
         <div className={cx('tracks_container')}>
           <header className={cx('Tracks_header')}>
             <h1 className={cx('Tracks_heading')}>Nội dung khóa học</h1>
-            {/* <button className={cx('Tracks_close-btn')}>
-              <XIcon />
-            </button> */}
           </header>
 
           <div className={cx('tracks_body')}>
