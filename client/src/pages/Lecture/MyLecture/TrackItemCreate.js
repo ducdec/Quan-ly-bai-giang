@@ -3,6 +3,8 @@ import styles from './TrackItem.module.scss';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 
+import { XIcon } from '~/components/Icons';
+
 const cx = classNames.bind(styles);
 
 function TrackItemCreate({ lectures, nameCourse, index, slug }) {
@@ -27,9 +29,9 @@ function TrackItemCreate({ lectures, nameCourse, index, slug }) {
                 <span>03:15</span>
               </p>
             </div>
-            {/* <div className={cx('StepItem_icon-box')}>
-                <CheckIcon />
-              </div> */}
+            <div className={cx('StepItem_icon-box')}>
+              <XIcon />
+            </div>
           </Link>
         ))}
       </div>

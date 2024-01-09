@@ -122,7 +122,6 @@ class LectureController {
 
       // TODO: Thêm logic cập nhật bảng Instructor ở đây
       const updatedInstructor = updatedLectureData.instructor;
-      const courseId = updatedLecture.course;
 
       // Lấy danh sách instructors của bài giảng trước khi cập nhật
       const previousInstructors = await Instructor.find({
