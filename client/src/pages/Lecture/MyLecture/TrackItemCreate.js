@@ -15,7 +15,7 @@ const cx = classNames.bind(styles);
 
 function TrackItemCreate({ lectures, nameCourse, index, id, slug }) {
   //console.log(courseResult);
-  const [deleteCourseId, setDeleteCourseId] = useState(null);
+  const [deleteLectureId, setDeleteLectureId] = useState(null);
   const [isDelete, setIsDelete] = useState(false);
   const [updatedLectures, setUpdatedLectures] = useState([]);
   //
@@ -24,25 +24,27 @@ function TrackItemCreate({ lectures, nameCourse, index, id, slug }) {
   //course
   const handleDeleteButtonClick = (id, e) => {
     e.preventDefault();
-    setDeleteCourseId(id);
+    setDeleteLectureId(id);
     setIsDelete(true);
   };
-
+  console.log('30', deleteLectureId);
   const deleteCourse = async () => {
-    console.log(deleteCourseId);
+    console.log(deleteLectureId);
 
-    if (deleteCourseId) {
+    if (deleteLectureId) {
       try {
-        await lectureService.DeleteLec(slug, deleteCourseId);
-        console.log('Xóa thành công');
+        await lectureService.DeleteLec(slug, deleteLectureId);
+        console.log('Xóa thành công', id);
         navigate(`/lecture/${id}/create`);
 
-        const result = await lectureService.courseSlug(slug);
-        setUpdatedLectures(result.lectures);
+        // Không cần gọi lại server để lấy danh sách mới
+        setUpdatedLectures((prevLectures) =>
+          prevLectures.filter((lec) => lec._id !== deleteLectureId),
+        );
       } catch (error) {
         console.error('Xóa thất bại:', error);
       } finally {
-        setDeleteCourseId(null);
+        setDeleteLectureId(null);
         setIsDelete(false);
       }
     }

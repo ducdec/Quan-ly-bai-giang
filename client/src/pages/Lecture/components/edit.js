@@ -124,7 +124,7 @@ function UpdateLecture() {
               lectures={lectures}
               nameCourse={course.name}
               index={lectures.length}
-              id={course._id}
+              id={course.id}
               slug={course.slug}
             />
           </div>

@@ -87,6 +87,14 @@ function CreateLecture() {
         // Cập nhật danh sách bài giảng để hiển thị bài giảng mới
         setlectures((prevLectures) => [...prevLectures, res.data]);
 
+        // Cập nhật trạng thái newLecture để làm mới các trường trong form
+        setNewLecture({
+          name: '',
+          instructor: '',
+          description: '',
+          videoID: '',
+        });
+
         navigate(`/lecture/${id}/create`);
       })
       .catch((error) => {
@@ -115,7 +123,7 @@ function CreateLecture() {
               lectures={lectures}
               nameCourse={course.name}
               index={lectures.length}
-              id={course._id}
+              id={course.id}
               slug={course.slug}
             />
           </div>

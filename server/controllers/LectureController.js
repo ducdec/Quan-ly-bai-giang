@@ -193,7 +193,6 @@ class LectureController {
       res.status(500).json({ error: 'Lỗi Nội Server' });
     }
   }
-
   //[DELETE] /lecture/:slug/:id/force (Xóa hết)
   async forceDestroy(req, res, next) {
     try {
@@ -201,7 +200,11 @@ class LectureController {
       const courseSlug = req.params.slug;
 
       // Xóa tiết học
-      await Lecture.deleteOne({ _id: lectureId });
+      const deletedLecture = await Lecture.findByIdAndDelete(lectureId);
+
+      if (!deletedLecture) {
+        return res.status(404).json({ error: 'Tiết học không tồn tại' });
+      }
 
       // Lấy thông tin khóa học dựa trên slug
       const course = await Course.findOne({ slug: courseSlug });
@@ -222,12 +225,12 @@ class LectureController {
       });
 
       // Cập nhật thông tin trong bảng Instructor
-      await Instructor.updateMany(
-        {
-          _id: { $in: instructorsToUpdate.map((instructor) => instructor._id) },
-        },
-        { $pull: { lectures: lectureId } },
-      );
+      for (const instructor of instructorsToUpdate) {
+        instructor.lectures = instructor.lectures.filter(
+          (lec) => lec.toString() !== lectureId.toString(),
+        );
+        await instructor.save();
+      }
 
       res.json({
         success: true,
