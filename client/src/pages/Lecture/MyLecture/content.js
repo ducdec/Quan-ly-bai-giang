@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-function Content() {
+function Content({ children }) {
   return (
     <>
       <div className={cx('Video_wrapper', 'noselect')}>

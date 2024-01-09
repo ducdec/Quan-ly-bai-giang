@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-function TrackItem({ lectures, nameCourse, index, slug }) {
+function TrackItemCreate({ lectures, nameCourse, index, slug }) {
   return (
     <>
       <div className={cx('TrackItem_wrapper')}>
@@ -16,7 +16,7 @@ function TrackItem({ lectures, nameCourse, index, slug }) {
       <div className={cx('trackItem_list')}>
         {lectures.map((lec) => (
           <Link
-            to={`/learning/${slug}?id=${lec._id}`}
+            to={`/lecture/${slug}/${lec._id}/edit`}
             key={lec._id}
             className={cx('StepItem_wrapper', 'learn-item-1')}
           >
@@ -37,4 +37,4 @@ function TrackItem({ lectures, nameCourse, index, slug }) {
   );
 }
 
-export default TrackItem;
+export default TrackItemCreate;

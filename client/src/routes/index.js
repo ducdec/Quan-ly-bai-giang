@@ -17,6 +17,7 @@ import Profile from '~/pages/Profile/Profile';
 //Lecture
 import Lecture from '~/pages/Lecture';
 import CreateLecture from '~/pages/Lecture/components/create';
+import UpdateLecture from '~/pages/Lecture/components/edit';
 //
 import learning from '~/pages/Lecture/learning';
 //instructor
@@ -70,6 +71,11 @@ const publicRoutes = [
   {
     path: config.routes.createLec,
     component: CreateLecture,
+    layout: HeaderOnly,
+  },
+  {
+    path: config.routes.editLec,
+    component: UpdateLecture,
     layout: HeaderOnly,
   },
   //

@@ -4,28 +4,64 @@ import { Course } from '../models/Course.js';
 class LearningController {
   constructor() {}
 
-  // [GET] /learning/:slugCourse
+  // [GET] /learning/:slug
+  // async courseLearning(req, res) {
+  //   try {
+  //     // Lấy giá trị slug từ tham số trong request
+  //     const { slug, lectureId } = req.params;
+
+  //     // Sử dụng Mongoose để tìm kiếm khóa học dựa trên slug
+  //     const course = await Course.findOne({ slug }).populate({
+  //       path: 'lectures',
+  //       match: { _id: lectureId },
+  //       populate: 'instructors',
+  //     });
+
+  //     if (!course) {
+  //       return res.status(404).json({ error: 'Course not found' });
+  //     }
+
+  //     // Lấy toàn bộ thông tin của giảng viên và các bài giảng
+  //     const { instructors, lectures } = course;
+
+  //     // Trả về đối tượng chứa thông tin cả về giảng viên và các bài giảng
+  //     res.status(200).json({
+  //       courseInfo: { name: course.name, slug: course.slug },
+  //       lectures,
+  //       instructors,
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({ error: 'Internal Server Error' });
+  //   }
+  // }
+
+  // [GET] /learning/:slug
   async courseLearning(req, res) {
     try {
-      // Lấy giá trị slug từ tham số trong request
-      const slug = req.params.slug;
+      // Lấy giá trị slug và id từ tham số trong request
+      const { slug } = req.params;
+      const id = req.query.id;
 
-      // Sử dụng Mongoose để tìm kiếm khóa học dựa trên slug
+      console.log('46', id);
+      // Sử dụng Mongoose để tìm kiếm khóa học dựa trên slug và id
       const course = await Course.findOne({ slug })
-        .populate('instructors')
-        .populate('lectures');
+        .populate({
+          path: 'lectures',
+          match: { _id: id },
+        })
+        .populate('instructors');
 
       if (!course) {
         return res.status(404).json({ error: 'Course not found' });
       }
 
       // Lấy toàn bộ thông tin của giảng viên và các bài giảng
-      const instructors = course.instructors;
-      const lectures = course.lectures;
+      const { instructors, lectures } = course;
 
       // Trả về đối tượng chứa thông tin cả về giảng viên và các bài giảng
       res.status(200).json({
-        courseInfo: { name: course.name, slug: course.slug },
+        course,
         instructors,
         lectures,
       });

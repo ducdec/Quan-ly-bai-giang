@@ -4,18 +4,18 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Select } from 'antd';
 
 import styles from './Lecture.module.scss';
-import TrackItemCreate from '../MyLecture/TrackItemCreate';
 //import { XIcon } from '~/components/Icons';
 import config from '~/config';
 import Button from '~/components/Button';
 import lectureService from '~/services/lectureServices';
+import TrackItemCreate from '../MyLecture/TrackItemCreate';
 
 const cx = classNames.bind(styles);
 
-function CreateLecture() {
-  const { slug } = useParams();
+function UpdateLecture() {
+  const { slug, id } = useParams();
 
-  const [newLecture, setNewLecture] = useState({
+  const [formData, setFormData] = useState({
     name: '',
     instructor: '',
     description: '',
@@ -23,6 +23,7 @@ function CreateLecture() {
   });
 
   const [instructors, setInstructors] = useState([]);
+  const [selectedInstructors, setSelectedInstructors] = useState([]);
   const [lectures, setlectures] = useState([]);
   const [course, setCourse] = useState('');
 
@@ -33,19 +34,25 @@ function CreateLecture() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await lectureService.courseSlug(slug);
-        console.log('Line 34 ', result.lectures);
-        console.log('Data from API:', result);
-        setInstructors(result.instructors);
-        setlectures(result.lectures);
-        setCourse(result.courseInfo);
+        const Data = await lectureService.courseSlug(slug);
+        console.log('Line 34 ', Data.lectures);
+        console.log('Data from API 1:', Data);
+        setInstructors(Data.instructors);
+        setlectures(Data.lectures);
+        setCourse(Data.courseInfo);
+
+        const result = await lectureService.editLec(slug, id);
+        console.log('Data from API 2:', result);
+
+        setSelectedInstructors(result.instructor || []);
+        setFormData(result);
       } catch (error) {
         console.error('API:', error);
       }
     };
 
     fetchData();
-  }, [slug]);
+  }, [slug, id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -53,25 +60,28 @@ function CreateLecture() {
     const updatedErrorFields = errorFields.filter((field) => field !== name);
     setErrorFields(updatedErrorFields);
 
-    setNewLecture((prevLec) => ({
+    setFormData((prevLec) => ({
       ...prevLec,
       [name]: value,
     }));
   };
 
   const handleInstructorChange = (value) => {
-    setNewLecture((prevLec) => ({
-      ...prevLec,
-      instructor: value,
-    }));
+    setSelectedInstructors(value);
   };
+  useEffect(() => {
+    setFormData((prevCourse) => ({
+      ...prevCourse,
+      instructors: selectedInstructors,
+    }));
+  }, [selectedInstructors]);
 
-  const handleCreateLecture = (e) => {
+  const handleUpdate = (e) => {
     e.preventDefault();
 
     // Kiểm tra xem có trường nào chưa được nhập không
     const requiredFields = ['name', 'videoID'];
-    const missingFields = requiredFields.filter((field) => !newLecture[field]);
+    const missingFields = requiredFields.filter((field) => !formData[field]);
 
     if (missingFields.length > 0) {
       // Nếu có trường chưa được nhập, hiển thị thông báo lỗi và cập nhật danh sách lỗi
@@ -80,9 +90,11 @@ function CreateLecture() {
       return;
     }
 
+    formData.instructor = selectedInstructors;
+
     // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo khóa học
     lectureService
-      .create(newLecture, slug)
+      .updateLec(slug, id, formData)
       .then((res) => {
         console.log('Success:', res.data);
         navigate(config.routes.createLec);
@@ -92,14 +104,12 @@ function CreateLecture() {
       });
   };
 
-  console.log('107:', newLecture);
+  //console.log('107:', formData);
   const instructorOptions = instructors.map((ins) => ({
     value: ins._id,
     label: ins.name,
     key: ins._id,
   }));
-  const first = instructors[0] ? instructors[0].name : 'Chọn người hướng dẫn';
-
   return (
     <>
       <div className={cx('tracks_wrapper')}>
@@ -125,9 +135,9 @@ function CreateLecture() {
       <div className={cx('content_wrapper')}>
         <div className={cx('form-container')}>
           <div className={cx('mt-5')}>
-            <h3>Thêm Tiết Học</h3>
+            <h3>Sửa Tiết Học</h3>
 
-            <form onSubmit={handleCreateLecture}>
+            <form onSubmit={handleUpdate}>
               <div className={cx('form-group')}>
                 <div className={cx('mb-3')}>
                   <label htmlFor="name" className="form-label">
@@ -135,7 +145,7 @@ function CreateLecture() {
                   </label>
                   <input
                     onChange={handleInputChange}
-                    value={newLecture.name}
+                    value={formData.name}
                     type="text"
                     className={cx('form-control', {
                       'is-invalid': errorFields.includes('name'),
@@ -158,7 +168,7 @@ function CreateLecture() {
                     </label>
                     <div className={cx('col-md-4')}>
                       <Select
-                        defaultValue={first}
+                        value={selectedInstructors}
                         placeholder="Chọn người hướng dẫn"
                         style={{ width: '100%' }}
                         onChange={handleInstructorChange}
@@ -176,7 +186,7 @@ function CreateLecture() {
                   </label>
                   <textarea
                     onChange={handleInputChange}
-                    value={newLecture.description}
+                    value={formData.description}
                     rows="3"
                     className={cx('form-control')}
                     id="description"
@@ -190,7 +200,7 @@ function CreateLecture() {
                   </label>
                   <input
                     onChange={handleInputChange}
-                    value={newLecture.videoID}
+                    value={formData.videoID}
                     type="text"
                     className={cx('form-control', {
                       'is-invalid': errorFields.includes('videoID'),
@@ -205,8 +215,8 @@ function CreateLecture() {
                   )}
                 </div>
 
-                <Button blue onClick={handleCreateLecture} type="submit">
-                  Thêm
+                <Button blue onClick={handleUpdate} type="submit">
+                  Sửa
                 </Button>
               </div>
             </form>
@@ -217,4 +227,4 @@ function CreateLecture() {
   );
 }
 
-export default CreateLecture;
+export default UpdateLecture;

@@ -40,9 +40,7 @@ const schema = new mongoose.Schema(
       slug: 'name',
     },
   },
-  {
-    timestamps: true,
-  },
+  { timestamps: true },
 );
 
 schema.plugin(mongooseDelete, {

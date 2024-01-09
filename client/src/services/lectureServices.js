@@ -21,5 +21,20 @@ const lectureService = {
         throw err;
       });
   },
+
+  //sua
+  editLec(slug, lecID) {
+    return request
+      .get(`/lecture/${slug}/${lecID}/edit`)
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error('Error edit lecture:', error.response.data);
+        throw error;
+      });
+  },
+
+  updateLec(slug, LecID, newLec) {
+    return request.put(`/lecture/${slug}/${LecID}`, newLec);
+  },
 };
 export default lectureService;

@@ -11,6 +11,8 @@ const routers = {
   //Lecture
   lecture: '/lecture',
   createLec: '/lecture/:slug/create',
+  editLec: '/lecture/:slug/:id/edit',
+  //
   learning: '/learning/:slug',
   //instructor
   CreateIns: '/instructor/create',

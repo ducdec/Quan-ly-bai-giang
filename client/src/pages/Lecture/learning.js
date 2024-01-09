@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { XIcon } from '~/components/Icons';
+//import { XIcon } from '~/components/Icons';
 import styles from './Lecture.module.scss';
 import TrackItem from './MyLecture/TrackItem';
 import Content from './MyLecture/content';
@@ -12,6 +12,7 @@ const cx = classNames.bind(styles);
 
 function Learning() {
   const { slug } = useParams();
+  const { id } = useParams();
   //const [instructors, setInstructors] = useState([]);
   const [lectures, setLectures] = useState([]);
   const [course, setCourse] = useState('');
@@ -19,11 +20,11 @@ function Learning() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!slug) {
+        if (!slug || !id) {
           console.error('Slug is undefined or null');
           return;
         }
-        const result = await learningService.courseInfo(slug);
+        const result = await learningService.courseInfo(slug, id);
 
         console.log('Line 34 ', result.lectures);
         console.log('Data from API:', result);
@@ -37,7 +38,7 @@ function Learning() {
     };
 
     fetchData();
-  }, [slug]);
+  }, [slug, id]);
 
   return (
     <div className={cx('wrapper')}>
@@ -62,7 +63,7 @@ function Learning() {
       </div>
 
       <div className={cx('content_wrapper')}>
-        <Content />
+        <Content lectures={lectures} />
       </div>
 
       <div className={cx('actionBar_wrapper')}></div>
