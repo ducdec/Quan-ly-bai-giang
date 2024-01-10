@@ -7,7 +7,6 @@ import { Select } from 'antd';
 
 import config from '~/config';
 import courseService from '~/services/courseServices';
-import InstructorService from '~/services/instructorServices';
 
 const cx = classNames.bind(styles);
 
