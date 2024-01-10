@@ -16,6 +16,7 @@ function UpdateInstructor() {
     email: '',
     phone: '',
   });
+  //123
   const navigate = useNavigate();
 
   useEffect(() => {
