@@ -12,30 +12,12 @@ const cx = classNames.bind(styles);
 function CreateInstructor() {
   const [newInstructor, setNewInstructor] = useState({
     name: '',
-    courses: [],
     email: '',
     phone: '',
   });
-
-  const [courses, setCourses] = useState([]);
-  const [selectedCourses, setSelectedCourses] = useState([]);
-
   const [errorFields, setErrorFields] = useState([]);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const coursesData = await InstructorService.getCourse();
-        setCourses(coursesData);
-      } catch (error) {
-        console.error('Error fetching courses:', error);
-      }
-    };
-
-    fetchCourses();
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -48,25 +30,6 @@ function CreateInstructor() {
       ...prevInstructor,
       [name]: value,
     }));
-  };
-
-  const handleCourseChange = (e) => {
-    const selectedCourse = e.target.value;
-    console.log('!!!!:', selectedCourses);
-
-    setSelectedCourses((prevCourses) => {
-      const isCourseSelected = prevCourses.some(
-        (course) => course.name === selectedCourse,
-      );
-
-      if (isCourseSelected) {
-        // Nếu đã chọn, hãy loại bỏ
-        return prevCourses.filter((course) => course.name !== selectedCourse);
-      } else {
-        // Nếu chưa chọn, hãy thêm vào
-        return [...prevCourses, { name: selectedCourse }];
-      }
-    });
   };
 
   //hadle create
@@ -84,15 +47,9 @@ function CreateInstructor() {
       return;
     }
 
-    setNewInstructor((prevIns) => ({
-      ...prevIns,
-      courses: selectedCourses.length > 0 ? selectedCourses : [],
-    }));
-
     // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo giáo viên
     InstructorService.create({
       ...newInstructor,
-      courses: selectedCourses,
     })
       .then((res) => {
         console.log('Success:', res.data);
@@ -130,40 +87,6 @@ function CreateInstructor() {
                 {errorFields.includes('name') && (
                   <div className="invalid-feedback">Vui lòng nhập tên.</div>
                 )}
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="courses" className="form-label">
-                  Khóa học
-                </label>
-                <input
-                  type="text"
-                  className={cx('form-control')}
-                  id="courses"
-                  name="courses"
-                  value={selectedCourses
-                    .map((course) => course.name)
-                    .join(', ')}
-                  disabled
-                />
-                <select
-                  onChange={handleCourseChange}
-                  value={selectedCourses.length > 0 ? selectedCourses[0] : ''}
-                  className={cx(
-                    'form-select',
-                    'form-select-lg',
-                    'course-select-all',
-                  )}
-                  id="courseS"
-                  name="courseS"
-                >
-                  <option value="">Chọn khóa học</option>
-                  {courses.map((course) => (
-                    <option key={course._id} value={course.name}>
-                      {course.name}
-                    </option>
-                  ))}
-                </select>
               </div>
 
               <div className="mb-3">
