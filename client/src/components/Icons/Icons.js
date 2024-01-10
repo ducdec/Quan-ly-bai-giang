@@ -218,14 +218,13 @@ export const CheckIcon = ({ className }) => (
     ></path>
   </svg>
 );
-export const LeftIcon = ({ className }) => (
+export const LeftIcon = () => (
   <svg
-    className={`${className}`}
     aria-hidden="true"
     focusable="false"
     data-prefix="fas"
     data-icon="chevron-left"
-    class="svg-inline--fa fa-chevron-left "
+    className="svg-inline--fa fa-chevron-left "
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 320 512"
@@ -236,14 +235,13 @@ export const LeftIcon = ({ className }) => (
     ></path>
   </svg>
 );
-export const RightIcon = ({ className }) => (
+export const RightIcon = () => (
   <svg
-    className={`${className}`}
     aria-hidden="true"
     focusable="false"
     data-prefix="fas"
     data-icon="chevron-right"
-    class="svg-inline--fa fa-chevron-right "
+    className="svg-inline--fa fa-chevron-right "
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 320 512"

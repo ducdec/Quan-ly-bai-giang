@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 //import { XIcon } from '~/components/Icons';
 import styles from './Lecture.module.scss';
@@ -11,27 +11,35 @@ import learningService from '~/services/learningServices';
 const cx = classNames.bind(styles);
 
 function Learning() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get('id');
   const { slug } = useParams();
-  const { id } = useParams();
+
+  console.log('12:', id, 'slug:', slug);
+
   //const [instructors, setInstructors] = useState([]);
-  const [lectures, setLectures] = useState([]);
-  const [course, setCourse] = useState('');
+  const [dataLectures, setDataLectures] = useState([]);
+  const [lectureAlone, setLectureAlone] = useState({});
+  const [course, setCourse] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!slug || !id) {
-          console.error('Slug is undefined or null');
-          return;
-        }
         const result = await learningService.courseInfo(slug, id);
 
-        console.log('Line 34 ', result.lectures);
-        console.log('Data from API:', result);
+        //console.log('Line 34 ', result.lectures);
+        // console.log(
+        //   'Data from API:',
+        //   result.lecture,
+        //   ' : ',
+        //   result.course.lectures,
+        // );
 
         //setInstructors(result.instructors);
-        setLectures(result.lectures);
-        setCourse(result.courseName);
+        setLectureAlone(result.lecture);
+        setDataLectures(result.course.lectures);
+        setCourse(result.course);
       } catch (error) {
         console.error('API:', error);
       }
@@ -40,6 +48,7 @@ function Learning() {
     fetchData();
   }, [slug, id]);
 
+  console.log('1:', dataLectures, '2:', lectureAlone, '3:', course);
   return (
     <div className={cx('wrapper')}>
       <div className={cx('tracks_wrapper')}>
@@ -53,9 +62,9 @@ function Learning() {
 
           <div className={cx('tracks_body')}>
             <TrackItem
-              lectures={lectures}
-              nameCourse={course}
-              index={lectures.length}
+              lectures={dataLectures}
+              nameCourse={course.name}
+              length={dataLectures.length}
               slug={slug}
             />
           </div>
@@ -63,7 +72,7 @@ function Learning() {
       </div>
 
       <div className={cx('content_wrapper')}>
-        <Content lectures={lectures} />
+        <Content lecture={lectureAlone} />
       </div>
 
       <div className={cx('actionBar_wrapper')}></div>

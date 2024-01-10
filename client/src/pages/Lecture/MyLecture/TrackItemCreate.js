@@ -14,6 +14,8 @@ import lectureService from '~/services/lectureServices';
 const cx = classNames.bind(styles);
 
 function TrackItemCreate({ lectures, nameCourse, index, id, slug }) {
+  const [activeIndex, setActiveIndex] = useState(null);
+
   //console.log(courseResult);
   const [deleteLectureId, setDeleteLectureId] = useState(null);
   const [isDelete, setIsDelete] = useState(false);
@@ -55,6 +57,12 @@ function TrackItemCreate({ lectures, nameCourse, index, id, slug }) {
     const filteredLectures = lectures.filter((lec) => lec !== undefined);
     setUpdatedLectures(filteredLectures);
   }, [lectures]);
+
+  const handleClick = (index) => {
+    // Hàm xử lý khi Link được nhấp vào
+    setActiveIndex(index);
+  };
+
   return (
     <>
       <div className={cx('TrackItem_wrapper')}>
@@ -64,14 +72,21 @@ function TrackItemCreate({ lectures, nameCourse, index, id, slug }) {
       </div>
       <div className={cx('trackItem_list')}>
         {Array.isArray(updatedLectures) &&
-          updatedLectures.map((lec) => (
+          updatedLectures.map((lec, i) => (
             <Link
               to={`/lecture/${slug}/${lec._id}/edit`}
               key={lec._id}
-              className={cx('StepItem_wrapper', 'learn-item-1')}
+              className={cx('StepItem_wrapper', 'learn-item-1', {
+                active: activeIndex === i,
+              })}
+              onClick={() => {
+                handleClick(i);
+              }}
             >
               <div className={cx('StepItem_info')}>
-                <h3 className={cx('StepItem_title')}>{lec.name}</h3>
+                <h3 className={cx('StepItem_title')}>
+                  {i + 1}. {lec.name}
+                </h3>
                 <p className={cx('StepItem_desc')}>
                   <StartIcon className={cx('lesson-icon')} />
                   <span>03:15</span>

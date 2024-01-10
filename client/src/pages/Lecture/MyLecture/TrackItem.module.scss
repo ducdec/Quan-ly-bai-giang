@@ -47,6 +47,15 @@
     &:hover {
         background: #f1f1f1;
     }
+    &.viewed {
+        color: #888; // Màu khi khóa học đã được xem
+      }
+    &.active {
+        // Quy tắc khi lớp active được thêm vào
+        background-color: rgba(240, 81, 35, 0.2); // Màu nền thay đổi khi active
+        font-weight: 600;
+        color: var(--black-color); // Màu chữ thay đổi khi active
+      }
 }
 .StepItem_info {
     cursor: pointer;
