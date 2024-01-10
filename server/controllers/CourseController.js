@@ -273,7 +273,9 @@ class CourseController {
       const slug = req.params.slug;
 
       // Sử dụng await để đợi cho hàm findOne hoàn tất
-      const course = await Course.findOne({ slug: slug });
+      const course = await Course.findOne({ slug: slug })
+        .populate('instructors')
+        .populate('lectures');
 
       // Kiểm tra xem course có tồn tại không
       if (!course) {
@@ -281,6 +283,7 @@ class CourseController {
         return res.status(404).json({ error: 'Không tìm thấy khóa học' });
       }
 
+      //const { instructors, lectures } = course;
       // Gửi course về client nếu tìm thấy
       res.status(200).json(course);
     } catch (error) {

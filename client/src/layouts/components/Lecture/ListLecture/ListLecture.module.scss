@@ -48,45 +48,47 @@
     margin: 20px 0 0;
 }
 
-.CurriculumOfCourse_headerSticky {
+.headerSticky {
     background-color: #fff;
+    margin-top: -4px;
     padding-bottom: 4px;
-    position: -webkit-sticky;
     position: sticky;
-    top: 66px;
+    top: 66px; 
     z-index: 2;
+    padding-top: 22px;
 }
 
-.CurriculumOfCourse_headerBlock {
+.headerBlock {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
 
-.CurriculumOfCourse_float {
+.float {
     font-size: 2rem;
     font-weight: 700;
+    color: var(--bs-heading-color);
 }
 
-.CurriculumOfCourse_subWrapper {
+.subWrapper {
     display: flex;
     font-size: 1.4rem;
     margin-top: 4px
 }
 
-.CurriculumOfCourse_subWrapper ul {
+.subWrapper ul {
     display: flex;
     margin: 0;
     padding-left: 0;
 }
 
-.CurriculumOfCourse_subWrapper ul li{
+.subWrapper ul li{
     display: inline-block;
 }
 
 
-.CurriculumOfCourse_hidden {
+.hidden {
     display: inline-block;
 }
 

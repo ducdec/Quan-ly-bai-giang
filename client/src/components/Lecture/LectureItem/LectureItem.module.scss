@@ -35,7 +35,13 @@
 
 .lectureName {
     padding-left: 6px;
-}
+    max-width: 500px;
+    white-space: nowrap;   // Tự động xuống dòng khi nó quá dài
+    overflow: hidden;      // Ẩn phần dư thừa khi quá dài
+    text-overflow: ellipsis; // Hiển thị dấu chấm (...) khi nó quá dài
+
+  }
+  
 
 .floatRight {
     margin-left: 58px;
