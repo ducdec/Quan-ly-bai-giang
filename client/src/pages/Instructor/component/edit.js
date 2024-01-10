@@ -1,10 +1,10 @@
 import classNames from 'classnames/bind';
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-
 import styles from './Instructor.module.scss';
-import config from '~/config';
 import Button from '~/components/Button';
+
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import config from '~/config';
 import InstructorService from '~/services/instructorServices';
 
 const cx = classNames.bind(styles);
@@ -15,13 +15,8 @@ function UpdateInstructor() {
     name: '',
     email: '',
     phone: '',
-    courses: [],
   });
-  const [courses, setCourses] = useState([]);
-  const [selectedCourses, setSelectedCourses] = useState([]);
-
-  const [errorFields, setErrorFields] = useState([]);
-
+  //123
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,77 +24,23 @@ function UpdateInstructor() {
       try {
         const result = await InstructorService.editInstructor(id);
         setFormData(result);
-
-        const coursesData = await InstructorService.getCourse();
-        setCourses(coursesData);
-        setSelectedCourses(result.courses || []);
       } catch (error) {
-        console.error('Lỗi API:', error);
+        console.error('Lỗi api:', error);
       }
     };
     fetchData();
   }, [id]);
 
+  //handle
   const handleInput = (e) => {
-    const { name, value } = e.target;
-
-    // Xóa trường đó khỏi danh sách lỗi khi người dùng bắt đầu nhập
-    const updatedErrorFields = errorFields.filter((field) => field !== name);
-    setErrorFields(updatedErrorFields);
-
-    setFormData((prevInstructor) => ({
-      ...prevInstructor,
-      [name]: value,
-    }));
-  };
-
-  const handleCourseChange = (e) => {
-    const selectedCourse = e.target.value;
-
-    if (selectedCourse === '') {
-      setSelectedCourses([]);
-      return;
-    }
-
-    setSelectedCourses((prevCourses) => {
-      const isCourseSelected = prevCourses.some(
-        (course) => course.name === selectedCourse,
-      );
-
-      if (isCourseSelected) {
-        // Nếu đã chọn, hãy loại bỏ
-        return prevCourses.filter((course) => course.name !== selectedCourse);
-      } else {
-        // Nếu chưa chọn, hãy thêm vào
-        return [...prevCourses, { name: selectedCourse }];
-      }
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
-    console.log('!!!!:', selectedCourses);
   };
-  // useEffect
-  useEffect(() => {
-    setFormData((prevData) => ({
-      ...prevData,
-      courses: selectedCourses,
-    }));
-  }, [selectedCourses]);
 
-  const handleUpdateInstructor = (e) => {
+  const handleUpdate = (e) => {
     e.preventDefault();
-    // const confirmed = window.confirm('Bạn có chắc chắn muốn cập nhật không?'); //oh
-    // if (!confirmed) {
-    //   return;
-    // }
-
-    const requiredFields = ['name'];
-
-    const missingFields = requiredFields.filter((field) => !formData[field]);
-
-    if (missingFields.length > 0) {
-      setErrorFields(missingFields);
-      return;
-    }
-
     //put
     InstructorService.updateInstructor(id, formData)
       .then((res) => {
@@ -109,18 +50,17 @@ function UpdateInstructor() {
       .catch((error) => {
         console.error(
           'Error data:',
-          error.response ? error.response.data : error.message,
+          error.res ? error.res.data : error.message,
         );
-        setErrorFields(error.res ? Object.keys(error.res.data) : ['error']);
       });
   };
 
   return (
     <div className={cx('form-container')}>
       <div className={cx('mt-5')}>
-        <h3>Sửa Giảng Viên</h3>
+        <h3>Sửa Khóa Học</h3>
 
-        <form onSubmit={handleUpdateInstructor}>
+        <form onSubmit={handleUpdate}>
           <div className={cx('form-group')}>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">
@@ -137,49 +77,17 @@ function UpdateInstructor() {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="coursesSelect" className="form-label">
-                Khóa học
-              </label>
-              <input
-                type="text"
-                className={cx('form-control')}
-                id="courses"
-                name="courses"
-                value={
-                  selectedCourses.length > 0
-                    ? selectedCourses.map((course) => course.name).join(', ')
-                    : ''
-                }
-                disabled
-              />
-              <select
-                onChange={handleCourseChange}
-                value={selectedCourses.length > 0 ? selectedCourses[0] : ''}
-                className={cx('form-select', 'form-select-lg')}
-                id="courseS"
-                name="courseS"
-              >
-                <option value="">Chọn khóa học</option>
-                {courses.map((course) => (
-                  <option key={course._id} value={course.name}>
-                    {course.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="mb-3">
               <label htmlFor="email" className="form-label">
                 Email
               </label>
-              <input
+              <textarea
                 onChange={handleInput}
                 value={formData.email}
+                rows="3"
                 className={cx('form-control')}
-                type="email"
                 id="email"
                 name="email"
-              />
+              ></textarea>
             </div>
 
             <div className={cx('form-group')}>
@@ -194,7 +102,7 @@ function UpdateInstructor() {
               />
             </div>
 
-            <Button blue onClick={handleUpdateInstructor} type="submit">
+            <Button blue onClick={handleUpdate} type="submit">
               Cập Nhật
             </Button>
           </div>
