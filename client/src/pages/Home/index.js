@@ -30,7 +30,6 @@ function Home() {
 
     fetchData();
   }, []);
-
   return (
     <section className={cx('grid', 'fullWidth')} style={{ maxWidth: '1920px' }}>
       <div className={cx('home-wrapper')}>

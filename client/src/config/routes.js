@@ -8,8 +8,8 @@ const routers = {
   editCourse: '/courses/:id/edit',
   storedCourse: '/courses/stored',
   trashCourse: '/courses/trash',
+  lecture: '/courses/:slug',
   //Lecture
-  lecture: '/lecture',
   createLec: '/lecture/:id/create',
   editLec: '/lecture/:slug/:id/edit',
   //

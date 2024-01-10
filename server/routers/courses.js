@@ -16,6 +16,8 @@ router.delete('/:id/delete', CourseController.forceDestroy); //xoa that
 //
 router.get('/stored', CourseController.storeCourses);
 router.get('/trash', CourseController.trashCourses);
+router.get('/:slug', CourseController.courseSlug);
+
 router.get('/get', CourseController.getCourse);
 router.get('/', CourseController.show);
 

@@ -12,10 +12,10 @@ import CreateCourse from '~/pages/Course/component/create';
 import UpdateCourse from '~/pages/Course/component/edit';
 import StoredCourse from '~/pages/Course/MyCourses/storedCourses';
 import TrashCourse from '~/pages/Course/MyCourses/trashCourses';
+import Course from '~/pages/Course/course';
 //Profile
 import Profile from '~/pages/Profile/Profile';
 //Lecture
-import Lecture from '~/pages/Lecture';
 import CreateLecture from '~/pages/Lecture/components/create';
 import UpdateLecture from '~/pages/Lecture/components/edit';
 //
@@ -65,9 +65,9 @@ const publicRoutes = [
     component: TrashCourse,
     layout: HeaderOnly,
   },
+  { path: config.routes.lecture, component: Course, layout: HeaderOnly },
 
   //Lectures
-  { path: config.routes.lecture, component: Lecture, layout: HeaderOnly },
   {
     path: config.routes.createLec,
     component: CreateLecture,

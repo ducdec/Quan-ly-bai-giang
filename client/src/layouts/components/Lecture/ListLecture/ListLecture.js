@@ -1,25 +1,38 @@
-import images from '~/assets/images';
 import styles from './ListLecture.module.scss';
 import classNames from 'classnames/bind';
 
 import LecturePanel from '~/components/Lecture/LecturePanel';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import courseService from '~/services/courseServices';
+import Button from '~/components/Button';
 const cx = classNames.bind(styles);
 
 function ListLecture() {
+  const { slug } = useParams();
+  const [dataCourse, setDataCourse] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await courseService.courseSlug(slug);
+        //console.log('Line 34 ', result);
+        console.log('Data from API:', result);
+        setDataCourse(result);
+      } catch (error) {
+        console.error('API:', error);
+      }
+    };
+
+    fetchData();
+  }, [slug]);
+
   return (
     <div className={cx('Content')}>
-      <section className={cx('grip')}>
-        <section className={cx('row')}>
-          <section className={cx('col1')}>
-            <h1 className={cx('course_name')}>
-              Lập trình C++ cơ bản, nâng cao
-            </h1>
-            <div className={cx('text_content')}>
-              Khóa học lập trình C++ từ cơ bản tới nâng cao dành cho người mới
-              bắt đầu. Mục tiêu của khóa học này nhằm giúp các bạn nắm được các
-              khái niệm căn cơ của lập trình, giúp các bạn có nền tảng vững chắc
-              để chinh phục con đường trở thành một lập trình viên.
-            </div>
+      <section className={cx('grip')} style={{ maxWidth: '1920px' }}>
+        <section className={cx('row', 'Course_wrapper')}>
+          <section className={cx('col2', 'c-12', 'm-12', 'c-1-8')}>
+            <h1 className={cx('course_name')}>{dataCourse.name}</h1>
+            <div className={cx('text_content')}>{dataCourse.description}</div>
 
             <div className={cx('CurriculumOfCourse')}>
               <div className={cx('CurriculumOfCourse_headerSticky')}>
@@ -56,16 +69,21 @@ function ListLecture() {
             </div>
           </section>
 
-          <section className={cx('col2')}>
+          <section className={cx('col2', 'c-12', 'm-12', 'c-1-4')}>
             <div className={cx('CourseDetail')}>
               <div className={cx('CourseDetail_img')}>
                 <div
                   className={cx('CourseDetail_bg')}
-                  style={{ backgroundImage: `url("${images.Vex}")` }}
+                  style={{ backgroundImage: `url(${dataCourse.imageUrl})` }}
                 ></div>
               </div>
               <h5>Miễn phí</h5>
-              <button className={cx('Button_btn')}>HỌC NGAY</button>
+              <Button
+                to={`/learning/${slug}?id=${123}`}
+                className={cx('Button_btn')}
+              >
+                HỌC NGAY
+              </Button>
               <ul>
                 <li>
                   <span>Trình độ cơ bản</span>

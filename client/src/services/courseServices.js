@@ -1,6 +1,16 @@
 import request from '~/utils/axios';
 
 const courseService = {
+  //hien thi
+  courseSlug(slug) {
+    return request
+      .get(`/courses/${slug}`)
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error('Error data courses:', error);
+        throw error;
+      });
+  },
   //them
   createCourse(newCourse) {
     return request

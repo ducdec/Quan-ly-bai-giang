@@ -55,7 +55,7 @@ class LectureController {
   // [GET] /lecture/:id/create
   async courseSlug(req, res) {
     try {
-      // Lấy giá trị slug từ tham số trong request
+      // Lấy giá trị id từ tham số trong request
       const id = req.params.id;
 
       // Sử dụng Mongoose để tìm kiếm khóa học dựa trên id

@@ -1,10 +1,10 @@
-import styles from './Lecture.module.scss';
+import styles from './course.module.scss';
 import classNames from 'classnames/bind';
 import ListLecture from '~/layouts/components/Lecture/ListLecture';
 
 const cx = classNames.bind(styles);
 
-function Lecture() {
+function Course() {
   return (
     <div className={cx('wrapper')}>
       <ListLecture />
@@ -12,4 +12,4 @@ function Lecture() {
   );
 }
 
-export default Lecture;
+export default Course;

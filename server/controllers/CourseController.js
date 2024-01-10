@@ -266,6 +266,28 @@ class CourseController {
       .then((courses) => res.json(courses))
       .catch(next);
   }
+
+  //[GET] /courses/:slug
+  async courseSlug(req, res, next) {
+    try {
+      const slug = req.params.slug;
+
+      // Sử dụng await để đợi cho hàm findOne hoàn tất
+      const course = await Course.findOne({ slug: slug });
+
+      // Kiểm tra xem course có tồn tại không
+      if (!course) {
+        // Nếu không tìm thấy, trả về lỗi 404 Not Found
+        return res.status(404).json({ error: 'Không tìm thấy khóa học' });
+      }
+
+      // Gửi course về client nếu tìm thấy
+      res.status(200).json(course);
+    } catch (error) {
+      // Bắt lỗi nếu có vấn đề trong quá trình xử lý
+      next(error);
+    }
+  }
 }
 
 export default new CourseController();

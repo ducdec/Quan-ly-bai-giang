@@ -7,7 +7,7 @@ import Image from '~/components/Image';
 
 const cx = classNames.bind(styles);
 
-function CourseItem({ name, image }) {
+function CourseItem({ name, image, link }) {
   const isURL = /^(http|https):\/\//.test(image);
 
   let imageUrl = image;
@@ -19,7 +19,7 @@ function CourseItem({ name, image }) {
   return (
     <section className={cx('col', 'c-12', 'm-4', 'col_1-3')}>
       <div className={cx('Item', 'Item-wrap')}>
-        <a className={cx('Item-link')} href="lecture">
+        <a className={cx('Item-link')} href={`courses/${link}`}>
           {/* Sử dụng imageUrl thay vì image */}
           <Image src={imageUrl} className={cx('Item-image')} alt={name} />
         </a>
