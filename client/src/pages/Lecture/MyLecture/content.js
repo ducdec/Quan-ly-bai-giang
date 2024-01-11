@@ -96,7 +96,7 @@ function Content({ lecture }) {
                       frameborder="0"
                       allowfullscreen=""
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      title="Thêm/sửa/xóa khóa học với Fetch và REST API"
+                      title="#"
                       width="100%"
                       height="100%"
                       src={`https://www.youtube.com/embed/${lecture.videoID}?autoplay=1&mute=0&controls=1&origin=https%3A%2F%2Ffullstack.edu.vn&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&widgetid=1`}
