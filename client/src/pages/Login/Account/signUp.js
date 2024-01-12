@@ -9,7 +9,7 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { validation } from './LoginValidation';
+import validationFunctions from './LoginValidation';
 import Button from '~/components/Button';
 import userService from '~/services/userServices';
 import { useNavigate } from 'react-router-dom';
@@ -34,7 +34,7 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setErrors(validation(values));
+      setErrors(validationFunctions.validationSignup(values));
     } catch (error) {
       console.error('Error during signup:', error);
       return;

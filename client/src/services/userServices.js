@@ -22,6 +22,26 @@ const userService = {
         throw error;
       });
   },
+
+  //forgot password
+  forgotPassToken(email) {
+    return request
+      .post('/login/password', email)
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error('Error axios password:', error);
+        throw error;
+      });
+  },
+  forgotPassNew(token, password) {
+    return request
+      .post(`/login/password/${token}`, password)
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error('Error axios passwordToken:', error);
+        throw error;
+      });
+  },
 };
 
 export default userService;

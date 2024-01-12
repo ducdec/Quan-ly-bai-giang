@@ -3,6 +3,8 @@ const routers = {
   //Login
   signIn: 'login/signin',
   signUp: 'login/signup',
+  passWord: 'login/password',
+  passWordToken: 'login/password/:token',
   //Course
   createCourse: '/courses/store',
   editCourse: '/courses/:id/edit',

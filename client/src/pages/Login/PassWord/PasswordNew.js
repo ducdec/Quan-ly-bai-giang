@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faEnvelope,
-  faEye,
-  faEyeSlash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-import validation from './LoginValidation';
+import validation from '../Account/LoginValidation';
 import Button from '~/components/Button';
 import userService from '~/services/userServices';
 import { useNavigate } from 'react-router-dom';
@@ -16,36 +12,15 @@ import config from '~/config';
 
 const cx = classNames.bind(styles);
 
-function SignIn() {
-  const [isPasswordVisible, setPasswordVisibility] = useState(false);
+function ForgotPass() {
   const [values, setValues] = useState({
-    email: '',
     password: '',
+    againPass: '',
   });
 
-  const [users, serUsers] = useState([]);
+  const [isPasswordVisible, setPasswordVisibility] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await userService.datauUser();
-        //console.log('Line 34 ', result);
-        console.log('Data from API:', result);
-        serUsers(result);
-      } catch (error) {
-        console.error('API:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // useEffect(() => {
-  //   // Kiểm tra lỗi mỗi khi giá trị thay đổi
-  //   setErrors(validation(values, users));
-  // }, [values, users]);
 
   const handleInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -54,7 +29,7 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setErrors(validation(values, users));
+      setErrors(validation(values));
 
       // Kiểm tra nếu không có lỗi
       if (!errors.email && !errors.password) {
@@ -76,23 +51,23 @@ function SignIn() {
   const togglePasswordVisibility = () => {
     setPasswordVisibility(!isPasswordVisible);
   };
-  console.log('values:', values, 'user:', users);
+  console.log('values:', values);
   return (
     <div className={cx('section')}>
       <div className={cx('form-box')}>
         <div className={cx('form-value')}>
           <form action="" onSubmit={handleSubmit}>
-            <h2>Đăng nhập</h2>
+            <h2>Đổi mật khẩu</h2>
             <div className={cx('input-box')}>
-              <FontAwesomeIcon icon={faEnvelope} className={cx('faicon')} />
-              <input type="email" onChange={handleInput} name="email" />
-              <label className={cx('label')} htmlFor="">
-                Email
-              </label>
-              {errors.email && (
-                <span className={cx('text-danger')}>{errors.email}</span>
+              <input type="text" onChange={handleInput} name="password" />
+              {errors.password && (
+                <span className={cx('text-danger')}>{errors.password}</span>
               )}
+              <label className={cx('label')} htmlFor="">
+                Mật khẩu mới
+              </label>
             </div>
+
             <div className={cx('input-box')}>
               <FontAwesomeIcon
                 icon={isPasswordVisible ? faEyeSlash : faEye}
@@ -102,27 +77,21 @@ function SignIn() {
               <input
                 type={isPasswordVisible ? 'text' : 'password'}
                 onChange={handleInput}
-                name="password"
+                name="againPass"
               />
               {errors.password && (
                 <span className={cx('text-danger')}>{errors.password}</span>
               )}
               <label className={cx('label')} htmlFor="">
-                Mật Khẩu
-              </label>
-            </div>
-            <div className={cx('forget')}>
-              <label className={cx('label')} htmlFor="">
-                <input type="checkbox" />
-                Nhớ <a href="/">Lấy lại mật khẩu</a>
+                Nhập lại mật khẩu
               </label>
             </div>
             <Button type="submit" btnLogin>
-              Đăng nhập
+              Đổi mật khẩu
             </Button>
             <div className={cx('register')}>
               <p>
-                Bạn chưa có tài khoản? <a href="/login/signup">Đăng ký</a>
+                Quay lại ? <a href="/login/signin">Đăng nhập</a>
               </p>
             </div>
           </form>
@@ -132,4 +101,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default ForgotPass;

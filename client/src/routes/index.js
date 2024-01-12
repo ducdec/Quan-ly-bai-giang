@@ -5,8 +5,10 @@ import { HeaderOnly } from '~/layouts';
 
 import Home from '~/pages/Home';
 //Login
-import SignIn from '~/pages/Login/SignIn';
-import SignUp from '~/pages/Login/signUp';
+import SignIn from '~/pages/Login/Account/SignIn';
+import SignUp from '~/pages/Login/Account/signUp';
+import ForgotPass from '~/pages/Login/PassWord/Password';
+import ForgotPassToken from '~/pages/Login/PassWord/PasswordNew';
 //Courses
 import CreateCourse from '~/pages/Course/component/create';
 import UpdateCourse from '~/pages/Course/component/edit';
@@ -42,6 +44,16 @@ const publicRoutes = [
   {
     path: config.routes.signUp,
     component: SignUp,
+    layout: null,
+  },
+  {
+    path: config.routes.passWord,
+    component: ForgotPass,
+    layout: null,
+  },
+  {
+    path: config.routes.passWordToken,
+    component: ForgotPassToken,
     layout: null,
   },
   //Courses
