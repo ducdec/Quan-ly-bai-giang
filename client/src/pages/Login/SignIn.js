@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,8 +22,30 @@ function SignIn() {
     email: '',
     password: '',
   });
+
+  const [users, serUsers] = useState([]);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await userService.datauUser();
+        //console.log('Line 34 ', result);
+        console.log('Data from API:', result);
+        serUsers(result);
+      } catch (error) {
+        console.error('API:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // useEffect(() => {
+  //   // Kiểm tra lỗi mỗi khi giá trị thay đổi
+  //   setErrors(validation(values, users));
+  // }, [values, users]);
 
   const handleInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -32,11 +54,19 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setErrors(validation(values));
+      setErrors(validation(values, users));
+
+      // Kiểm tra nếu không có lỗi
       if (!errors.email && !errors.password) {
         const User = await userService.signin(values);
-        console.log(User); // Optional: log the user data
-        navigate(config.routes.home);
+
+        // Kiểm tra nếu đăng nhập thành công
+        if (User) {
+          console.log(User); // Optional: log the user data
+          navigate(config.routes.home);
+        } else {
+          console.log('Tài khoản hoặc mật khẩu không chính xác');
+        }
       }
     } catch (error) {
       console.error('Error during signin:', error);
@@ -46,7 +76,7 @@ function SignIn() {
   const togglePasswordVisibility = () => {
     setPasswordVisibility(!isPasswordVisible);
   };
-
+  console.log('values:', values, 'user:', users);
   return (
     <div className={cx('section')}>
       <div className={cx('form-box')}>
