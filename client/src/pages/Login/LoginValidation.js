@@ -1,4 +1,4 @@
-export const validation = (values) => {
+export const validation = (values, users) => {
   const errors = {};
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
@@ -20,6 +20,8 @@ export const validation = (values) => {
   } else if (!passwordPattern.test(values.password)) {
     errors.password =
       'Mật khẩu phải bao gồm ít nhất một chữ thường, một chữ hoa và một số';
+  } else {
+    errors.password = 'Tài khoản hoặc mật khẩu không chính xác';
   }
 
   // Thêm các kiểm tra khác nếu cần
