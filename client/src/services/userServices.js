@@ -22,6 +22,16 @@ const userService = {
         throw error;
       });
   },
+
+  datauUser() {
+    return request
+      .get('/login/signin')
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error('Error data user:', error);
+        throw error;
+      });
+  },
 };
 
 export default userService;

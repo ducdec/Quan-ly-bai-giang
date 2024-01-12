@@ -1,6 +1,6 @@
 import { LeftIcon, RightIcon } from '~/components/Icons';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import styles from './content.module.scss';
 import FormatDate from '~/components/FormatTime/FormatDate';
@@ -28,12 +28,37 @@ function Content({ lecture }) {
   const isPreviousDisabled = currentLecture === 1;
   const isNextDisabled = currentLecture === lecture.length;
 
-  console.log(currentLecture, currentLecture);
+  //console.log(currentLecture, currentLecture);
   //video
   const handlePlayClick = () => {
     // Khi icon được ấn, chuyển trạng thái của video sang true
     setShowVideo(true);
   };
+
+  // const time = document.getElementById('widget2').duration;
+  // console.log('time', time);
+  const iframeRef = useRef(null);
+  useEffect(() => {
+    // Lấy tham chiếu đến iframe
+    const iframe = iframeRef.current;
+
+    // Kiểm tra xem iframe đã sẵn sàng (đã load) chưa
+    if (iframe && iframe.contentDocument) {
+      // Truy vấn vào phần tử bên trong iframe (ví dụ: span.ytp-time-duration)
+      const spanElement = iframe.contentDocument.querySelector(
+        'span.ytp-time-duration',
+      );
+      console.log(spanElement);
+
+      // Kiểm tra xem phần tử có tồn tại không
+      if (spanElement) {
+        // Thực hiện các thao tác với spanElement tại đây
+        console.log('55', spanElement.textContent);
+      } else {
+        console.log('ko co');
+      }
+    }
+  }, [lecture.videoID]); // Thay đổi khi videoID thay đổi
 
   return (
     <>
@@ -93,8 +118,9 @@ function Content({ lecture }) {
                 {showVideo && (
                   <div style={{ width: '100%', height: '100%' }}>
                     <iframe
-                      frameborder="0"
-                      allowfullscreen=""
+                      ref={iframeRef}
+                      frameBorder="0"
+                      allowFullScreen
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       title="#"
                       width="100%"

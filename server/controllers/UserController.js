@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 class UserController {
   constructor() {}
 
-  //show
+  // [GET] login/signin
   async showUser(req, res, next) {
     try {
       const users = await User.find();
