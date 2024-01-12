@@ -38,6 +38,7 @@
 .actions {
   display: flex;
   align-items: center;
+  margin-right: 20px;
 }
 
 .more-btn {
@@ -56,4 +57,10 @@
   border-radius: 50%;
   margin-left: 12px;
   cursor: pointer;
+}
+
+.action-btn {
+  margin-right: -24px;
+  font-size: 500;
+  background: transparent;
 }

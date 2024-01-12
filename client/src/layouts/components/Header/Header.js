@@ -1,11 +1,11 @@
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import Tippy from '@tippyjs/react';
+import Tippy from '@tippyjs/react';
 
 import {
   faCircleQuestion,
-  //faCloudUpload,
+  faCloudUpload,
   faCoins,
   faEarthAsia,
   faEllipsisVertical,
@@ -23,6 +23,7 @@ import Menu from '~/components/Popper/Menu';
 import images from '~/assets/images';
 import Image from '~/components/Image';
 import Search from '../Search';
+import { MessageIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -108,24 +109,29 @@ function Header() {
 
         <div className={cx('actions')}>
           {currentUser ? (
-            <div></div>
+            <div className={cx('action')}>
+              <>
+                <Tippy
+                  delay={[0, 200]}
+                  content="Thêm khóa học"
+                  placement="bottom"
+                >
+                  <Button
+                    to={config.routes.createCourse}
+                    className={cx('action-btn')}
+                  >
+                    <FontAwesomeIcon icon={faCloudUpload} />
+                  </Button>
+                </Tippy>
+
+                {/* <Tippy delay={[0, 200]} content="Message" placement="bottom">
+                  <Button className={cx('action-btn')}>
+                    <MessageIcon />
+                  </Button>
+                </Tippy> */}
+              </>
+            </div>
           ) : (
-            // <>
-            //   <Tippy delay={[0, 200]} content="Upload video" placement="bottom">
-            //     <button
-            //       src="./courses/store"
-            //       on={config.routes.createCourse}
-            //       className={cx('action-btn')}
-            //     >
-            //       <FontAwesomeIcon icon={faCloudUpload} />
-            //     </button>
-            //   </Tippy>
-            //   <Tippy delay={[0, 200]} content="Message" placement="bottom">
-            //     <button className={cx('action-btn')}>
-            //       <MessageIcon />
-            //     </button>
-            //   </Tippy>
-            // </>
             <>
               <Button text>Upload</Button>
               <Button primary>Log in</Button>
