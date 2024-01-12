@@ -7,6 +7,7 @@ import { Select } from 'antd';
 
 import config from '~/config';
 import courseService from '~/services/courseServices';
+import Back from '~/layouts/components/Back';
 
 const cx = classNames.bind(styles);
 
@@ -112,156 +113,161 @@ function CreateCourse() {
   return (
     <div className={cx('form-container')}>
       <div className={cx('mt-5')}>
-        <h3>Thêm Khóa Học</h3>
+        <div className={cx('mt-5')}>
+          <div className={cx('back')}>
+            <Back to={`/courses/stored`} />
+          </div>
+          <h3>Thêm Khóa Học</h3>
 
-        <form onSubmit={handleCreateCourse}>
-          <div className={cx('form-group')}>
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">
-                Tên
-              </label>
-              <input
-                onChange={handleInputChange}
-                value={newCourse.name}
-                type="text"
-                className={cx('form-control', {
-                  'is-invalid': errorFields.includes('name'),
-                })}
-                id="name"
-                name="name"
-              />
-              {errorFields.includes('name') && (
-                <div className="invalid-feedback">Vui lòng nhập tên.</div>
-              )}
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="description" className="form-label">
-                Mô tả
-              </label>
-              <textarea
-                onChange={handleInputChange}
-                value={newCourse.description}
-                rows="3"
-                className={cx('form-control')}
-                id="description"
-                name="description"
-              ></textarea>
-            </div>
-
-            <>
-              <div className={cx('form-group', 'row')}>
-                <label
-                  htmlFor="instructorSelect"
-                  className={cx('col-md-2', 'col-form-label')}
-                >
-                  Người Hướng Dẫn
+          <form onSubmit={handleCreateCourse}>
+            <div className={cx('form-group')}>
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label">
+                  Tên
                 </label>
-                <div className={cx('col-md-4')}>
-                  <Select
-                    className={cx({
-                      'is-invalid': errorFields.includes('instructor'),
-                    })}
-                    mode="tags"
-                    style={{ width: '100%' }}
-                    placeholder="Chọn người hướng dẫn"
-                    onChange={handleInstructorChange}
-                    options={instructorOptions}
-                  />
-                </div>
-              </div>
-            </>
-
-            <div className={cx('form-group', 'row')}>
-              <label
-                htmlFor="action"
-                className={cx('col-md-2', 'col-form-label')}
-              >
-                Hình ảnh
-              </label>
-              <div className={cx('col-md-10')}>
-                <select
-                  className={cx(
-                    'form-select',
-                    'form-select-lg',
-                    'checkbox-select-all',
-                  )}
-                  aria-label="Default select example"
-                  name="action"
-                  value={selectedOption}
-                  onChange={handleSelectChange}
-                  required
-                >
-                  <option>File</option>
-                  <option>URL</option>
-                </select>
-              </div>
-            </div>
-
-            {selectedOption === 'File' && (
-              <div className={cx('form-group')}>
-                <label htmlFor="imageFile">Chọn File</label>
                 <input
-                  type="file"
-                  className={cx('form-control', {
-                    'is-invalid': errorFields.includes('imageFile'),
-                  })}
-                  id="imageFile"
-                  name="imageFile"
                   onChange={handleInputChange}
-                />
-                {errorFields.includes('imageFile') && (
-                  <div className="invalid-feedback">
-                    Vui lòng chọn file hình ảnh.
-                  </div>
-                )}
-              </div>
-            )}
-
-            {selectedOption === 'URL' && (
-              <div className={cx('form-group')}>
-                <label htmlFor="imageUrl">Nhập URL</label>
-                <input
+                  value={newCourse.name}
                   type="text"
                   className={cx('form-control', {
-                    'is-invalid': errorFields.includes('imageUrl'),
+                    'is-invalid': errorFields.includes('name'),
                   })}
-                  id="imageUrl"
-                  name="imageUrl"
-                  onChange={handleInputChange}
+                  id="name"
+                  name="name"
                 />
-                {errorFields.includes('imageUrl') && (
+                {errorFields.includes('name') && (
+                  <div className="invalid-feedback">Vui lòng nhập tên.</div>
+                )}
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="description" className="form-label">
+                  Mô tả
+                </label>
+                <textarea
+                  onChange={handleInputChange}
+                  value={newCourse.description}
+                  rows="3"
+                  className={cx('form-control')}
+                  id="description"
+                  name="description"
+                ></textarea>
+              </div>
+
+              <>
+                <div className={cx('form-group', 'row')}>
+                  <label
+                    htmlFor="instructorSelect"
+                    className={cx('col-md-2', 'col-form-label')}
+                  >
+                    Người Hướng Dẫn
+                  </label>
+                  <div className={cx('col-md-4')}>
+                    <Select
+                      className={cx({
+                        'is-invalid': errorFields.includes('instructor'),
+                      })}
+                      mode="tags"
+                      style={{ width: '100%' }}
+                      placeholder="Chọn người hướng dẫn"
+                      onChange={handleInstructorChange}
+                      options={instructorOptions}
+                    />
+                  </div>
+                </div>
+              </>
+
+              <div className={cx('form-group', 'row')}>
+                <label
+                  htmlFor="action"
+                  className={cx('col-md-2', 'col-form-label')}
+                >
+                  Hình ảnh
+                </label>
+                <div className={cx('col-md-10')}>
+                  <select
+                    className={cx(
+                      'form-select',
+                      'form-select-lg',
+                      'checkbox-select-all',
+                    )}
+                    aria-label="Default select example"
+                    name="action"
+                    value={selectedOption}
+                    onChange={handleSelectChange}
+                    required
+                  >
+                    <option>File</option>
+                    <option>URL</option>
+                  </select>
+                </div>
+              </div>
+
+              {selectedOption === 'File' && (
+                <div className={cx('form-group')}>
+                  <label htmlFor="imageFile">Chọn File</label>
+                  <input
+                    type="file"
+                    className={cx('form-control', {
+                      'is-invalid': errorFields.includes('imageFile'),
+                    })}
+                    id="imageFile"
+                    name="imageFile"
+                    onChange={handleInputChange}
+                  />
+                  {errorFields.includes('imageFile') && (
+                    <div className="invalid-feedback">
+                      Vui lòng chọn file hình ảnh.
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {selectedOption === 'URL' && (
+                <div className={cx('form-group')}>
+                  <label htmlFor="imageUrl">Nhập URL</label>
+                  <input
+                    type="text"
+                    className={cx('form-control', {
+                      'is-invalid': errorFields.includes('imageUrl'),
+                    })}
+                    id="imageUrl"
+                    name="imageUrl"
+                    onChange={handleInputChange}
+                  />
+                  {errorFields.includes('imageUrl') && (
+                    <div className="invalid-feedback">
+                      Vui lòng nhập URL hình ảnh.
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className={cx('form-group')}>
+                <label htmlFor="status">Trạng thái</label>
+                <input
+                  onChange={handleInputChange}
+                  value={newCourse.status}
+                  type="text"
+                  className={cx('form-control', {
+                    'is-invalid': errorFields.includes('status'),
+                  })}
+                  id="status"
+                  name="status"
+                />
+                {errorFields.includes('status') && (
                   <div className="invalid-feedback">
-                    Vui lòng nhập URL hình ảnh.
+                    Vui lòng nhập trạng thái.
                   </div>
                 )}
               </div>
-            )}
 
-            <div className={cx('form-group')}>
-              <label htmlFor="status">Trạng thái</label>
-              <input
-                onChange={handleInputChange}
-                value={newCourse.status}
-                type="text"
-                className={cx('form-control', {
-                  'is-invalid': errorFields.includes('status'),
-                })}
-                id="status"
-                name="status"
-              />
-              {errorFields.includes('status') && (
-                <div className="invalid-feedback">
-                  Vui lòng nhập trạng thái.
-                </div>
-              )}
+              <Button blue onClick={handleCreateCourse} type="submit">
+                Thêm
+              </Button>
             </div>
-
-            <Button blue onClick={handleCreateCourse} type="submit">
-              Thêm
-            </Button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

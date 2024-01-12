@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import courseService from '~/services/courseServices';
 import { useParams, useNavigate } from 'react-router-dom';
 import config from '~/config';
+import Back from '~/layouts/components/Back';
 
 const cx = classNames.bind(styles);
 
@@ -132,6 +133,9 @@ function UpdateCourse() {
   return (
     <div className={cx('form-container')}>
       <div className={cx('mt-5')}>
+        <div className={cx('back')}>
+          <Back to={`/courses/stored`} />
+        </div>
         <h3>Sửa Khóa Học</h3>
 
         <form onSubmit={handleUpdate}>

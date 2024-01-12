@@ -19,6 +19,7 @@ router.get('/trash', CourseController.trashCourses);
 router.get('/:slug', CourseController.courseSlug);
 
 router.get('/get', CourseController.getCourse);
+router.get('/searchs', CourseController.searchAll);
 router.get('/', CourseController.show);
 
 export default router;

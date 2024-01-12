@@ -5,6 +5,19 @@ import { InstructorCourse } from '../models/InstructorCourse.js';
 class CourseController {
   constructor() {}
 
+  //[GET] /searchAll
+  async searchAll(req, res, next) {
+    try {
+      const searchTerm = req.params.q;
+
+      const courses = await Course.find().populate('lectures');
+      res.json(courses);
+    } catch (error) {
+      console.error('Error during search:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
   // [GET] courses/get
   async getCourse(req, res) {
     try {
@@ -19,7 +32,9 @@ class CourseController {
 
   async show(req, res, next) {
     try {
-      const courses = await Course.find();
+      const courses = await Course.find()
+        .populate('lectures')
+        .populate('instructors');
       res.json(courses);
     } catch (error) {
       console.error(error);

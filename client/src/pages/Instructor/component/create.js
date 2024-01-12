@@ -6,6 +6,7 @@ import styles from './Instructor.module.scss';
 import config from '~/config';
 import Button from '~/components/Button';
 import InstructorService from '~/services/instructorServices';
+import Back from '~/layouts/components/Back';
 
 const cx = classNames.bind(styles);
 
@@ -64,6 +65,9 @@ function CreateInstructor() {
       <div className={cx('content_wrapper')}>
         <div className={cx('form-container')}>
           <div className={cx('mt-5')}>
+            <div className={cx('back')}>
+              <Back to={`/instructor/stored`} />
+            </div>
             <h3>Thêm giảng viên</h3>
 
             <form onSubmit={handleCreateInstructor}>

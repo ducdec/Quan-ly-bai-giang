@@ -8,6 +8,7 @@ import styles from './Lecture.module.scss';
 import Button from '~/components/Button';
 import lectureService from '~/services/lectureServices';
 import TrackItemCreate from '../MyLecture/TrackItemCreate';
+import Back from '~/layouts/components/Back';
 
 const cx = classNames.bind(styles);
 
@@ -74,6 +75,8 @@ function UpdateLecture() {
     }));
   }, [selectedInstructors]);
 
+  let idCourse = course.id;
+
   const handleUpdate = (e) => {
     e.preventDefault();
 
@@ -90,7 +93,6 @@ function UpdateLecture() {
 
     formData.instructor = selectedInstructors;
 
-    const idCourse = course.id;
     // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo khóa học
     lectureService
       .updateLec(slug, id, idCourse, formData)
@@ -134,6 +136,9 @@ function UpdateLecture() {
       <div className={cx('content_wrapper')}>
         <div className={cx('form-container')}>
           <div className={cx('mt-5')}>
+            <div className={cx('back')}>
+              <Back to={`/lecture/${idCourse}/create`} />
+            </div>
             <h3>Sửa Tiết Học</h3>
 
             <form onSubmit={handleUpdate}>

@@ -7,6 +7,7 @@ import styles from './Lecture.module.scss';
 import TrackItemCreate from '../MyLecture/TrackItemCreate';
 import Button from '~/components/Button';
 import lectureService from '~/services/lectureServices';
+import Back from '~/layouts/components/Back';
 
 const cx = classNames.bind(styles);
 
@@ -133,8 +134,10 @@ function CreateLecture() {
       <div className={cx('content_wrapper')}>
         <div className={cx('form-container')}>
           <div className={cx('mt-5')}>
+            <div className={cx('back')}>
+              <Back to={`/courses/stored`} />
+            </div>
             <h3>Thêm Tiết Học</h3>
-
             <form onSubmit={handleCreateLecture}>
               <div className={cx('form-group')}>
                 <div className={cx('mb-3')}>

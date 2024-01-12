@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import config from '~/config';
 import InstructorService from '~/services/instructorServices';
+import Back from '~/layouts/components/Back';
 
 const cx = classNames.bind(styles);
 
@@ -58,6 +59,9 @@ function UpdateInstructor() {
   return (
     <div className={cx('form-container')}>
       <div className={cx('mt-5')}>
+        <div className={cx('back')}>
+          <Back to={`/instructor/stored`} />
+        </div>
         <h3>Sửa Khóa Học</h3>
 
         <form onSubmit={handleUpdate}>

@@ -7,12 +7,14 @@ import {
   faCircleXmark,
 } from '@fortawesome/free-solid-svg-icons';
 
-import * as searchServices from '~/services/searchServices';
+//import * as searchServices from '~/services/searchServices';
+
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import { SearchIcon } from '~/components/Icons';
 import HeadlessTippy from '@tippyjs/react/headless';
 import AccountItem from '~/components/AccountItem';
 import { useDebounce } from '~/hooks';
+import { searchService } from '~/services/searchServices';
 
 const cx = classNames.bind(styles);
 function Search() {
@@ -34,7 +36,7 @@ function Search() {
     const fetchApi = async () => {
       setLoading(true);
 
-      const result = await searchServices.search(debouncedValue);
+      const result = await searchService.courseSearch(debouncedValue);
 
       setSearchResult(result);
 
@@ -61,6 +63,7 @@ function Search() {
     setSearchValue(searchValue);
   };
 
+  console.log(searchResult);
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   // };
@@ -76,7 +79,7 @@ function Search() {
             <PopperWrapper>
               <h4 className={cx('search-title')}>Accounts</h4>
               {searchResult.map((result) => (
-                <AccountItem key={result.id} data={result} />
+                <AccountItem key={result._id} data={result} />
               ))}
             </PopperWrapper>
           </div>
