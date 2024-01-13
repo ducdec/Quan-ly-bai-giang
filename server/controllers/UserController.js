@@ -38,8 +38,6 @@ class UserController {
         existingUser.password,
       );
 
-      console.log('Entered Password:', password);
-      console.log('Stored Hashed Password:', existingUser.password);
       console.log('Is Password Valid:', isPasswordValid);
 
       if (!isPasswordValid) {
@@ -84,8 +82,8 @@ class UserController {
       // Hash the password
       const hashedPassword = await bcrypt.hash(newUserData.password, 10);
       newUserData.password = hashedPassword;
-
-      const newUser = new User(newUserData);
+      const usernow = { role: 'user', ...newUserData };
+      const newUser = new User(usernow);
 
       const savedUser = await newUser.save();
 

@@ -5,11 +5,11 @@ import { InstructorCourse } from '../models/InstructorCourse.js';
 class CourseController {
   constructor() {}
 
-  //[GET] /searchAll
+  //[GET] /search
   async searchAll(req, res, next) {
     try {
-      const searchTerm = req.params.q;
-
+      //const searchTerm = req.params.q;
+      console.log(req);
       const courses = await Course.find().populate('lectures');
       res.json(courses);
     } catch (error) {
@@ -28,14 +28,23 @@ class CourseController {
     }
   }
 
-  // [GET] /courses/:slug
-
   async show(req, res, next) {
     try {
-      const courses = await Course.find()
-        .populate('lectures')
-        .populate('instructors');
-      res.json(courses);
+      const searchTerm = req.query.name;
+      // Giả sử Course.find() trả về một promise, sử dụng await để đợi kết quả
+      const courses = await Course.find().populate('instructors');
+
+      // Đảm bảo courses là một mảng
+      if (!Array.isArray(courses)) {
+        throw new Error('Invalid data returned from Course.find()');
+      }
+
+      // Đảm bảo bạn có một danh sách các khóa học để lọc
+      const filteredCourses = courses.filter((course) =>
+        course.name.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+
+      res.json(filteredCourses);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
@@ -43,7 +52,8 @@ class CourseController {
   }
 
   // [POST] /courses/store
-  async store(req, res) {
+  async store(req, res, next) {
+    //  if(re/)
     try {
       const newCourse = req.body;
 

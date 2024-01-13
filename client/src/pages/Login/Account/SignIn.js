@@ -13,10 +13,12 @@ import Button from '~/components/Button';
 import userService from '~/services/userServices';
 import { useNavigate } from 'react-router-dom';
 import config from '~/config';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser } from '~/store/userSlice';
 const cx = classNames.bind(styles);
 
 function SignIn() {
+  const dispatch = useDispatch();
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
   const [values, setValues] = useState({
     email: '',
@@ -30,7 +32,7 @@ function SignIn() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await userService.datauUser();
+        const result = await userService.signin();
         //console.log('Line 34 ', result);
         console.log('Data from API:', result);
         serUsers(result);
@@ -58,11 +60,11 @@ function SignIn() {
 
       // Kiểm tra nếu không có lỗi
       if (!errors.email && !errors.password) {
-        const User = await userService.signin(values);
+        const { user } = await userService.signin(values);
 
         // Kiểm tra nếu đăng nhập thành công
-        if (User) {
-          console.log(User); // Optional: log the user data
+        if (user) {
+          dispatch(setUser(user));
           navigate(config.routes.home);
         } else {
           console.log('Tài khoản hoặc mật khẩu không chính xác');

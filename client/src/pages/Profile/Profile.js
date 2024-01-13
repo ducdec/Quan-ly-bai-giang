@@ -5,10 +5,40 @@ import styles from './Profile.module.scss';
 import Image from '~/components/Image';
 import images from '~/assets/images';
 import { ProfileIcon } from '~/components/Icons';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 const Profile = () => {
+  const userStore = useSelector((state) => state.data);
+  console.log(userStore);
+
+  // Thời điểm bạn tạo tài khoản
+  const accountCreationTime = new Date(userStore.createdAt);
+
+  // Thời điểm hiện tại
+  const currentTime = new Date();
+
+  console.log(accountCreationTime, currentTime);
+  // Tính khoảng thời gian
+  const timeDifference = currentTime.getTime() - accountCreationTime.getTime();
+
+  const secondsDifference = timeDifference / 1000;
+  const minutesDifference = secondsDifference / 60;
+  const hoursDifference = minutesDifference / 60;
+  const daysDifference = Math.ceil(hoursDifference / 24);
+
+  // Hàm chuyển đổi thành "X tháng trước"
+  const formatMonthsAgo = (days) => {
+    if (days > 30) {
+      const months = Math.floor(days / 30);
+      return ` từ ${months} tháng trước`;
+    } else {
+      return ` từ ${days} ngày trước`;
+    }
+  };
+  const formattedTimeDifference = formatMonthsAgo(daysDifference);
+  console.log('Khoảng thời gian (ngày):', Math.ceil(daysDifference));
   return (
     <div className={cx('container')}>
       <section
@@ -20,7 +50,7 @@ const Profile = () => {
             <Image src={images.Vex} alt="Ảnh đại diện" />
           </div>
           <div className={cx('info')}>
-            <h1>Nguyễn Văn A</h1>
+            <h1>{userStore.username}</h1>
             <p>Lập trình viên / Nhà thiết kế web</p>
           </div>
         </div>
@@ -36,11 +66,11 @@ const Profile = () => {
                       <ProfileIcon />
                     </div>
                     <span>
-                      Thành viên của{' '}
+                      Thành viên của
                       <span className={cx('Profile_highlight')}>
-                        Quản Lý Bài Giảng
-                      </span>{' '}
-                      từ 4 năm trước
+                        <span> Quản Lý Bài Giảng</span>
+                      </span>
+                      {formattedTimeDifference}
                     </span>
                   </div>
                 </div>

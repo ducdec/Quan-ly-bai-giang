@@ -9,10 +9,11 @@ import Button from '~/components/Button';
 import { useNavigate } from 'react-router-dom';
 import config from '~/config';
 import FormatTime from '~/components/FormatTime';
-
+import { useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 
 function StoredCourse() {
+  const userStore = useSelector((state) => state.data);
   const [courseResult, setCourseResult] = useState({
     storedCourses: [],
     countDeletedCourses: 0,
@@ -256,13 +257,22 @@ function StoredCourse() {
                       {FormatTime(course.createdAt)}
                     </td>
                     <td>
-                      <Button
-                        style={{ fontSize: '16px' }}
-                        href={`/lecture/${course._id}/create`}
-                        className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
-                      >
-                        Thêm
-                      </Button>
+                      {userStore.role === 'user' ? (
+                        <></>
+                      ) : (
+                        <Button
+                          style={{ fontSize: '16px' }}
+                          href={`/lecture/${course._id}/create`}
+                          className={cx(
+                            'btn',
+                            'btn-lg',
+                            'btn-link',
+                            'underline',
+                          )}
+                        >
+                          Thêm
+                        </Button>
+                      )}
                       <Button
                         style={{ fontSize: '16px' }}
                         href={`/courses/${course._id}/edit`}

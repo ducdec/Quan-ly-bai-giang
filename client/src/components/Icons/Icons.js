@@ -130,20 +130,15 @@ export const StartIcon = ({
   </svg>
 );
 
-export const BackIcon = ({
-  width = '1.4rem',
-  height = '1.4rem',
-  className,
-}) => (
+export const BackIcon = ({ width = '1.4rem', height = '1.4rem' }) => (
   <svg
-    className={`${className}`}
     width={width}
     height={height}
     aria-hidden="true"
     focusable="false"
     data-prefix="fas"
     data-icon="chevron-left"
-    class="svg-inline--fa fa-chevron-left "
+    className="svg-inline--fa fa-chevron-left "
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 320 512"

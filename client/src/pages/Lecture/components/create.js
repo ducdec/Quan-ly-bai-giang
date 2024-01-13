@@ -65,7 +65,7 @@ function CreateLecture() {
     }));
   };
 
-  const handleCreateLecture = (e) => {
+  const handleCreateLecture = async (e) => {
     e.preventDefault();
 
     // Kiểm tra xem có trường nào chưa được nhập không
@@ -78,29 +78,22 @@ function CreateLecture() {
       setErrorFields(missingFields);
       return;
     }
+    const data = await lectureService.createLec(id, newLecture);
+    // Cập nhật danh sách bài giảng để hiển thị bài giảng mới
+    setlectures((prevLectures) => [...prevLectures, data]);
 
-    // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo khóa học
-    lectureService
-      .createLec(id, newLecture)
-      .then((res) => {
-        console.log('Success:', res.data);
-
-        // Cập nhật danh sách bài giảng để hiển thị bài giảng mới
-        setlectures((prevLectures) => [...prevLectures, res.data]);
-
-        // Cập nhật trạng thái newLecture để làm mới các trường trong form
-        setNewLecture({
-          name: '',
-          instructor: '',
-          description: '',
-          videoID: '',
-        });
-
-        navigate(`/lecture/${id}/create`);
-      })
-      .catch((error) => {
-        console.error('Error:', error.res ? error.res.data : error.message);
-      });
+    // Cập nhật trạng thái newLecture để làm mới các trường trong form
+    setNewLecture({
+      name: '',
+      instructor: '',
+      description: '',
+      videoID: '',
+    });
+    navigate(`/lecture/${id}/create`);
+    //  }
+    // catch((error) => {
+    //   console.error('Error:', error.res ? error.res.data : error.message);
+    // });
   };
 
   console.log('107:', newLecture);

@@ -5,7 +5,7 @@ import CourseItem from './CourseItem';
 const cx = classNames.bind(styles);
 
 function ScollList({ status, courses }) {
-  console.log('8', courses);
+  //console.log('8', courses);
   return (
     <div className={cx('ScollList')}>
       <div className={cx('SL-heading-wrap')}>

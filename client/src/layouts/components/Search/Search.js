@@ -35,44 +35,45 @@ function Search() {
 
     const fetchApi = async () => {
       setLoading(true);
-
-      const result = await searchService.courseSearch(debouncedValue);
-
-      setSearchResult(result);
-
-      setLoading(false);
+      try {
+        const result = await searchService.courseSearch(debouncedValue);
+        setSearchResult(result);
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchApi();
   }, [debouncedValue]);
 
-  //Handle
+  // Handle functions
   const handleClear = () => {
     setSearchValue('');
     setSearchResult([]);
     inputRef.current.focus();
   };
 
-  const handleHideResul = () => {
+  const handleHideResult = () => {
     setShowResult(false);
   };
 
   const handleInput = (e) => {
-    let searchValue = e.target.value;
-    searchValue = searchValue.trimStart();
+    const searchValue = e.target.value; // Remove leading and trailing whitespaces
     setSearchValue(searchValue);
   };
-
   console.log(searchResult);
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  // };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
   return (
     // fix err Tippy <div> or <span>
     <div>
       <HeadlessTippy
         interactive
-        visible={showResult && searchResult.length > 0}
+        visible={showResult && searchResult?.length > 0}
         placement="bottom-end"
         render={(attrs) => (
           <div className={cx('search-result')} tabIndex="-1" {...attrs}>
@@ -84,7 +85,7 @@ function Search() {
             </PopperWrapper>
           </div>
         )}
-        onClickOutside={handleHideResul}
+        onClickOutside={handleHideResult}
       >
         <div className={cx('search')}>
           <input
@@ -106,6 +107,7 @@ function Search() {
           <button
             className={cx('search-btn')}
             onMouseDown={(e) => e.preventDefault()}
+            onclick={handleSubmit}
           >
             <SearchIcon />
           </button>

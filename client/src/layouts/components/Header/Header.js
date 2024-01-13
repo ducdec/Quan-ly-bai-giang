@@ -23,7 +23,6 @@ import Menu from '~/components/Popper/Menu';
 import images from '~/assets/images';
 import Image from '~/components/Image';
 import Search from '../Search';
-import { MessageIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 
