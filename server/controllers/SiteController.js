@@ -1,4 +1,5 @@
 import { Course } from '../models/Course';
+import { Instructors } from '../models/Instructors';
 class SiteController {
   // [GET] /
   async home1(req, res, next) {
@@ -14,9 +15,11 @@ class SiteController {
   async home(req, res, next) {
     try {
       //const status = req.query.status || 'new';
-      const status = await Course.distinct('status', { deleted: false });
+      const status = await Course.distinct('status', {
+        deleted: false,
+      });
 
-      const courses = await Course.find({ status });
+      const courses = await Course.find({ status }).populate('instructors');
 
       res.json({ status, courses });
     } catch (error) {

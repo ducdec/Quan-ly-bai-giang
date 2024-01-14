@@ -10,7 +10,7 @@ const cx = classNames.bind(styles);
 
 function Home() {
   const user = useSelector((state) => state.data);
-  console.log('Line 14 user : ', user);
+  //console.log('Line 14 user : ', user);
   const [coursesByStatus, setCoursesByStatus] = useState({});
 
   useEffect(() => {

@@ -50,7 +50,7 @@ app.get('/', async (req, res) => {
     // Lặp qua từng giá trị status
     for (const status of allStatus) {
       // Tìm các khóa học có status tương ứng
-      const courses = await Course.find({ status });
+      const courses = await Course.find({ status }).populate('instructors');
       // Lưu danh sách khóa học vào đối tượng coursesByStatus
       coursesByStatus[status] = courses;
     }

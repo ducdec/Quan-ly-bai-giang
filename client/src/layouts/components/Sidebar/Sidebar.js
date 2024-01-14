@@ -4,10 +4,38 @@ import Menu, { MenuItem } from './Menu';
 import config from '~/config';
 import { HomeIcon, UserIcon, AnphaIcon } from '~/components/Icons';
 import SuggestedAccounts from '../SuggestedAccounts';
+import { useEffect, useState } from 'react';
+import siteService from '~/services/siteServices';
 
 const cx = classNames.bind(styles);
 
 function Sidebar() {
+  const [valuesHot, setValuesHot] = useState({});
+  const [valuesRandom, setValuesRandom] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Thêm dấu ngoặc để gọi hàm
+        const { coursesByStatus } = await siteService.home();
+        // Kiểm tra giá trị trước khi gọi setValues
+        if (coursesByStatus && coursesByStatus.hot) {
+          console.log('Line 24 ', coursesByStatus.hot);
+          setValuesHot(coursesByStatus.hot);
+        } else if (coursesByStatus) {
+          valuesRandom(coursesByStatus);
+        } else {
+          console.error('API returned invalid data:', coursesByStatus);
+        }
+      } catch (error) {
+        console.error('API:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  console.log('Values Hot:', valuesHot);
+
   return (
     <aside className={cx('wrapper')}>
       <Menu>
@@ -23,8 +51,8 @@ function Sidebar() {
           icon={<UserIcon />}
         />
       </Menu>
-      <SuggestedAccounts label="Suggested accounts" />
-      <SuggestedAccounts label="Following accounts" />
+      <SuggestedAccounts data={valuesHot} label="Các khóa học HOT" />
+      {/* <SuggestedAccounts data={valuesRandom} label="Các khóa học khác ..." /> */}
     </aside>
   );
 }

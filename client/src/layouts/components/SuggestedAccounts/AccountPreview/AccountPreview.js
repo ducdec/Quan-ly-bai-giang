@@ -4,16 +4,23 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './AccountPreview.module.scss';
 import Image from '~/components/Image';
-import images from '~/assets/images';
 import Button from '~/components/Button';
+import { useState, useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
-function AccountPreview() {
+function AccountPreview({ data }) {
+  const [dataInstructors, setDataInstructors] = useState([]);
+  const [dataLectures, setDataLectures] = useState([]);
+  useEffect(() => {
+    setDataInstructors(data.instructors || []);
+    setDataLectures(data.lectures || []);
+  }, [data.instructors]);
+
   return (
     <div className={cx('wrapper')}>
       <div className={cx('header')}>
-        <Image className={cx('avatar')} src={images.MeoLeLuoi} alt="" />
+        <Image className={cx('avatar')} src={data.imageUrl} alt="" />
         <div>
           <Button className={cx('watch-btn')} primary>
             Xem
@@ -23,13 +30,20 @@ function AccountPreview() {
 
       <div className={cx('body')}>
         <h4 className={cx('nickname')}>
-          <strong>ducdeptrai</strong>
+          <strong>{data.name}</strong>
           <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} />
         </h4>
-        <p className={cx('name')}>Nguyen Van Duc</p>
+        {dataInstructors && dataInstructors.length > 0 && (
+          <p className={cx('name')}>
+            {dataInstructors.map((ins) => ins.name).join(', ')}
+          </p>
+        )}
+
         <p className={cx('analysis')}>
-          <strong className={cx('value')}>8.2M </strong>
-          <span className={cx('label')}>Likes</span>
+          {dataLectures && (
+            <strong className={cx('value')}>{dataLectures.length} </strong>
+          )}
+          <span className={cx('label')}>bài học</span>
           <strong className={cx('value')}>8.2M </strong>
           <span className={cx('label')}>follow</span>
         </p>

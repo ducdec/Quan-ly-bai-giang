@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
+import { useState, useEffect } from 'react';
 
 import styles from './SuggestedAccounts.module.scss';
 import Image from '~/components/Image';
@@ -11,16 +12,23 @@ import AccountPreview from './AccountPreview';
 
 const cx = classNames.bind(styles);
 
-function AccountItem() {
+function AccountItem({ data }) {
   const renderPreview = (props) => {
     return (
       <div tabIndex="-1" {...props}>
         <PopperWrapper>
-          <AccountPreview />
+          <AccountPreview data={data} />
         </PopperWrapper>
       </div>
     );
   };
+
+  const [dataInstructors, setDataInstructors] = useState([]);
+  //const [dataLectures, setDataLectures] = useState([]);
+  useEffect(() => {
+    setDataInstructors(data.instructors || []);
+    //setDataLectures(data.lectures || []);
+  }, [data.instructors]);
 
   return (
     <div>
@@ -32,14 +40,18 @@ function AccountItem() {
         render={renderPreview}
       >
         <div className={cx('account-item')}>
-          <Image className={cx('avatar')} src={images.MeoLeLuoi} alt="anpha" />
+          <Image className={cx('avatar')} src={data.imageUrl} alt="anpha" />
 
           <div className={cx('item-info')}>
             <h4 className={cx('nickname')}>
-              <strong>ducdeptrai</strong>
+              <strong>{data.name}</strong>
               <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} />
             </h4>
-            <p className={cx('name')}>Nguyen Van Duc</p>
+            {dataInstructors && dataInstructors.length > 0 && (
+              <p className={cx('name')}>
+                {dataInstructors.map((ins) => ins.name).join(', ')}
+              </p>
+            )}{' '}
           </div>
         </div>
       </Tippy>

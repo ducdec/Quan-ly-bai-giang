@@ -63,7 +63,7 @@ function Search() {
     const searchValue = e.target.value; // Remove leading and trailing whitespaces
     setSearchValue(searchValue);
   };
-  console.log(searchResult);
+  //console.log(searchResult);
 
   const handleSubmit = (e) => {
     e.preventDefault();
