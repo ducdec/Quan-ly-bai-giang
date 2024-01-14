@@ -20,6 +20,9 @@ const schema = new mongoose.Schema(
     role: {
       type: String,
     },
+    resetToken: {
+      type: String,
+    },
   },
   {
     timestamps: true,

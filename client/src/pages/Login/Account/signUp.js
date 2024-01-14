@@ -12,7 +12,7 @@ import {
 import validationFunctions from './LoginValidation';
 import Button from '~/components/Button';
 import userService from '~/services/userServices';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -120,7 +120,7 @@ function SignUp() {
             </Button>
             <div className={cx('register')}>
               <p>
-                Bạn đã có tài khoản? <a href="/login/signin">Đăng nhập</a>
+                Bạn đã có tài khoản? <Link to="/login/signin">Đăng nhập</Link>
               </p>
             </div>
           </form>

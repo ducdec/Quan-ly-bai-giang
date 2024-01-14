@@ -67,7 +67,6 @@
   }
 }
 .btnLogin {
-
   width: 100%;
   height: 40px;
   border-radius: 40px;
@@ -77,7 +76,16 @@
   cursor: pointer;
   font-size: 1em;
   font-weight: 600;
-}
+
+  &:hover {
+    border-color: #c95679;  // Màu viền khi hover
+    background-color: #c95679;  // Màu nền khi hover
+  }
+
+  &:active {
+    border-color: #b35470;  // Màu viền khi active
+    background-color: #b35470;  // Màu nền khi active
+  }}
 .primary {
   color: var(--white);
   background-color: var(--primary);

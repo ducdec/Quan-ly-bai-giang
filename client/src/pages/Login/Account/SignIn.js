@@ -11,7 +11,7 @@ import {
 import validationFunctions from './LoginValidation';
 import Button from '~/components/Button';
 import userService from '~/services/userServices';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import config from '~/config';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '~/store/userSlice';
@@ -51,6 +51,7 @@ function SignIn() {
 
   const handleInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setErrors('');
   };
 
   const handleSubmit = async (e) => {
@@ -61,7 +62,6 @@ function SignIn() {
       // Kiểm tra nếu không có lỗi
       if (!errors.email && !errors.password) {
         const { user } = await userService.signin(values);
-
         // Kiểm tra nếu đăng nhập thành công
         if (user) {
           dispatch(setUser(user));
@@ -124,7 +124,7 @@ function SignIn() {
             </Button>
             <div className={cx('register')}>
               <p>
-                Bạn chưa có tài khoản? <a href="/login/signup">Đăng ký</a>
+                Bạn chưa có tài khoản? <Link to="/login/signup">Đăng ký</Link>
               </p>
             </div>
           </form>

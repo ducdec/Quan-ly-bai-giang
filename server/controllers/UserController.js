@@ -124,18 +124,21 @@ class UserController {
 
       // Gửi email chứa liên kết xác nhận đến người dùng
       const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
         auth: {
           user: 'nguyenvanduc011209@gmail.com',
-          pass: 'Ducdec123',
+          pass: 'oiyp cpiv xmpc nwbl',
         },
       });
 
       const mailOptions = {
-        from: 'nguyenvanduc011209@gmail.com',
+        from: '"Quản lý bài giảng " <no-relply@QLBG.com>',
         to: user.email,
         subject: 'Password Reset',
-        text: `Click the following link to reset your password: http://localhost:3000/login/password/${resetToken}`,
+        html: `Vui lòng click vào liên kết dưới đây để thay đổi mật khẩu của bạn:
+         <a href= http://localhost:3000/login/password/${resetToken}> Click here</a>`,
       };
 
       transporter.sendMail(mailOptions, (error, info) => {

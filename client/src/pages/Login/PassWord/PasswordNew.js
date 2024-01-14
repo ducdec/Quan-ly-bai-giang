@@ -4,15 +4,16 @@ import styles from './Login.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-import validation from '../Account/LoginValidation';
+import { validation } from './PassValidation';
 import Button from '~/components/Button';
 import userService from '~/services/userServices';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import config from '~/config';
 
 const cx = classNames.bind(styles);
 
 function ForgotPass() {
+  const { token } = useParams;
   const [values, setValues] = useState({
     password: '',
     againPass: '',
@@ -29,18 +30,18 @@ function ForgotPass() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setErrors(validation(values));
+      setErrors(validation(values, values.againPass));
 
       // Kiểm tra nếu không có lỗi
-      if (!errors.email && !errors.password) {
-        const User = await userService.signin(values);
+      if (!errors.password) {
+        const User = await userService.forgotPassNew(token, values);
 
         // Kiểm tra nếu đăng nhập thành công
         if (User) {
           console.log(User); // Optional: log the user data
           navigate(config.routes.home);
         } else {
-          console.log('Tài khoản hoặc mật khẩu không chính xác');
+          console.log('Khong duoc');
         }
       }
     } catch (error) {
@@ -91,7 +92,7 @@ function ForgotPass() {
             </Button>
             <div className={cx('register')}>
               <p>
-                Quay lại ? <a href="/login/signin">Đăng nhập</a>
+                Quay lại ? <Link to="/login/signin">Đăng nhập</Link>
               </p>
             </div>
           </form>

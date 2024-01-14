@@ -4,11 +4,10 @@ import styles from './Login.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
-import validation from '../Account/LoginValidation';
+//import validation from '../Account/LoginValidation';
 import Button from '~/components/Button';
 import userService from '~/services/userServices';
-import { useNavigate } from 'react-router-dom';
-import config from '~/config';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -17,17 +16,18 @@ function ForgotPassToken() {
     email: '',
   });
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
 
+  // Trong hàm handleInput
   const handleInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    // Hiển thị thông báo lỗi ngay khi nhập liệu
+    setErrors((prev) => ({ ...prev, email: '' })); // Đặt email thành rỗng để ẩn thông báo lỗi
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setErrors(validation(values));
-
+      //setErrors(validation(values));
       // ...
     } catch (error) {
       console.error('Error during forgot password:', error);
@@ -44,7 +44,6 @@ function ForgotPassToken() {
 
           if (response.success) {
             console.log('Mã xác nhận đã được gửi thành công');
-            navigate(config.routes.home);
           } else {
             console.log('Có lỗi xảy ra khi gửi mã xác nhận');
           }
@@ -55,7 +54,7 @@ function ForgotPassToken() {
     };
 
     fetchData();
-  }, [errors, navigate, values]);
+  }, [errors, values]);
   return (
     <div className={cx('section')}>
       <div className={cx('form-box')}>
@@ -77,7 +76,7 @@ function ForgotPassToken() {
             </Button>
             <div className={cx('register')}>
               <p>
-                Quay lại ? <a href="/login/signin">Đăng nhập</a>
+                Quay lại ? <Link to="/login/signin">Đăng nhập</Link>
               </p>
             </div>
           </form>

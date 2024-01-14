@@ -4,7 +4,7 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
 
 // Common function to check email and password
-const validateEmailAndPassword = (values, errors) => {
+const validateEmailAndPassword = (values, errors, AgainPass) => {
   if (!values.email) {
     errors.email = 'Email không được để trống';
   } else if (!emailPattern.test(values.email)) {
@@ -18,19 +18,17 @@ const validateEmailAndPassword = (values, errors) => {
   } else if (!passwordPattern.test(values.password)) {
     errors.password =
       'Mật khẩu phải bao gồm ít nhất một chữ thường, một chữ hoa và một số';
-  } else {
-    errors.password = 'Tài khoản hoặc mật khẩu không đúng';
+  } else if (values.password !== AgainPass) {
+    errors.password = 'Mật khẩu nhập lại không khớp';
   }
 };
 
 // Exported validation functions
-export const validation = (values) => {
+export const validation = (values, AgainPass) => {
   const errors = {};
 
   // Use the common function to check email and password
-  validateEmailAndPassword(values, errors);
-
-  // Additional checks if needed
+  validateEmailAndPassword(values, errors, AgainPass);
 
   return errors;
 };
