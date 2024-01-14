@@ -8,7 +8,23 @@ import AccountItem from './AccounItem';
 const cx = classNames.bind(styles);
 
 function SuggestedAccounts({ data, label }) {
-  //console.log('Data in SuggestedAccounts:', data);
+  const itemsToShowInitially = 3;
+  const itemsToShowIncrement = 5;
+  const [visibleItems, setVisibleItems] = useState(itemsToShowInitially);
+  const [showAll, setShowAll] = useState(false);
+
+  const handleSeeAllClick = () => {
+    setShowAll(true);
+    setVisibleItems(
+      (prevVisibleItems) => prevVisibleItems + itemsToShowIncrement,
+    );
+  };
+
+  const handleSeeLessClick = () => {
+    setShowAll(false);
+    setVisibleItems(itemsToShowInitially);
+  };
+
   if (!data || !Array.isArray(data)) {
     console.error('Invalid data:', data);
     return null; // Hoặc hiển thị thông báo lỗi khác nếu cần
@@ -17,18 +33,26 @@ function SuggestedAccounts({ data, label }) {
   return (
     <div className={cx('wrapper')}>
       <p className={cx('label')}>{label}</p>
-      {data.map((item) => (
+      {data.slice(0, visibleItems).map((item) => (
         <AccountItem key={item._id} data={item} />
       ))}
-      <p className={cx('more-btn')}>See all</p>
+      {visibleItems < data.length && !showAll && (
+        <p className={cx('more-btn')} onClick={handleSeeAllClick}>
+          Xem thêm
+        </p>
+      )}
+      {showAll && (
+        <p className={cx('more-btn')} onClick={handleSeeLessClick}>
+          Thu gọn
+        </p>
+      )}
     </div>
   );
 }
 
-// SuggestedAccounts.propTypes = {
-//   // Corrected typo here
-//   label: PropTypes.string.isRequired,
-//   data: PropTypes.array, // Adjusted propType to reflect that 'data' is an array
-// };
+SuggestedAccounts.propTypes = {
+  label: PropTypes.string.isRequired,
+  data: PropTypes.array,
+};
 
 export default SuggestedAccounts;

@@ -22,7 +22,11 @@ function AccountPreview({ data }) {
       <div className={cx('header')}>
         <Image className={cx('avatar')} src={data.imageUrl} alt="" />
         <div>
-          <Button className={cx('watch-btn')} primary>
+          <Button
+            to={`/courses/${data.slug}`}
+            className={cx('watch-btn')}
+            primary
+          >
             Xem
           </Button>
         </div>

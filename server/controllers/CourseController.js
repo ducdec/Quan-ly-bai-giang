@@ -5,29 +5,7 @@ import { InstructorCourse } from '../models/InstructorCourse.js';
 class CourseController {
   constructor() {}
 
-  //[GET] /search
-  async searchAll(req, res, next) {
-    try {
-      //const searchTerm = req.params.q;
-      console.log(req);
-      const courses = await Course.find().populate('lectures');
-      res.json(courses);
-    } catch (error) {
-      console.error('Error during search:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  }
-
-  // [GET] courses/get
-  async getCourse(req, res) {
-    try {
-      const courses = await Course.find();
-      res.status(200).json(courses);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  }
-
+  //[GET] /
   async show(req, res, next) {
     try {
       const searchTerm = req.query.name;

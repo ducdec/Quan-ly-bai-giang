@@ -18,8 +18,6 @@ router.get('/stored', CourseController.storeCourses);
 router.get('/trash', CourseController.trashCourses);
 router.get('/:slug', CourseController.courseSlug);
 
-router.get('/get', CourseController.getCourse);
-router.get('/search', CourseController.searchAll);
 router.get('/', CourseController.show);
 
 export default router;

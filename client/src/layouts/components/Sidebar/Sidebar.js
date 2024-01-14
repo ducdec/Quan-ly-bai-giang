@@ -6,24 +6,26 @@ import { HomeIcon, UserIcon, AnphaIcon } from '~/components/Icons';
 import SuggestedAccounts from '../SuggestedAccounts';
 import { useEffect, useState } from 'react';
 import siteService from '~/services/siteServices';
+import courseService from '~/services/courseServices';
 
 const cx = classNames.bind(styles);
 
 function Sidebar() {
-  const [valuesHot, setValuesHot] = useState({});
-  const [valuesRandom, setValuesRandom] = useState({});
+  const [valuesHot, setValuesHot] = useState([]);
+  const [valuesRandom, setValuesRandom] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Thêm dấu ngoặc để gọi hàm
         const { coursesByStatus } = await siteService.home();
-        // Kiểm tra giá trị trước khi gọi setValues
+        const result = await courseService.storedCourse();
+        const randomOrderValues = result.storedCourses.sort(
+          () => Math.random() - 0.5,
+        );
+        setValuesRandom(randomOrderValues);
+        console.log('Line 24 ', randomOrderValues, result.storedCourses);
         if (coursesByStatus && coursesByStatus.hot) {
-          console.log('Line 24 ', coursesByStatus.hot);
           setValuesHot(coursesByStatus.hot);
-        } else if (coursesByStatus) {
-          valuesRandom(coursesByStatus);
         } else {
           console.error('API returned invalid data:', coursesByStatus);
         }
@@ -52,7 +54,7 @@ function Sidebar() {
         />
       </Menu>
       <SuggestedAccounts data={valuesHot} label="Các khóa học HOT" />
-      {/* <SuggestedAccounts data={valuesRandom} label="Các khóa học khác ..." /> */}
+      <SuggestedAccounts data={valuesRandom} label="Các khóa học khác ..." />
     </aside>
   );
 }
