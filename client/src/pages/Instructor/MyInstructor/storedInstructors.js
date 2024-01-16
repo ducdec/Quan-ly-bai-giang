@@ -233,7 +233,7 @@ function StoredInstructor() {
                     <td>
                       <Button
                         style={{ fontSize: '16px' }}
-                        href={`/instructor/${instructor._id}/edit`}
+                        to={`/instructor/${instructor._id}/edit`}
                         className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
                       >
                         Sửa

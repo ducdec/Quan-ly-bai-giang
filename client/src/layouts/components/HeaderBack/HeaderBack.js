@@ -23,6 +23,7 @@ import images from '~/assets/images';
 import Image from '~/components/Image';
 import Search from '../Search';
 import Back from '../Back';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
@@ -60,6 +61,7 @@ const MENU_ITEMS = [
 function HeaderBack({ to }) {
   const currentUser = true;
 
+  const userStore = useSelector((state) => state.data);
   //Handle logic
   const handleMenuChange = (menuItem) => {
     switch (menuItem.type) {
@@ -75,7 +77,7 @@ function HeaderBack({ to }) {
     {
       icon: <FontAwesomeIcon icon={faUser} />,
       title: 'Trang cá nhân',
-      to: '@hoaa',
+      to: `@${userStore.username}`,
       separate: true,
     },
     {

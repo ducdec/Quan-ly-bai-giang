@@ -1,9 +1,29 @@
 import express from 'express';
 import CourseController from '../controllers/CourseController.js';
+import jwt from 'jsonwebtoken';
+import { User } from '../models/User.js';
 
 const router = express.Router();
+const IsAuthenticated = async (req, res, next) => {
+  try {
+    let token = req.header('Authorization');
+    token = token && token.split(' ')[1];
+    if (!token) {
+      return next('Please login to access the data');
+    }
 
-router.post('/store', CourseController.store); //create
+    const verify = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const user = await User.findById(verify.userId);
+    if (user.role == 'Admin') {
+      next();
+    } else {
+      return res.status(403).json('Forbidden');
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+router.post('/store', IsAuthenticated, CourseController.store); //create
 router.get('/store', CourseController.storeInstructor);
 
 router.get('/:id/edit', CourseController.edit);

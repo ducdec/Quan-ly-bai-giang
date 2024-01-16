@@ -1,5 +1,22 @@
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUser } from '~/store/userSlice';
+import useCustomHook from '~/store/CustomHook';
 
+// const useCustomHook = () => {
+//   const dispatch = useDispatch();
+//   const userState = useSelector((state) => state.user);
+
+//   const updateUser = (userData) => {
+//     dispatch(setUser(userData));
+//   };
+
+//   return {
+//     userState,
+//     updateUser,
+//   };
+// };
+//const { updateUser } = useCustomHook();
 const request = axios.create({
   baseURL: 'http://localhost:5000',
   headers: {
@@ -25,4 +42,17 @@ request.interceptors.request.use(
     return Promise.reject(error);
   },
 );
+
+// request.interceptors.response.use(async (response) => {
+//   const userState = useSelector((state) => state.data);
+//   // const dispatch = useDispatch();
+//   //
+//   if (!userState) {
+//     const data = await request.get('/users/getToken');
+//   }
+//   console.log('Line 36 : ');
+//   // dispatch(setUser(data));
+
+//   return response;
+// });
 export default request;

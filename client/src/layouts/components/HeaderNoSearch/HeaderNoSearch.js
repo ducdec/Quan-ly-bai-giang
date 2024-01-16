@@ -21,6 +21,8 @@ import Menu from '~/components/Popper/Menu';
 import images from '~/assets/images';
 import Image from '~/components/Image';
 import { BackIcon } from '~/components/Icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '~/store/userSlice';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
@@ -56,6 +58,8 @@ const MENU_ITEMS = [
 
 function HeaderNoSearch() {
   const currentUser = true;
+  const dispatch = useDispatch();
+  const userStore = useSelector((state) => state.data);
 
   //Handle logic
   const handleMenuChange = (menuItem) => {
@@ -67,12 +71,15 @@ function HeaderNoSearch() {
     }
   };
 
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
   //
   const userMENU = [
     {
       icon: <FontAwesomeIcon icon={faUser} />,
       title: 'Trang cá nhân',
-      to: '@hoaa',
+      to: `/@${userStore.username}`,
       separate: true,
     },
     {
@@ -91,6 +98,7 @@ function HeaderNoSearch() {
       title: 'Log out',
       to: config.routes.signIn,
       separate: true,
+      onclick: { handleLogout },
     },
   ];
 

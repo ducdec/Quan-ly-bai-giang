@@ -30,7 +30,11 @@ function Menu({
             if (isParent) {
               setHistory((prev) => [...prev, item.children]);
             } else {
-              onChange(item);
+              if (item.onclick) {
+                item.onclick(); // Gọi hàm xử lý sự kiện từ thuộc tính onclick
+              } else {
+                onChange(item);
+              }
             }
           }}
         />

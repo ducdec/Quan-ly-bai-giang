@@ -13,7 +13,8 @@ import courses from './routers/courses.js';
 import instructors from './routers/instructor.js';
 import lectures from './routers/lectures.js';
 import learning from './routers/learning.js';
-import users from './routers/users.js';
+import login from './routers/login.js';
+import users from './routers/user.js';
 import { Course } from './models/Course.js';
 
 import customRenderer from './util/customRenderer.js';
@@ -65,7 +66,8 @@ app.use('/courses', courses);
 app.use('/instructor', instructors);
 app.use('/lecture', lectures);
 app.use('/learning', learning);
-app.use('/login', users);
+app.use('/login', login);
+app.use('/users', users);
 
 //data http://localhost:5000/
 

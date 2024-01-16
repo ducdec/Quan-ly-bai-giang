@@ -1,6 +1,30 @@
 import request from '~/utils/axios';
 
 const userService = {
+  //storeUser
+  storedUser() {
+    return request
+      .get('/users/stored')
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error('Error data user:', error);
+        throw error;
+      });
+  },
+  //:id
+  userId(id) {
+    return request
+      .get(`/users/${id}/edit`)
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error('Error data user ID:', error);
+        throw error;
+      });
+  },
+
+  userUphate(id, newUser) {
+    return request.put(`/users/${id}`, newUser);
+  },
   //signup
   signup(newUser) {
     return request

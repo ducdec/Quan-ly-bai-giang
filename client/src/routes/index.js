@@ -28,6 +28,8 @@ import UpdateInstructor from '~/pages/Instructor/component/edit';
 import StoredInstructor from '~/pages/Instructor/MyInstructor/storedInstructors';
 //user
 import StoredUsers from '~/pages/User/storedUser';
+import UpdateUsers from '~/pages/User/components/edit';
+//
 import HeaderProfile from '~/layouts/HeaderProfile';
 
 //Public routes
@@ -116,6 +118,11 @@ const publicRoutes = [
   {
     path: config.routes.storeUsers,
     component: StoredUsers,
+    layout: HeaderOnly,
+  },
+  {
+    path: config.routes.editUser,
+    component: UpdateUsers,
     layout: HeaderOnly,
   },
 ];

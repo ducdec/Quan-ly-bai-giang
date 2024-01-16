@@ -8,6 +8,7 @@ import Button from '~/components/Button';
 import { useNavigate } from 'react-router-dom';
 import config from '~/config';
 import InstructorService from '~/services/instructorServices';
+import userService from '~/services/userServices';
 
 const cx = classNames.bind(styles);
 
@@ -26,8 +27,9 @@ function StoredUsers() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await InstructorService.storedInstructor();
+        const result = await userService.storedUser();
         setInsResult(result);
+        console.log('result', result);
       } catch (error) {
         console.error('API:', error);
       } finally {
@@ -203,41 +205,33 @@ function StoredUsers() {
                   </td>
                 </tr>
               ) : (
-                insResult.map((instructor, index) => (
-                  <tr key={instructor._id}>
+                insResult.map((user, index) => (
+                  <tr key={user._id}>
                     <td>
                       <div className={cx('form-check')}>
                         <input
                           className={cx('form-check-input')}
                           type="checkbox"
-                          name="instructorId[]"
-                          checked={selectedIns.includes(instructor._id)}
-                          onChange={(e) =>
-                            handleInsCheckboxChange(e, instructor._id)
-                          }
+                          name="userId[]"
+                          checked={selectedIns.includes(user._id)}
+                          onChange={(e) => handleInsCheckboxChange(e, user._id)}
                         />
                       </div>
                     </td>
                     <th scope="row">{index + 1}</th>
-                    <td className={cx('name', 'th_col')}>{instructor.name}</td>
-                    <td className={cx('number', 'th_col')}>
-                      {instructor.courses.map((ins, i) => (
-                        <div key={i}>{ins.name}</div>
-                      ))}
-                    </td>
-                    <td className={cx('number', 'th_col')}></td>
+                    <td className={cx('name', 'th_col')}>{user.username}</td>
+                    <td className={cx('number', 'th_col')}>{user.email}</td>
+                    <td className={cx('number', 'th_col')}>{user.role}</td>
                     <td>
                       <Button
                         style={{ fontSize: '16px' }}
-                        href={`/instructor/${instructor._id}/edit`}
+                        to={`/users/${user._id}/edit`}
                         className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
                       >
                         Sửa
                       </Button>
                       <Button
-                        onClick={(e) =>
-                          handleDeleteButtonClick(instructor._id, e)
-                        }
+                        onClick={(e) => handleDeleteButtonClick(user._id, e)}
                         style={{ fontSize: '16px' }}
                         className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
                       >

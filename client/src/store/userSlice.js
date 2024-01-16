@@ -4,11 +4,15 @@ const userSlice = createSlice({
   name: 'users',
   initialState: {},
   reducers: {
-    setUser(state, { payload }) {
-      state = Object.assign(state, payload);
+    setUser(state, action) {
+      return { ...state, ...action.payload };
+    },
+    logoutUser(state, action) {
+      // Đặt lại trạng thái người dùng về mặc định khi logout
+      return {};
     },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, logoutUser } = userSlice.actions;
 export default userSlice.reducer;

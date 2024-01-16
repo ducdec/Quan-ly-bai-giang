@@ -1,6 +1,5 @@
 import { Course } from '../models/Course.js';
 import { Instructor } from '../models/Instructor.js';
-import { InstructorCourse } from '../models/InstructorCourse.js';
 
 class CourseController {
   constructor() {}
@@ -29,7 +28,7 @@ class CourseController {
     }
   }
 
-  // [POST] /courses/store
+  // [POST] /courses/store tutu
   async store(req, res, next) {
     //  if(re/)
     try {
@@ -52,6 +51,7 @@ class CourseController {
           const instructor = await Instructor.findOne({
             _id: instructorId,
             courses: createdCourse._id,
+            ádasdas,
           });
 
           if (!instructor) {
@@ -106,6 +106,7 @@ class CourseController {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+
   // [PATCH] /courses/:id
   async update(req, res) {
     try {

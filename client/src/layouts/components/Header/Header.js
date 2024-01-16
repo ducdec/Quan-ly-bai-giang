@@ -23,6 +23,8 @@ import Menu from '~/components/Popper/Menu';
 import images from '~/assets/images';
 import Image from '~/components/Image';
 import Search from '../Search';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser } from '~/store/userSlice';
 
 const cx = classNames.bind(styles);
 
@@ -59,6 +61,8 @@ const MENU_ITEMS = [
 
 function Header() {
   const currentUser = true;
+  const dispatch = useDispatch();
+  const userStore = useSelector((state) => state.data);
 
   //Handle logic
   const handleMenuChange = (menuItem) => {
@@ -69,13 +73,15 @@ function Header() {
       default:
     }
   };
-
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
   //
   const userMENU = [
     {
       icon: <FontAwesomeIcon icon={faUser} />,
       title: 'Trang cá nhân',
-      to: '@hoaa',
+      to: `/@${userStore.username}`,
       separate: true,
     },
     {
@@ -91,8 +97,9 @@ function Header() {
     ...MENU_ITEMS,
     {
       icon: <FontAwesomeIcon icon={faSignOut} />,
-      title: 'Log out',
+      title: 'Đăng xuất',
       to: config.routes.signIn,
+      onclick: handleLogout,
       separate: true,
     },
   ];
@@ -145,7 +152,7 @@ function Header() {
               <Image
                 className={cx('user-avatar')}
                 src={images.MeoMatTo}
-                alt="Nguyen Van Duc"
+                alt="avatar"
               />
             ) : (
               <button className={cx('more-btn')}>

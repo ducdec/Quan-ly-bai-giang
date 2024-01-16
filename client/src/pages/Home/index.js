@@ -4,7 +4,7 @@ import styles from './Home.module.scss';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import siteService from '~/services/siteServices';
-import store from '~/store/store';
+import store from '~/store/configStore';
 import { useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 

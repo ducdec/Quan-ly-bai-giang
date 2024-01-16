@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 
 import courseService from '~/services/courseServices';
 import Button from '~/components/Button';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import config from '~/config';
 import FormatTime from '~/components/FormatTime';
 import { useSelector } from 'react-redux';
@@ -187,13 +187,13 @@ function StoredCourse() {
               </button>
             </div>
 
-            <a
+            <Link
               className={cx('col-md-3', 'ms-md-auto', 'underline')}
-              href="/courses/trash"
+              to="/courses/trash"
             >
               Thùng Rác(
               {courseResult.countDeletedCourses})
-            </a>
+            </Link>
           </div>
 
           <table className={cx('table', 'mt-4')}>
@@ -275,7 +275,7 @@ function StoredCourse() {
                       )}
                       <Button
                         style={{ fontSize: '16px' }}
-                        href={`/courses/${course._id}/edit`}
+                        to={`/courses/${course._id}/edit`}
                         className={cx('btn', 'btn-lg', 'btn-link', 'underline')}
                       >
                         Sửa

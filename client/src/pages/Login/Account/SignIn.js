@@ -15,35 +15,44 @@ import { Link, useNavigate } from 'react-router-dom';
 import config from '~/config';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '~/store/userSlice';
+
 const cx = classNames.bind(styles);
 
 function SignIn() {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.data);
+
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
   const [values, setValues] = useState({
     email: '',
     password: '',
   });
 
-  const [users, serUsers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await userService.signin();
-        //console.log('Line 34 ', result);
-        console.log('Data from API:', result);
-        serUsers(result);
-      } catch (error) {
-        console.error('API:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await userService.signin();
+  //       console.log('Line 34 ', result);
+  //       console.log('Data from API:', result);
+  //       serUsers(result);
+  //     } catch (error) {
+  //       console.error('API:', error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
+
+  useEffect(() => {
+    // Lưu trữ dữ liệu vào localStorage khi component unmounted
+    return () => {
+      localStorage.setItem('userStore', JSON.stringify(userState));
+    };
+  }, [userState]);
 
   // useEffect(() => {
   //   // Kiểm tra lỗi mỗi khi giá trị thay đổi

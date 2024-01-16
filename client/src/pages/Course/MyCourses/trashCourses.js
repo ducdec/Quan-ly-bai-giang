@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames/bind';
 import styles from './MyCourses.module.scss';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 
 import courseService from '~/services/courseServices';
@@ -214,12 +214,12 @@ function StoredCourse() {
                 <tr>
                   <td colSpan="6" className={cx('text-center')}>
                     Thùng rác trống!!!!
-                    <a
+                    <Link
                       className={cx('mt-4', 'btn-lg', 'btn-link', 'underline')}
-                      href="/courses/stored"
+                      to="/courses/stored"
                     >
                       Danh Sách
-                    </a>
+                    </Link>
                   </td>
                 </tr>
               ) : (
