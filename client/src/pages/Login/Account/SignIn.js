@@ -28,24 +28,17 @@ function SignIn() {
     password: '',
   });
 
-  const [users, setUsers] = useState([]);
+  const [showError, setShowError] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await userService.signin();
-  //       console.log('Line 34 ', result);
-  //       console.log('Data from API:', result);
-  //       serUsers(result);
-  //     } catch (error) {
-  //       console.error('API:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setShowError(true);
+    }, 500);
 
-  //   fetchData();
-  // }, []);
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   useEffect(() => {
     // Lưu trữ dữ liệu vào localStorage khi component unmounted
@@ -66,9 +59,9 @@ function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      setErrors(validationFunctions.validation(values, users));
 
+    try {
+      setErrors(validationFunctions.validation(values));
       // Kiểm tra nếu không có lỗi
       if (!errors.email && !errors.password) {
         const { user, token } = await userService.signin(values);
@@ -118,7 +111,7 @@ function SignIn() {
                 onChange={handleInput}
                 name="password"
               />
-              {errors.password && (
+              {errors.password && showError && (
                 <span className={cx('text-danger')}>{errors.password}</span>
               )}
               <label className={cx('label')} htmlFor="">

@@ -4,12 +4,11 @@ import styles from './Home.module.scss';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import siteService from '~/services/siteServices';
-import store from '~/store/configStore';
-import { useSelector } from 'react-redux';
+
 const cx = classNames.bind(styles);
 
 function Home() {
-  const user = useSelector((state) => state.data);
+  //const user = useSelector((state) => state.data);
   //console.log('Line 14 user : ', user);
   const [coursesByStatus, setCoursesByStatus] = useState({});
 
