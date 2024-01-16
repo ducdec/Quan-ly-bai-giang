@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import CryptoJS from 'crypto-js';
 import nodemailer from 'nodemailer';
+import { secretKey } from '../config/config.js';
 class UserController {
   constructor() {}
 
@@ -14,6 +15,37 @@ class UserController {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  // [GET] /api/auth/check-token
+  async checkToken(req, res, next) {
+    const { token } = req.body;
+
+    try {
+      if (!token) {
+        return res.status(401).json({ error: 'Missing token' });
+      }
+
+      // Kiểm tra tính hợp lệ của token
+      const decoded = jwt.verify(token, secretKey);
+
+      // Token hợp lệ, trả về thông tin người dùng
+      const userData = {
+        userId: decoded.userId,
+        username: decoded.username,
+        // Thêm thông tin khác nếu cần
+      };
+
+      res.json(userData);
+    } catch (error) {
+      if (error.name === 'JsonWebTokenError') {
+        // Token không hợp lệ
+        return res.status(401).json({ error: 'Invalid token' });
+      }
+
+      // Lỗi khác, ví dụ: token hết hạn
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 

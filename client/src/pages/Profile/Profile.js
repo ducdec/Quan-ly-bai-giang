@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 
 const Profile = () => {
   const userStore = useSelector((state) => state.data);
-  console.log(userStore);
+  //console.log(userStore);
 
   // Thời điểm bạn tạo tài khoản
   const accountCreationTime = new Date(userStore.createdAt);
@@ -19,7 +19,7 @@ const Profile = () => {
   // Thời điểm hiện tại
   const currentTime = new Date();
 
-  console.log(accountCreationTime, currentTime);
+  //console.log(accountCreationTime, currentTime);
   // Tính khoảng thời gian
   const timeDifference = currentTime.getTime() - accountCreationTime.getTime();
 
@@ -38,7 +38,7 @@ const Profile = () => {
     }
   };
   const formattedTimeDifference = formatMonthsAgo(daysDifference);
-  console.log('Khoảng thời gian (ngày):', Math.ceil(daysDifference));
+  //console.log('Khoảng thời gian (ngày):', Math.ceil(daysDifference));
   return (
     <div className={cx('container')}>
       <section

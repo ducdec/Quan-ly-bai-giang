@@ -5,7 +5,7 @@ import { StartIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 //to={`/learning/${slug}?id=${lecture._id}`}
-function LectureItem({ lecture, slug }) {
+function LectureItem({ lecture }) {
   return (
     <div className={cx('lessonItem')}>
       <div>
@@ -13,7 +13,7 @@ function LectureItem({ lecture, slug }) {
           <StartIcon className={cx('icon')} />
           <div className={cx('lectureName')}>{lecture.name}</div>
         </span>
-        <span className={cx('floatRight')}>time</span>
+        {/* <span className={cx('floatRight')}>{lecture.instructor}</span> */}
       </div>
     </div>
   );

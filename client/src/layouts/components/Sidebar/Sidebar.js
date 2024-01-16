@@ -2,11 +2,13 @@ import classNames from 'classnames/bind';
 import styles from './Sidebar.module.scss';
 import Menu, { MenuItem } from './Menu';
 import config from '~/config';
-import { HomeIcon, UserIcon, AnphaIcon } from '~/components/Icons';
+import { HomeIcon, UserIcon, AnphaIcon, CourseIcon } from '~/components/Icons';
 import SuggestedAccounts from '../SuggestedAccounts';
 import { useEffect, useState } from 'react';
 import siteService from '~/services/siteServices';
 import courseService from '~/services/courseServices';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSwatchbook } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -23,7 +25,7 @@ function Sidebar() {
           () => Math.random() - 0.5,
         );
         setValuesRandom(randomOrderValues);
-        console.log('Line 24 ', randomOrderValues, result.storedCourses);
+        //console.log('Line 24 ', randomOrderValues, result.storedCourses);
         if (coursesByStatus && coursesByStatus.hot) {
           setValuesHot(coursesByStatus.hot);
         } else {
@@ -36,7 +38,7 @@ function Sidebar() {
 
     fetchData();
   }, []);
-  console.log('Values Hot:', valuesHot);
+  //console.log('Values Hot:', valuesHot);
 
   return (
     <aside className={cx('wrapper')}>
@@ -45,12 +47,17 @@ function Sidebar() {
         <MenuItem
           title="Course"
           to={config.routes.storedCourse}
-          icon={<AnphaIcon />}
+          icon={<CourseIcon className={cx('courses-menu')} />}
         />
         <MenuItem
           title="Instructor"
           to={config.routes.storedIns}
           icon={<UserIcon />}
+        />
+        <MenuItem
+          title="Users"
+          to={config.routes.storeUsers}
+          icon={<AnphaIcon />}
         />
       </Menu>
       <SuggestedAccounts data={valuesHot} label="Các khóa học HOT" />

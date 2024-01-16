@@ -18,7 +18,7 @@ function ListLecture() {
       try {
         const result = await courseService.courseSlug(slug);
         //console.log('Line 34 ', result);
-        console.log('Data from API:', result);
+        //console.log('Data from API:', result.lectures);
         setDataCourse(result);
         setLecture(result.lectures);
       } catch (error) {
@@ -53,11 +53,11 @@ function ListLecture() {
                       <strong>{countLec} </strong> bài học
                     </li>
                     <li className={cx('dot')}>•</li>
-                    <li>
+                    {/* <li>
                       <span>
                         Thời lượng <strong>10 giờ 29 phút</strong>
                       </span>
-                    </li>
+                    </li> */}
                   </ul>
                   {/* <div className={cx('toggleBtn')}>
                     Mở rộng tất cả
@@ -95,11 +95,11 @@ function ListLecture() {
                     Tổng số <strong>{countLec}</strong> bài học
                   </span>
                 </li>
-                <li>
+                {/* <li>
                   <span>
                     Thời lượng <strong>10 giờ 29 phút</strong>
                   </span>
-                </li>
+                </li> */}
                 <li>
                   <span>Học mọi lúc, mọi nơi</span>
                 </li>

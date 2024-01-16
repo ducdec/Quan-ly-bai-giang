@@ -29,12 +29,13 @@ function TrackItem({ lectures, nameCourse, length, slug }) {
   const markAsViewed = (index) => {
     setViewedLectures((prevViewedLectures) => [...prevViewedLectures, index]);
   };
-
   return (
     <>
       <div className={cx('TrackItem_wrapper')}>
         <h3 className={cx('TrackItem_title')}>{nameCourse}</h3>
-        <span className={cx('TrackItem_desc')}>{length}/? | 20:39</span>
+        <span className={cx('TrackItem_desc')}>
+          {length} / {length}
+        </span>
         <span className={cx('TrackItem_icon')}></span>
       </div>
       <div className={cx('trackItem_list')}>
@@ -57,7 +58,7 @@ function TrackItem({ lectures, nameCourse, length, slug }) {
               </h3>
               <p className={cx('StepItem_desc')}>
                 <StartIcon className={cx('lesson-icon')} />
-                <span>03:15</span>
+                <span></span>
               </p>
             </div>
           </Link>

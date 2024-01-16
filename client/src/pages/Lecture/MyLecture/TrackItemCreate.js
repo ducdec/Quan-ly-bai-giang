@@ -67,7 +67,9 @@ function TrackItemCreate({ lectures, nameCourse, index, id, slug }) {
     <>
       <div className={cx('TrackItem_wrapper')}>
         <h3 className={cx('TrackItem_title')}>{nameCourse}</h3>
-        <span className={cx('TrackItem_desc')}>{index}/? | 20:39</span>
+        <span className={cx('TrackItem_desc')}>
+          {index} / {index}
+        </span>
         <span className={cx('TrackItem_icon')}></span>
       </div>
       <div className={cx('trackItem_list')}>
@@ -89,7 +91,7 @@ function TrackItemCreate({ lectures, nameCourse, index, id, slug }) {
                 </h3>
                 <p className={cx('StepItem_desc')}>
                   <StartIcon className={cx('lesson-icon')} />
-                  <span>03:15</span>
+                  {/* <span>03:15</span> */}
                 </p>
               </div>
               <div

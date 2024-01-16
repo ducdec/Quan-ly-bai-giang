@@ -19,6 +19,7 @@ const cx = classNames.bind(styles);
 
 function SignIn() {
   const dispatch = useDispatch();
+  const userState = useSelector((state) => state.data);
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
   const [values, setValues] = useState({
     email: '',
@@ -61,10 +62,12 @@ function SignIn() {
 
       // Kiểm tra nếu không có lỗi
       if (!errors.email && !errors.password) {
-        const { user } = await userService.signin(values);
+        const { user, token } = await userService.signin(values);
         // Kiểm tra nếu đăng nhập thành công
         if (user) {
           dispatch(setUser(user));
+          // Lưu token vào localStorage
+          localStorage.setItem('token', token);
           navigate(config.routes.home);
         } else {
           console.log('Tài khoản hoặc mật khẩu không chính xác');
@@ -78,7 +81,7 @@ function SignIn() {
   const togglePasswordVisibility = () => {
     setPasswordVisibility(!isPasswordVisible);
   };
-  console.log('values:', values, 'user:', users);
+  console.log('values:', values, 'user:', userState);
   return (
     <div className={cx('section')}>
       <div className={cx('form-box')}>

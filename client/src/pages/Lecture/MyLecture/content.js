@@ -138,7 +138,7 @@ function Content({ lecture }) {
         </div>
       </div>
 
-      <div className={cx('ActionBar_wrapper')}>
+      {/* <div className={cx('ActionBar_wrapper')}>
         <button
           className={cx('ActionBar_btn', {
             ActionBar_disabled: isPreviousDisabled,
@@ -178,7 +178,7 @@ function Content({ lecture }) {
             </svg>
           </button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

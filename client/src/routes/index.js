@@ -26,9 +26,8 @@ import learning from '~/pages/Lecture/learning';
 import CreateInstructor from '~/pages/Instructor/component/create';
 import UpdateInstructor from '~/pages/Instructor/component/edit';
 import StoredInstructor from '~/pages/Instructor/MyInstructor/storedInstructors';
-//
-import Search from '~/pages/Search';
-import Upload from '~/pages/Upload';
+//user
+import StoredUsers from '~/pages/User/storedUser';
 import HeaderProfile from '~/layouts/HeaderProfile';
 
 //Public routes
@@ -112,10 +111,16 @@ const publicRoutes = [
 
   //Profiles
   { path: config.routes.profile, component: Profile, layout: HeaderProfile },
-  { path: config.routes.search, component: Search, layout: null },
-  { path: config.routes.upload, component: Upload, layout: HeaderOnly },
+
+  //Users
+  {
+    path: config.routes.storeUsers,
+    component: StoredUsers,
+    layout: HeaderOnly,
+  },
 ];
 
-const privateRoutes = [];
+const userRoutes = [];
+const adminRoutes = [];
 
-export { publicRoutes, privateRoutes };
+export { publicRoutes, userRoutes, adminRoutes };

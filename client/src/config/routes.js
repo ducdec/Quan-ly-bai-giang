@@ -23,8 +23,10 @@ const routers = {
 
   //profile
   profile: '/:nickname',
-  search: '/search',
-  upload: '/upload',
+
+  //users
+  storeUsers: '/users/stored',
+  editUser: '/users/:id/edit',
 };
 
 export default routers;

@@ -1,0 +1,89 @@
+.form-container {
+    max-width: 1140px;
+    width: 1000px;
+    margin: 20px auto;
+  }
+
+thead {
+    height: 50px;
+}
+.th_col {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mt-5 h3 {
+    font-size: 1.75em;
+    font-weight: 600;
+    padding-bottom: 12px;
+}
+
+.card-text{
+    height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+  /* Thêm class cho phần tử cha */
+.error-container {
+  position: relative;
+}
+
+/* Định dạng phần tử con */
+.invalid-feedback {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin-top: 2px; /* Điều chỉnh khoảng cách giữa phần tử và select */
+  color: #dc3545; /* Màu sắc của thông báo lỗi */
+  font-size: 14px; /* Kích thước font của thông báo lỗi */
+}
+
+  .checkbox-select-all {
+    max-width: 130px;
+  }
+  .select-all {
+    min-width: 90px;
+  }
+  
+  .check-all-submit-btn {
+    margin-left: 8px; 
+    height: 32px; 
+    width: 80px;
+    line-height: normal; 
+    font-size: 500; /* Đặt kích thước chữ của nút */
+    cursor: pointer;
+  
+    &:hover {
+      text-decoration: underline; /* Hiển thị gạch chân khi hover */
+    }
+  }
+  
+  .underline {
+    color: #007BFF;
+    text-decoration: none;
+    display: inline-block; /* Cho phép hiển thị gạch chân */
+  
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .c-item img {
+    max-width: 100%;
+    height: auto;
+  }
+    
+  @media screen and (max-width: 768px) {
+    .form-container {
+      max-width: 100%;
+    }
+  }
+  
