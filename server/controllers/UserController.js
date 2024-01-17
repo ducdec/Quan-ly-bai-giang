@@ -10,15 +10,25 @@ class UserController {
     if (token == null) return res.sendStatus(401);
 
     const jwtSecretKey = process.env.JWT_SECRET_KEY;
-    const verified = jwt.verify(token, jwtSecretKey);
-    console.log(verified);
 
-    const user = await User.findById(verified.userId);
-    if (verified) {
+    try {
+      const verified = jwt.verify(token, jwtSecretKey);
+
+      // Kiểm tra thời gian hiệu lực của token
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+      if (verified.exp && verified.exp < currentTimestamp) {
+        return res.status(401).json({ error: 'Token has expired' });
+      }
+
+      // Truy vấn người dùng từ cơ sở dữ liệu bằng userId
+      const user = await User.findById(verified.userId);
+
+      // Gửi dữ liệu người dùng về
       return res.status(200).json(user);
-    } else {
-      // Access Denied
-      return res.status(401).send(error);
+    } catch (error) {
+      // Xử lý lỗi xác thực
+      console.error('Error during token verification:', error);
+      return res.status(401).json({ error: 'Invalid token' });
     }
   }
 

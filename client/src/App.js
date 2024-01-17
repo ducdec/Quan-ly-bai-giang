@@ -130,15 +130,26 @@ function App() {
   };
   console.log('roleUser', roleUser);
 
+  const renderRoutes = () => {
+    // Kiểm tra xem có token hay không
+    const hasToken = Boolean(localStorage.getItem('token'));
+
+    if (hasToken) {
+      // Nếu có token, kiểm tra và hiển thị routes phù hợp với vai trò người dùng
+      if (roleUser === 'Admin') {
+        return renderAdminRoutes();
+      } else if (roleUser === 'User') {
+        return renderUserRoutes();
+      }
+    }
+
+    // Nếu không có token hoặc không phải là Admin/User, hiển thị public routes
+    return renderPublicRoutes();
+  };
   return (
     <Router>
       <div className="App">
-        <Routes>
-          {/* Dựa trên vai trò người dùng, render các route tương ứng */}
-          {roleUser === 'Admin' && renderAdminRoutes()}
-          {roleUser === 'User' && renderUserRoutes()}
-          {renderPublicRoutes()}
-        </Routes>
+        <Routes>{renderRoutes()}</Routes>
       </div>
     </Router>
   );
