@@ -1,7 +1,7 @@
 import config from '~/config';
 
 //layouts
-import { HeaderOnly } from '~/layouts';
+import { HeaderOnly, UserLayout, PublicLayout } from '~/layouts';
 
 import Home from '~/pages/Home';
 //Login
@@ -91,7 +91,7 @@ const publicRoutes = [
     component: UpdateLecture,
     layout: HeaderOnly,
   },
-  //
+  //learning
   { path: config.routes.learning, component: learning, layout: HeaderOnly },
 
   //instructors
@@ -127,7 +127,46 @@ const publicRoutes = [
   },
 ];
 
-const userRoutes = [];
-const adminRoutes = [];
+//user routes
+
+const userRoutes = [
+  //home
+  { path: config.routes.home, component: Home, layout: UserLayout },
+
+  //Login routes
+  {
+    path: config.routes.signIn,
+    component: SignIn,
+    layout: null,
+  },
+  {
+    path: config.routes.signUp,
+    component: SignUp,
+    layout: null,
+  },
+  {
+    path: config.routes.passWord,
+    component: ForgotPass,
+    layout: null,
+  },
+  {
+    path: config.routes.passWordToken,
+    component: ForgotPassToken,
+    layout: null,
+  },
+
+  //courses
+  { path: config.routes.lecture, component: Course, layout: HeaderOnly },
+
+  //learning
+  { path: config.routes.learning, component: learning, layout: HeaderOnly },
+
+  //Profiles
+  { path: config.routes.profile, component: Profile, layout: HeaderProfile },
+];
+const adminRoutes = [
+  //home
+  { path: config.routes.home, component: Home, layout: PublicLayout },
+];
 
 export { publicRoutes, userRoutes, adminRoutes };
