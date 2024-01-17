@@ -156,14 +156,13 @@ export const ProfileIcon = ({
   className,
 }) => (
   <svg
-    className={`${className}`}
     width={width}
     height={height}
     aria-hidden="true"
     focusable="false"
     data-prefix="fas"
     data-icon="user-group"
-    class="svg-inline--fa fa-user-group "
+    className="svg-inline--fa fa-user-group "
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 640 512"
@@ -197,12 +196,11 @@ export const XIcon = ({ width = '1.4rem', height = '1.4rem' }) => (
 
 export const CheckIcon = ({ className }) => (
   <svg
-    className={`${className}`}
     aria-hidden="true"
     focusable="false"
     data-prefix="fas"
     data-icon="circle-check"
-    class="svg-inline--fa fa-circle-check StepItem_state-icon__w1Yoc"
+    className="svg-inline--fa fa-circle-check StepItem_state-icon__w1Yoc"
     role="img"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"

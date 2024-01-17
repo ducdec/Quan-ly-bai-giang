@@ -4,7 +4,7 @@ import { Instructor } from '../models/Instructor.js';
 class CourseController {
   constructor() {}
 
-  //[GET] /
+  //[GET] /search
   async show(req, res, next) {
     try {
       const searchTerm = req.query.name;
@@ -20,6 +20,8 @@ class CourseController {
       const filteredCourses = courses.filter((course) =>
         course.name.toLowerCase().includes(searchTerm.toLowerCase()),
       );
+      console.log(searchTerm);
+      console.log(filteredCourses);
 
       res.json(filteredCourses);
     } catch (error) {
@@ -28,7 +30,7 @@ class CourseController {
     }
   }
 
-  // [POST] /courses/store tutu
+  // [POST] /courses/store
   async store(req, res, next) {
     //  if(re/)
     try {

@@ -9,7 +9,7 @@ import Image from '../Image';
 const cx = classNames.bind(styles);
 
 function AccountItem({ data }) {
-  console.log(data);
+  //console.log(data);
   return (
     <Link to={`/courses/${data.slug}`} className={cx('wrapper')}>
       <Image className={cx('avatar')} src={data.imageUrl} alt={data.slug} />

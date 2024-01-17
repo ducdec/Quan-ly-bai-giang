@@ -1,6 +1,6 @@
 import { LeftIcon, RightIcon } from '~/components/Icons';
 import classNames from 'classnames/bind';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import styles from './content.module.scss';
 import FormatDate from '~/components/FormatTime/FormatDate';
@@ -33,15 +33,6 @@ function Content({ lecture }) {
   const handlePlayClick = () => {
     // Khi icon được ấn, chuyển trạng thái của video sang true
     setShowVideo(true);
-  };
-
-  const videoRef = useRef(null);
-
-  const handleLoadedMetadata = () => {
-    const video = videoRef.current;
-    console.log('Line 42 : video ', video);
-    if (!video) return;
-    console.log(`The video is ${video.duration} seconds long.`);
   };
 
   return (
@@ -102,8 +93,6 @@ function Content({ lecture }) {
                 {showVideo && (
                   <div style={{ width: '100%', height: '100%' }}>
                     <iframe
-                      ref={videoRef}
-                      onLoadedMetadata={handleLoadedMetadata}
                       frameborder="0"
                       allowfullscreen=""
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

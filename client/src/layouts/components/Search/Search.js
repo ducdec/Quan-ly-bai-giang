@@ -22,6 +22,7 @@ function Search() {
   const [searchResult, setSearchResult] = useState([]);
   const [showResult, setShowResult] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [hasSearchResults, setHasSearchResults] = useState(true);
 
   const debouncedValue = useDebounce(searchValue, 500);
 
@@ -38,6 +39,7 @@ function Search() {
       try {
         const result = await searchService.courseSearch(debouncedValue);
         setSearchResult(result);
+        setHasSearchResults(result.length > 0);
       } catch (error) {
         console.error('Error fetching search results:', error);
       } finally {
@@ -78,10 +80,16 @@ function Search() {
         render={(attrs) => (
           <div className={cx('search-result')} tabIndex="-1" {...attrs}>
             <PopperWrapper>
-              <h4 className={cx('search-title')}>Accounts</h4>
-              {searchResult.map((result) => (
-                <AccountItem key={result._id} data={result} />
-              ))}
+              {hasSearchResults ? (
+                <div>
+                  <h4 className={cx('search-title')}>Course</h4>
+                  {searchResult.map((result) => (
+                    <AccountItem key={result._id} data={result} />
+                  ))}
+                </div>
+              ) : (
+                <p>No courses found</p>
+              )}
             </PopperWrapper>
           </div>
         )}
@@ -107,7 +115,7 @@ function Search() {
           <button
             className={cx('search-btn')}
             onMouseDown={(e) => e.preventDefault()}
-            onclick={handleSubmit}
+            onClick={handleSubmit}
           >
             <SearchIcon />
           </button>

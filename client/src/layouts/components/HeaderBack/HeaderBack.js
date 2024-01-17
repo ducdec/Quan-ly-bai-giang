@@ -124,7 +124,7 @@ function HeaderBack({ to }) {
               <Image
                 className={cx('user-avatar')}
                 src={images.MeoMatTo}
-                alt="Nguyen Van Duc"
+                alt="Image"
               />
             ) : (
               <button className={cx('more-btn')}>

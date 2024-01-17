@@ -23,8 +23,8 @@ import Menu from '~/components/Popper/Menu';
 import images from '~/assets/images';
 import Image from '~/components/Image';
 import Search from '../Search';
-import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser } from '~/store/userSlice';
+import { useSelector } from 'react-redux';
+//import { logoutUser } from '~/store/userSlice';
 
 const cx = classNames.bind(styles);
 
@@ -61,7 +61,7 @@ const MENU_ITEMS = [
 
 function Header() {
   const currentUser = true;
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const userStore = useSelector((state) => state.data);
 
   //Handle logic
@@ -73,9 +73,9 @@ function Header() {
       default:
     }
   };
-  const handleLogout = () => {
-    dispatch(logoutUser());
-  };
+  // const handleLogout = () => {
+  //   dispatch(logoutUser());
+  // };
   //
   const userMENU = [
     {
@@ -99,7 +99,7 @@ function Header() {
       icon: <FontAwesomeIcon icon={faSignOut} />,
       title: 'Đăng xuất',
       to: config.routes.signIn,
-      onclick: handleLogout,
+      //onClick: handleLogout,
       separate: true,
     },
   ];

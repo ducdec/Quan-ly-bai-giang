@@ -48,8 +48,8 @@ function AccountPreview({ data }) {
             <strong className={cx('value')}>{dataLectures.length} </strong>
           )}
           <span className={cx('label')}>bài học</span>
-          <strong className={cx('value')}>8.2M </strong>
-          <span className={cx('label')}>follow</span>
+          {/* <strong className={cx('value')}>time </strong>
+          <span className={cx('label')}>time</span> */}
         </p>
       </div>
     </div>

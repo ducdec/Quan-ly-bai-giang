@@ -21,8 +21,8 @@ import Menu from '~/components/Popper/Menu';
 import images from '~/assets/images';
 import Image from '~/components/Image';
 import { BackIcon } from '~/components/Icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { logoutUser } from '~/store/userSlice';
+import { useSelector } from 'react-redux';
+//import { logoutUser } from '~/store/userSlice';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
@@ -58,7 +58,6 @@ const MENU_ITEMS = [
 
 function HeaderNoSearch() {
   const currentUser = true;
-  const dispatch = useDispatch();
   const userStore = useSelector((state) => state.data);
 
   //Handle logic
@@ -71,9 +70,9 @@ function HeaderNoSearch() {
     }
   };
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-  };
+  // const handleLogout = () => {
+  //   dispatch(logoutUser());
+  // };
   //
   const userMENU = [
     {
@@ -98,7 +97,7 @@ function HeaderNoSearch() {
       title: 'Log out',
       to: config.routes.signIn,
       separate: true,
-      onclick: { handleLogout },
+      //onClick: handleLogout,
     },
   ];
 

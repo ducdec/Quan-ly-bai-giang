@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import styles from './SuggestedAccounts.module.scss';
 import AccountItem from './AccounItem';
