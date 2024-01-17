@@ -55,6 +55,18 @@ class UserController {
       next(error);
     }
   }
+
+  //[DELETE] /users/:id/destroy
+  async forceDestroy(req, res, next) {
+    try {
+      await User.deleteOne({ _id: req.params.id });
+      console.log('User deleted successfully');
+      res.json({ success: true, message: 'User deleted successfully' });
+    } catch (error) {
+      console.error('Error in forceDestroy:', error);
+      next(error);
+    }
+  }
 }
 
 export default new UserController();

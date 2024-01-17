@@ -7,14 +7,13 @@ import Modal from 'react-bootstrap/Modal';
 import Button from '~/components/Button';
 import { useNavigate } from 'react-router-dom';
 import config from '~/config';
-import InstructorService from '~/services/instructorServices';
 import userService from '~/services/userServices';
 
 const cx = classNames.bind(styles);
 
 function StoredUsers() {
-  const [insResult, setInsResult] = useState([]);
-  const [deleteInsId, setDeleteInsId] = useState(null);
+  const [userResult, setUserResult] = useState([]);
+  const [deleteUserId, setDeleteUserId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDelete, setIsDelete] = useState(false);
   //
@@ -22,13 +21,13 @@ function StoredUsers() {
   const [selectedIns, setSelectedIns] = useState([]);
   const [showActionWarning, setShowActionWarning] = useState(false);
 
-  //console.log('data', insResult);
+  //console.log('data', userResult);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await userService.storedUser();
-        setInsResult(result);
+        setUserResult(result);
         console.log('result', result);
       } catch (error) {
         console.error('API:', error);
@@ -45,7 +44,7 @@ function StoredUsers() {
     const isChecked = e.target.checked;
     setSelectAll(isChecked);
 
-    const allInstIds = insResult.map((instructor) => instructor._id);
+    const allInstIds = userResult.map((user) => user._id);
 
     if (isChecked && selectedIns.length === allInstIds.length) {
       // Hủy tích "Chọn tất cả"
@@ -57,19 +56,18 @@ function StoredUsers() {
     }
   };
 
-  const handleInsCheckboxChange = (e, instructorId) => {
+  const handleInsCheckboxChange = (e, userId) => {
     const isChecked = e.target.checked;
     setSelectAll(false);
 
     if (isChecked) {
-      setSelectedIns((prevSelected) => [...prevSelected, instructorId]);
+      setSelectedIns((prevSelected) => [...prevSelected, userId]);
     } else {
       setSelectedIns((prevSelected) =>
-        prevSelected.filter((id) => id !== instructorId),
+        prevSelected.filter((id) => id !== userId),
       );
     }
   };
-
   const handleActionSubmit = async (e) => {
     const selectedActionElement = document.querySelector('[name="action"]');
     const selectedAction = selectedActionElement.value;
@@ -83,40 +81,40 @@ function StoredUsers() {
     setShowActionWarning(false);
 
     if (selectedAction === 'delete') {
-      selectedIns.forEach(async (instructorId) => {
-        await InstructorService.trueDelete(instructorId);
+      selectedIns.forEach(async (userId) => {
+        await userService.deleteUser(userId);
       });
     }
 
     // Sau khi thực hiện hành động, cập nhật danh sách khóa học và làm sạch dữ liệu đã chọn
-    const updatedResult = await InstructorService.storedIntructor();
-    setInsResult(updatedResult);
+    const updatedResult = await userService.storedUser();
+    setUserResult(updatedResult);
     setSelectedIns([]);
     navigate(config.routes.storedIns);
   };
 
-  //instructor
+  //lay id user
   const handleDeleteButtonClick = (id, e) => {
     e.preventDefault();
-    setDeleteInsId(id);
+    setDeleteUserId(id);
     setIsDelete(true);
   };
 
-  const deleteinstructor = async () => {
-    console.log(deleteInsId);
+  const deleteUser = async () => {
+    console.log(deleteUserId);
 
-    if (deleteInsId) {
+    if (deleteUserId) {
       try {
-        await InstructorService.trueDelete(deleteInsId);
+        await userService.deleteUser(deleteUserId);
         console.log('Xóa thanh cong');
         // Fetch the updated data after successful deletion
-        const updatedResult = await InstructorService.storedInstructor();
-        setInsResult(updatedResult);
-        navigate(config.routes.storedIns);
+        const updatedResult = await userService.storedUser();
+        setUserResult(updatedResult);
+        navigate(config.routes.storeUsers);
       } catch (error) {
         console.error('Xoa that bai:', error);
       } finally {
-        setDeleteInsId(null);
+        setDeleteUserId(null);
         setIsDelete(false);
       }
     }
@@ -198,14 +196,14 @@ function StoredUsers() {
             </thead>
 
             <tbody>
-              {insResult.length === 0 ? (
+              {userResult.length === 0 ? (
                 <tr>
                   <td colSpan="6" className={cx('text-center')}>
                     Chưa có người dùng nào cả !
                   </td>
                 </tr>
               ) : (
-                insResult.map((user, index) => (
+                userResult.map((user, index) => (
                   <tr key={user._id}>
                     <td>
                       <div className={cx('form-check')}>
@@ -249,13 +247,13 @@ function StoredUsers() {
       {/* Modal */}
       <Modal show={isDelete} onHide={() => setIsDelete(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Xóa hả?</Modal.Title>
+          <Modal.Title>Xóa người dùng ?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Bạn chắc chắn muốn xóa?</p>
+          <p>Hành động này không thể khôi phục. Bạn chắc chắn muốn xóa?</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button primary small variant="danger" onClick={deleteinstructor}>
+          <Button primary small variant="danger" onClick={deleteUser}>
             Xóa bỏ
           </Button>
           <Button

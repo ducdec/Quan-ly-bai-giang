@@ -19,8 +19,7 @@ function UpdateUsers() {
     email: '',
     role: '',
   });
-
-  const [role, setRole] = useState([]);
+  const [selectedRole, setSelectedRole] = useState([]);
   const [errorFields, setErrorFields] = useState([]);
 
   const navigate = useNavigate();
@@ -31,7 +30,7 @@ function UpdateUsers() {
         const result = await userService.userId(id);
         console.log('Line 34 ', result);
         setFormData(result);
-        setRole(result.role);
+        setSelectedRole(result.role);
         //const dataUser = await userService.storedUser();
       } catch (error) {
         console.error('API:', error);
@@ -53,11 +52,20 @@ function UpdateUsers() {
     }));
   };
 
+  const handleRoleChange = (value) => {
+    setSelectedRole(value);
+    setFormData((prevData) => ({
+      ...prevData,
+      role: value,
+    }));
+    console.log('61', selectedRole);
+  };
+
   const handleUpdate = (e) => {
     e.preventDefault();
 
     // Kiểm tra xem có trường nào chưa được nhập không
-    const requiredFields = ['name', 'email', 'role'];
+    const requiredFields = ['username', 'email', 'role'];
     const missingFields = requiredFields.filter((field) => !formData[field]);
 
     if (missingFields.length > 0) {
@@ -67,11 +75,11 @@ function UpdateUsers() {
       return;
     }
 
-    formData.instructor = role;
+    formData.role = selectedRole;
 
     // Nếu mọi thứ hợp lệ, thực hiện yêu cầu tạo khóa học
     userService
-      .UpdateUsers(id, formData)
+      .userUpdate(id, formData)
       .then((res) => {
         console.log('Success:', res.data);
         navigate(config.routes.storeUsers);
@@ -82,9 +90,10 @@ function UpdateUsers() {
   };
 
   const roleOptions = [
-    { value: 'admin', label: 'Admin' },
-    { value: 'user', label: 'User' },
+    { value: 'User', label: 'User' },
+    { value: 'Admin', label: 'Admin' },
   ];
+  //console.log('Form Data:', formData);
 
   return (
     <div className={cx('content_wrapper')}>
@@ -98,7 +107,7 @@ function UpdateUsers() {
           <form onSubmit={handleUpdate}>
             <div className={cx('form-group')}>
               <div className={cx('mb-3')}>
-                <label htmlFor="name" className="form-label">
+                <label htmlFor="username" className="form-label">
                   Tên
                 </label>
                 <input
@@ -106,12 +115,12 @@ function UpdateUsers() {
                   value={formData.username}
                   type="text"
                   className={cx('form-control', {
-                    'is-invalid': errorFields.includes('name'),
+                    'is-invalid': errorFields.includes('username'),
                   })}
-                  id="name"
-                  name="name"
+                  id="username"
+                  name="username"
                 />
-                {errorFields.includes('name') && (
+                {errorFields.includes('username') && (
                   <div className="invalid-feedback">Vui lòng nhập tên.</div>
                 )}
               </div>
@@ -119,21 +128,29 @@ function UpdateUsers() {
               <>
                 <div className={cx('form-group', 'row')}>
                   <label
-                    htmlFor="instructorSelect"
+                    htmlFor="role"
                     className={cx('col-md-2', 'col-form-label')}
                   >
                     Quyền
                   </label>
                   <div className={cx('col-md-4')}>
                     <Select
-                      value={role}
+                      value={selectedRole}
                       placeholder="Chọn quyền truy cập"
                       style={{ width: '100%' }}
-                      //onChange={}
+                      onChange={handleRoleChange}
                       options={roleOptions}
                       showSearch
                       optionFilterProp="children"
+                      className={cx({
+                        'is-invalid': errorFields.includes('role'),
+                      })}
                     />
+                    {errorFields.includes('role') && (
+                      <div className="invalid-feedback">
+                        Vui lòng chọn quyền
+                      </div>
+                    )}
                   </div>
                 </div>
               </>

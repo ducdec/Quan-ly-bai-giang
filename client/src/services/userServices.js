@@ -11,7 +11,7 @@ const userService = {
         throw error;
       });
   },
-  //:id
+  //:id sua
   userId(id) {
     return request
       .get(`/users/${id}/edit`)
@@ -22,8 +22,15 @@ const userService = {
       });
   },
 
-  userUphate(id, newUser) {
+  userUpdate(id, newUser) {
     return request.put(`/users/${id}`, newUser);
+  },
+  //xoa
+  deleteUser(id) {
+    return request.delete(`/users/${id}/delete`).catch((error) => {
+      console.error('Error delete user:', error);
+      throw error;
+    });
   },
   //signup
   signup(newUser) {

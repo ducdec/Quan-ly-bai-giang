@@ -67,7 +67,7 @@ class InstructorController {
     }
   }
 
-  //[DELETE] /instructor/:id/force (Xo'a that)
+  //[DELETE] /instructor/:id/delete (Xo'a that)
   async forceDestroy(req, res, next) {
     try {
       await Instructor.deleteOne({ _id: req.params.id });
