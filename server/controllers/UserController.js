@@ -1,10 +1,9 @@
 import { User } from '../models/User.js';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 class UserController {
   constructor() {}
 
-  //[GET] /users/getToken
+  //[GET] /users/:token
   async getUser(req, res) {
     let token = req.header('Authorization');
     token = token && token.split(' ')[1];
@@ -12,6 +11,7 @@ class UserController {
 
     const jwtSecretKey = process.env.JWT_SECRET_KEY;
     const verified = jwt.verify(token, jwtSecretKey);
+    console.log(verified);
 
     const user = await User.findById(verified.userId);
     if (verified) {

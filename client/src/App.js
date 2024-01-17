@@ -1,29 +1,36 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes, userRoutes, adminRoutes } from '~/routes';
-import MainLayout from './layouts';
+import MainLayout, { PublicLayout, UserLayout } from './layouts';
 
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUser } from '~/store/userSlice';
 import userService from '~/services/userServices';
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const [roleUser, setRoleUser] = useState('');
+  const updateRoleUser = (role) => setRoleUser(role);
+
   useEffect(() => {
+    console.log('useEffect đã được kích hoạt');
     const fetchUserFromToken = async () => {
       // Lấy token từ Local Storage
       const storedToken = localStorage.getItem('token');
-
       // Kiểm tra xem có token hay không
       if (storedToken) {
         try {
           // Gửi token lên server để xác thực
-          const { user } = await userService.getUserFromToken(storedToken);
-
+          const { role, ...user } = await userService.getUserFromToken();
+          console.log('Dữ liệu người dùng nhận được:', role, user);
           // Nếu xác thực thành công, cập nhật state của ứng dụng
-          dispatch(setUser(user));
+          // dispatch(setUser(user));
+          // setRoleUser(dispatch(setUser(role)).payload);
+          // console.log(dispatch(setUser(role)));
+          const action = dispatch(setUser(role));
+          console.log('Dispatch result:', action);
+          updateRoleUser(role);
         } catch (error) {
           console.error('Error while fetching user:', error);
           // Xử lý lỗi (ví dụ: xóa token nếu không hợp lệ)
@@ -44,7 +51,7 @@ function App() {
             ? route.layout
             : route.layout === null
             ? Fragment
-            : MainLayout;
+            : PublicLayout;
           const Page = route.component;
           return (
             <Route
@@ -63,6 +70,10 @@ function App() {
   };
 
   const renderUserRoutes = () => {
+    // Kiểm tra nếu không phải là Admin hoặc User, hiển thị public routes
+    if (!roleUser || (roleUser !== 'Admin' && roleUser !== 'User')) {
+      return renderPublicRoutes();
+    }
     return (
       <>
         {userRoutes.map((route, index) => {
@@ -70,7 +81,7 @@ function App() {
             ? route.layout
             : route.layout === null
             ? Fragment
-            : MainLayout;
+            : UserLayout;
           const Page = route.component;
           return (
             <Route
@@ -89,6 +100,10 @@ function App() {
   };
 
   const renderAdminRoutes = () => {
+    // Kiểm tra nếu không phải là Admin hoặc User, hiển thị public routes
+    if (!roleUser || (roleUser !== 'Admin' && roleUser !== 'User')) {
+      return renderPublicRoutes();
+    }
     return (
       <>
         {adminRoutes.map((route, index) => {
@@ -113,15 +128,16 @@ function App() {
       </>
     );
   };
+  console.log('roleUser', roleUser);
 
   return (
     <Router>
       <div className="App">
         <Routes>
           {/* Dựa trên vai trò người dùng, render các route tương ứng */}
-          {user && user.role === 'Admin' && renderAdminRoutes()}
-          {user && user.role === 'User' && renderUserRoutes()}
-          {!user && renderPublicRoutes()}
+          {roleUser === 'Admin' && renderAdminRoutes()}
+          {roleUser === 'User' && renderUserRoutes()}
+          {renderPublicRoutes()}
         </Routes>
       </div>
     </Router>

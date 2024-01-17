@@ -1,4 +1,4 @@
-import { LeftIcon, RightIcon } from '~/components/Icons';
+//import { LeftIcon, RightIcon } from '~/components/Icons';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 
@@ -10,23 +10,23 @@ const cx = classNames.bind(styles);
 function Content({ lecture }) {
   // Sử dụng useState để lưu trạng thái của video
   const [showVideo, setShowVideo] = useState(false);
-  const [currentLecture, setCurrentLecture] = useState(1);
+  //const [currentLecture, setCurrentLecture] = useState(1);
 
   //chuyen bai
-  const handlePreviousClick = () => {
-    if (currentLecture > 1) {
-      setCurrentLecture(currentLecture - 1);
-    }
-  };
+  // const handlePreviousClick = () => {
+  //   if (currentLecture > 1) {
+  //     setCurrentLecture(currentLecture - 1);
+  //   }
+  // };
 
-  const handleNextClick = () => {
-    // Thay bằng số lượng bài giảng tối đa của khóa học
-    if (currentLecture < lecture.length) {
-      setCurrentLecture(currentLecture + 1);
-    }
-  };
-  const isPreviousDisabled = currentLecture === 1;
-  const isNextDisabled = currentLecture === lecture.length;
+  // const handleNextClick = () => {
+  //   // Thay bằng số lượng bài giảng tối đa của khóa học
+  //   if (currentLecture < lecture.length) {
+  //     setCurrentLecture(currentLecture + 1);
+  //   }
+  // };
+  // const isPreviousDisabled = currentLecture === 1;
+  // const isNextDisabled = currentLecture === lecture.length;
 
   // console.log(currentLecture, currentLecture);
   //video

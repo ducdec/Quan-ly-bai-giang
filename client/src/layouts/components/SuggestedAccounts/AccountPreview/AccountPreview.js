@@ -15,7 +15,7 @@ function AccountPreview({ data }) {
   useEffect(() => {
     setDataInstructors(data.instructors || []);
     setDataLectures(data.lectures || []);
-  }, [data.instructors]);
+  }, [data]);
 
   return (
     <div className={cx('wrapper')}>

@@ -1,6 +1,16 @@
 import request from '~/utils/axios';
 
 const userService = {
+  //getToken
+  getUserFromToken() {
+    return request
+      .get(`/users/getToken`)
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error('Error data userToken:', error);
+        throw error;
+      });
+  },
   //storeUser
   storedUser() {
     return request
