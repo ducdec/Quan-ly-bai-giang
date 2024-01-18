@@ -4,21 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react';
 
 import {
-  faCircleQuestion,
   faCloudUpload,
-  faCoins,
-  faEarthAsia,
-  faEllipsisVertical,
   faGear,
-  faKeyboard,
   faSignOut,
   faUser,
+  faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import 'tippy.js/dist/tippy.css';
 import config from '~/config';
 
-import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
 import images from '~/assets/images';
 import Image from '~/components/Image';
@@ -28,39 +23,7 @@ import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
-const MENU_ITEMS = [
-  {
-    icon: <FontAwesomeIcon icon={faEarthAsia} />,
-    title: 'English',
-    children: {
-      title: 'Languagesss',
-      data: [
-        {
-          type: 'language',
-          code: 'en',
-          title: 'English',
-        },
-        {
-          type: 'language',
-          code: 'vi',
-          title: 'Tieng Viet',
-        },
-      ],
-    },
-  },
-  {
-    icon: <FontAwesomeIcon icon={faCircleQuestion} />,
-    title: 'Feedback and help',
-    to: '/feedback',
-  },
-  {
-    icon: <FontAwesomeIcon icon={faKeyboard} />,
-    title: 'Keyboard shorcuts',
-  },
-];
-
 function Header() {
-  const currentUser = true;
   //const dispatch = useDispatch();
   const userStore = useSelector((state) => state.data);
 
@@ -85,16 +48,10 @@ function Header() {
       separate: true,
     },
     {
-      icon: <FontAwesomeIcon icon={faCoins} />,
-      title: 'Get coins',
-      to: '/coins',
-    },
-    {
       icon: <FontAwesomeIcon icon={faGear} />,
-      title: 'Settings',
-      to: '/settings',
+      title: 'Cài đặt',
+      to: `/users/:id/setting`,
     },
-    ...MENU_ITEMS,
     {
       icon: <FontAwesomeIcon icon={faSignOut} />,
       title: 'Đăng xuất',
@@ -114,51 +71,39 @@ function Header() {
         <Search />
 
         <div className={cx('actions')}>
-          {currentUser ? (
-            <div className={cx('action')}>
-              <>
-                <Tippy
-                  delay={[0, 200]}
-                  content="Thêm khóa học"
-                  placement="bottom"
-                >
-                  <Button
-                    to={config.routes.createCourse}
-                    className={cx('action-btn')}
-                  >
-                    <FontAwesomeIcon icon={faCloudUpload} />
-                  </Button>
-                </Tippy>
-
-                {/* <Tippy delay={[0, 200]} content="Message" placement="bottom">
-                  <Button className={cx('action-btn')}>
-                    <MessageIcon />
-                  </Button>
-                </Tippy> */}
-              </>
-            </div>
-          ) : (
+          <div className={cx('action')}>
             <>
-              <Button text>Upload</Button>
-              <Button primary>Log in</Button>
-            </>
-          )}
+              <Tippy
+                delay={[0, 200]}
+                content="Thêm khóa học"
+                placement="bottom"
+              >
+                <Link
+                  to={config.routes.createCourse}
+                  className={cx('action-btn')}
+                >
+                  <FontAwesomeIcon icon={faCloudUpload} />
+                </Link>
+              </Tippy>
 
-          <Menu
-            items={currentUser ? userMENU : MENU_ITEMS}
-            onChange={handleMenuChange}
-          >
-            {currentUser ? (
-              <Image
-                className={cx('user-avatar')}
-                src={images.MeoMatTo}
-                alt="avatar"
-              />
-            ) : (
-              <button className={cx('more-btn')}>
-                <FontAwesomeIcon icon={faEllipsisVertical} />
-              </button>
-            )}
+              <Tippy
+                delay={[0, 200]}
+                content="Thêm giảng viên"
+                placement="bottom"
+              >
+                <Link to={config.routes.CreateIns} className={cx('action-btn')}>
+                  <FontAwesomeIcon icon={faUserPlus} />
+                </Link>
+              </Tippy>
+            </>
+          </div>
+
+          <Menu items={userMENU} onChange={handleMenuChange}>
+            <Image
+              className={cx('user-avatar')}
+              src={images.MeoMatTo}
+              alt="avatar"
+            />
           </Menu>
         </div>
       </div>

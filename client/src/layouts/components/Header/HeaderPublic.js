@@ -26,13 +26,13 @@ function HeaderPublic() {
         <div className={cx('actions')}>
           <>
             <Button to={config.routes.signIn} primary>
-              Log in
+              Đăng nhập
             </Button>
           </>
 
-          <button className={cx('more-btn')}>
+          {/* <button className={cx('more-btn')}>
             <FontAwesomeIcon icon={faEllipsisVertical} />
-          </button>
+          </button> */}
         </div>
       </div>
     </header>

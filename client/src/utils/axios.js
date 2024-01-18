@@ -1,5 +1,7 @@
 import axios from 'axios';
-// import { useSelector, useDispatch } from 'react-redux';
+import configureAppStore from '~/store/configStore';
+import { useDispatch } from 'react-redux';
+const store = configureAppStore();
 // import { setUser } from '~/store/userSlice';
 // import useCustomHook from '~/store/CustomHook';
 
@@ -26,7 +28,7 @@ const request = axios.create({
 });
 // Add an interceptor for every request
 request.interceptors.request.use(
-  (config) => {
+  async (config) => {
     // Kiểm tra xem có token đã được lưu trong localStorage không
     const token = localStorage.getItem('token');
 
@@ -34,7 +36,11 @@ request.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
+    // const { data } = store.getState();
+    // if (Object.getOwnPropertyNames(data).length === 0) {
+    //   const data = await request.get('/users/getToken');
+    //   console.log('Line 51 : ', data);
+    // }
     return config;
   },
   (error) => {
@@ -42,17 +48,25 @@ request.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-
-// request.interceptors.response.use(async (response) => {
-//   const userState = useSelector((state) => state.data);
-//   // const dispatch = useDispatch();
-//   //
-//   if (!userState) {
-//     const data = await request.get('/users/getToken');
-//   }
-//   console.log('Line 36 : ');
-//   // dispatch(setUser(data));
-
-//   return response;
-// });
+let isInterceptorCalled = false;
+request.interceptors.response.use(
+  async (res) => {
+    const { data } = store.getState();
+    if (!isInterceptorCalled && Object.getOwnPropertyNames(data).length === 0) {
+      isInterceptorCalled = true;
+      console.log();
+      try {
+        const response = await request.get('users/getToken');
+        // Xử lý response và lưu trữ token nếu cần
+        // sessionStorage.setItem('token', response.data.access_token);
+      } catch (error) {
+        // Xử lý lỗi nếu có
+      }
+    }
+    return res;
+  },
+  async (error) => {
+    return Promise.reject(error);
+  },
+);
 export default request;

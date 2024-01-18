@@ -40,12 +40,12 @@ function SignIn() {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  useEffect(() => {
-    // Lưu trữ dữ liệu vào localStorage khi component unmounted
-    return () => {
-      localStorage.setItem('userStore', JSON.stringify(userState));
-    };
-  }, [userState]);
+  // useEffect(() => {
+  //   // Lưu trữ dữ liệu vào localStorage khi component unmounted
+  //   return () => {
+  //     localStorage.setItem('userStore', JSON.stringify(userState));
+  //   };
+  // }, [userState]);
 
   // useEffect(() => {
   //   // Kiểm tra lỗi mỗi khi giá trị thay đổi

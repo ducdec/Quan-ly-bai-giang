@@ -8,6 +8,7 @@ import Image from '~/components/Image';
 import images from '~/assets/images';
 import { ProfileIcon } from '~/components/Icons';
 import { setUser } from '~/store/userSlice';
+import userService from '~/services/userServices';
 
 const cx = classNames.bind(styles);
 
@@ -16,6 +17,35 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   const [userData, setUserData] = useState({});
+
+  const updateRoleUser = (role) => setUserData(role);
+
+  useEffect(() => {
+    console.log('useEffect đã được kích hoạt');
+    const fetchUserFromToken = async () => {
+      // Lấy token từ Local Storage
+      const storedToken = localStorage.getItem('token');
+      // Kiểm tra xem có token hay không
+      if (storedToken) {
+        try {
+          // Gửi token lên server để xác thực
+          const user = await userService.getUserFromToken();
+          console.log('Dữ liệu người dùng nhận được:', user);
+          // Nếu xác thực thành công, cập nhật state của ứng dụng
+
+          const action = dispatch(setUser(user));
+          console.log('Dispatch result:', action);
+          updateRoleUser(user);
+        } catch (error) {
+          console.error('Error while fetching user:', error);
+          // Xử lý lỗi (ví dụ: xóa token nếu không hợp lệ)
+          localStorage.removeItem('token');
+        }
+      }
+    };
+
+    fetchUserFromToken();
+  }, [dispatch]);
 
   useEffect(() => {
     // Khôi phục dữ liệu từ localStorage khi component được mounted

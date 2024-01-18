@@ -27,6 +27,7 @@ const routers = {
   //users
   storeUsers: '/users/stored',
   editUser: '/users/:id/edit',
+  setting: '/users/:id/setting',
 };
 
 export default routers;

@@ -29,6 +29,7 @@ import StoredInstructor from '~/pages/Instructor/MyInstructor/storedInstructors'
 //user
 import StoredUsers from '~/pages/User/storedUser';
 import UpdateUsers from '~/pages/User/components/edit';
+import GeneralSettings from '~/pages/User/components/Setting';
 //
 import HeaderProfile from '~/layouts/HeaderProfile';
 
@@ -125,6 +126,11 @@ const adminRoutes = [
     component: UpdateUsers,
     layout: HeaderOnly,
   },
+  {
+    path: config.routes.setting,
+    component: GeneralSettings,
+    layout: HeaderOnly,
+  },
 ];
 
 //user routes
@@ -164,6 +170,8 @@ const userRoutes = [
   //Profiles
   { path: config.routes.profile, component: Profile, layout: HeaderProfile },
 ];
+
+//public routes
 const publicRoutes = [
   //home
   { path: config.routes.home, component: Home },
