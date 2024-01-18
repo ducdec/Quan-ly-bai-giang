@@ -8,6 +8,7 @@ router.put('/:id', UserController.update);
 router.delete('/:id/delete', UserController.forceDestroy); //xoa that
 
 router.get('/getToken', UserController.getUser);
+router.put('/setting/:id', UserController.setting);
 router.get('/stored', UserController.showUser);
 
 export default router;

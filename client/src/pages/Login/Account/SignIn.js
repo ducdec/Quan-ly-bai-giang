@@ -71,6 +71,7 @@ function SignIn() {
           // Lưu token vào localStorage
           localStorage.setItem('token', token);
           navigate(config.routes.home);
+          window.location.reload();
         } else {
           console.log('Tài khoản hoặc mật khẩu không chính xác');
         }

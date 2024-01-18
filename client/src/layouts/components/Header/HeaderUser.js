@@ -11,13 +11,46 @@ import Menu from '~/components/Popper/Menu';
 import images from '~/assets/images';
 import Image from '~/components/Image';
 import Search from '../Search';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import userService from '~/services/userServices';
+import { setUser } from '~/store/userSlice';
 //import { logoutUser } from '~/store/userSlice';
 
 const cx = classNames.bind(styles);
 
 function HeaderUser() {
-  const userStore = useSelector((state) => state.data);
+  const dispatch = useDispatch();
+  const [userData, setUserData] = useState({});
+
+  const updateRoleUser = (user) => setUserData(user);
+
+  useEffect(() => {
+    console.log('useEffect đã được kích hoạt');
+    const fetchUserFromToken = async () => {
+      // Lấy token từ Local Storage
+      const storedToken = localStorage.getItem('token');
+      // Kiểm tra xem có token hay không
+      if (storedToken) {
+        try {
+          // Gửi token lên server để xác thực
+          const user = await userService.getUserFromToken();
+          console.log('Dữ liệu người dùng nhận được:', user);
+          // Nếu xác thực thành công, cập nhật state của ứng dụng
+
+          const action = dispatch(setUser(user));
+          console.log('Dispatch result:', action);
+          updateRoleUser(user);
+        } catch (error) {
+          console.error('Error while fetching user:', error);
+          // Xử lý lỗi (ví dụ: xóa token nếu không hợp lệ)
+          localStorage.removeItem('token');
+        }
+      }
+    };
+
+    fetchUserFromToken();
+  }, [dispatch]);
 
   //Handle logic
   const handleMenuChange = (menuItem) => {
@@ -33,13 +66,13 @@ function HeaderUser() {
     {
       icon: <FontAwesomeIcon icon={faUser} />,
       title: 'Trang cá nhân',
-      to: `/@${userStore.username}`,
+      to: `/@${userData.username}`,
       separate: true,
     },
     {
       icon: <FontAwesomeIcon icon={faGear} />,
       title: 'Settings',
-      to: '/settings',
+      to: '/users/setting',
     },
     {
       icon: <FontAwesomeIcon icon={faSignOut} />,
@@ -63,7 +96,7 @@ function HeaderUser() {
           <Menu items={userMENU} onChange={handleMenuChange}>
             <Image
               className={cx('user-avatar')}
-              src={images.MeoMatTo}
+              src={userData.image}
               alt="avatar"
             />
           </Menu>

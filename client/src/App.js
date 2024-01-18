@@ -7,12 +7,17 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from '~/store/userSlice';
 import userService from '~/services/userServices';
+import config from './config';
+import SignIn from './pages/Login/Account/SignIn';
+import Home from './pages/Home';
 
 function App() {
   const dispatch = useDispatch();
   const [roleUser, setRoleUser] = useState('');
-  const updateRoleUser = (role) => setRoleUser(role);
 
+  const updateRoleUser = (role) => {
+    setRoleUser(role); // Cập nhật state trước khi cập nhật bên UI
+  };
   useEffect(() => {
     console.log('useEffect đã được kích hoạt');
     const fetchUserFromToken = async () => {
@@ -28,9 +33,9 @@ function App() {
           // dispatch(setUser(user));
           // setRoleUser(dispatch(setUser(role)).payload);
           // console.log(dispatch(setUser(role)));
+          updateRoleUser(role);
           const action = dispatch(setUser(role));
           console.log('Dispatch result:', action);
-          updateRoleUser(role);
         } catch (error) {
           console.error('Error while fetching user:', error);
           // Xử lý lỗi (ví dụ: xóa token nếu không hợp lệ)

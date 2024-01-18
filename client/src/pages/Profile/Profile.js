@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Profile.module.scss';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Image from '~/components/Image';
-import images from '~/assets/images';
 import { ProfileIcon } from '~/components/Icons';
 import { setUser } from '~/store/userSlice';
 import userService from '~/services/userServices';
@@ -13,12 +12,11 @@ import userService from '~/services/userServices';
 const cx = classNames.bind(styles);
 
 const Profile = () => {
-  const userStore = useSelector((state) => state.data);
   const dispatch = useDispatch();
 
   const [userData, setUserData] = useState({});
 
-  const updateRoleUser = (role) => setUserData(role);
+  const updateRoleUser = (user) => setUserData(user);
 
   useEffect(() => {
     console.log('useEffect đã được kích hoạt');
@@ -47,22 +45,9 @@ const Profile = () => {
     fetchUserFromToken();
   }, [dispatch]);
 
-  useEffect(() => {
-    // Khôi phục dữ liệu từ localStorage khi component được mounted
-    const storedUser = localStorage.getItem('userStore');
-
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-
-      // Dispatch action setUser với parsedUser
-      const data = dispatch(setUser(parsedUser));
-      setUserData(data.payload);
-      console.log(data.payload);
-    }
-  }, [dispatch]);
-  console.log(userData.username);
+  //console.log(userData);
   // Thời điểm bạn tạo tài khoản
-  const accountCreationTime = new Date(userStore.createdAt);
+  const accountCreationTime = new Date(userData.createdAt);
 
   // Thời điểm hiện tại
   const currentTime = new Date();
@@ -95,7 +80,7 @@ const Profile = () => {
       >
         <div className={cx('header')}>
           <div className={cx('avatar')}>
-            <Image src={images.Vex} alt="Ảnh đại diện" />
+            <Image src={userData.image} alt="Ảnh đại diện" />
           </div>
           <div className={cx('info')}>
             <h1>{userData.username}</h1>

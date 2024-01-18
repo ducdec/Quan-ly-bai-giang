@@ -11,6 +11,16 @@ const userService = {
         throw error;
       });
   },
+  //setting
+  setting(updateData, id) {
+    return request
+      .put(`/users/setting/${id}`, updateData)
+      .then((res) => res.data)
+      .catch((error) => {
+        console.error('Error data setting:', error);
+        throw error;
+      });
+  },
   //storeUser
   storedUser() {
     return request

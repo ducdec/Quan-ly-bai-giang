@@ -13,6 +13,11 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    image: {
+      //type: String,
+      data: Buffer,
+      contentType: String,
+    },
     email: {
       type: String,
       required: true,

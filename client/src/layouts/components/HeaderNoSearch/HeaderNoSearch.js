@@ -2,21 +2,11 @@ import classNames from 'classnames/bind';
 import styles from '../HeaderNoSearch/HeaderNoSearch.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {
-  faCircleQuestion,
-  faCoins,
-  faEarthAsia,
-  faEllipsisVertical,
-  faGear,
-  faKeyboard,
-  faSignOut,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
+import { faGear, faSignOut, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import 'tippy.js/dist/tippy.css';
 import config from '~/config';
 
-import Button from '~/components/Button';
 import Menu from '~/components/Popper/Menu';
 import images from '~/assets/images';
 import Image from '~/components/Image';
@@ -25,39 +15,8 @@ import { useSelector } from 'react-redux';
 //import { logoutUser } from '~/store/userSlice';
 
 const cx = classNames.bind(styles);
-const MENU_ITEMS = [
-  {
-    icon: <FontAwesomeIcon icon={faEarthAsia} />,
-    title: 'English',
-    children: {
-      title: 'Languagesss',
-      data: [
-        {
-          type: 'language',
-          code: 'en',
-          title: 'English',
-        },
-        {
-          type: 'language',
-          code: 'vi',
-          title: 'Tieng Viet',
-        },
-      ],
-    },
-  },
-  {
-    icon: <FontAwesomeIcon icon={faCircleQuestion} />,
-    title: 'Feedback and help',
-    to: '/feedback',
-  },
-  {
-    icon: <FontAwesomeIcon icon={faKeyboard} />,
-    title: 'Keyboard shorcuts',
-  },
-];
 
 function HeaderNoSearch() {
-  const currentUser = true;
   const userStore = useSelector((state) => state.data);
 
   //Handle logic
@@ -82,16 +41,10 @@ function HeaderNoSearch() {
       separate: true,
     },
     {
-      icon: <FontAwesomeIcon icon={faCoins} />,
-      title: 'Get coins',
-      to: '/coins',
-    },
-    {
       icon: <FontAwesomeIcon icon={faGear} />,
       title: 'Settings',
-      to: '/settings',
+      to: '/users/setting',
     },
-    ...MENU_ITEMS,
     {
       icon: <FontAwesomeIcon icon={faSignOut} />,
       title: 'Log out',
@@ -112,29 +65,12 @@ function HeaderNoSearch() {
           </div>
         </Link>
         <div className={cx('actions')}>
-          {currentUser ? (
-            <div></div>
-          ) : (
-            <>
-              <Button text>Upload</Button>
-              <Button primary>Log in</Button>
-            </>
-          )}
-          <Menu
-            items={currentUser ? userMENU : MENU_ITEMS}
-            onChange={handleMenuChange}
-          >
-            {currentUser ? (
-              <Image
-                className={cx('user-avatar')}
-                src={images.MeoMatTo}
-                alt="Nguyen Van Duc"
-              />
-            ) : (
-              <button className={cx('more-btn')}>
-                <FontAwesomeIcon icon={faEllipsisVertical} />
-              </button>
-            )}
+          <Menu items={userMENU} onChange={handleMenuChange}>
+            <Image
+              className={cx('user-avatar')}
+              src={userStore.image}
+              alt="Nguyen Van Duc"
+            />
           </Menu>
         </div>
       </div>

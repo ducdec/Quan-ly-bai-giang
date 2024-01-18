@@ -86,11 +86,7 @@ function UpdateCourse() {
     e.preventDefault();
 
     //console.log('Dữ liệu trước khi cập nhật:', formData);
-    const requiredFields = [
-      'name',
-      selectedOption === 'URL' ? 'imageUrl' : 'imageFile',
-      'status',
-    ];
+    const requiredFields = ['name', 'imageUrl', 'status'];
 
     const missingFields = requiredFields.filter((field) => {
       return !formData[field];
@@ -237,9 +233,7 @@ function UpdateCourse() {
                 <label htmlFor="imageFile">Chọn File</label>
                 <input
                   type="file"
-                  className={cx('form-control', {
-                    'is-invalid': errorFields.includes('imageFile'),
-                  })}
+                  className={cx('form-control')}
                   id="imageFile"
                   name="imageFile"
                   onChange={handleFileChange}

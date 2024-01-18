@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './SettingName.module.scss';
 import { CamIcon } from '~/components/Icons';
+import Image from '~/components/Image';
 
 const cx = classNames.bind(styles);
 
-function SettingAvatar() {
+function SettingAvatar({ updateData, data }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState(
-    'https://graph.facebook.com/1117867828580619/picture?width=400&height=400',
-  );
+  const [avatar, setAvatar] = useState(data);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [base64Image, setBase64Image] = useState(null);
+
+  useEffect(() => {
+    setAvatar(data);
+  }, [data]);
 
   const startEditing = () => {
     setIsEditing(true);
@@ -18,19 +22,27 @@ function SettingAvatar() {
 
   const cancelEditing = () => {
     setIsEditing(false);
+    setSelectedImage(null); // Hủy bỏ hình ảnh đã chọn nếu có
   };
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const saveChanges = () => {
-    // Add logic to handle save changes (e.g., API call or state update)
+    console.log('Selected Image.:', selectedImage);
+    console.log('Current Avatar:', avatar);
     setIsEditing(false);
+    setAvatar(selectedImage || avatar);
+    setBase64Image(selectedImage || avatar);
+    updateData(selectedImage || avatar);
   };
 
   return (
@@ -49,10 +61,7 @@ function SettingAvatar() {
                 className={cx('FallbackAvatar_avatar')}
                 style={{ '--font-size': '8.9px' }}
               >
-                <img
-                  src={isEditing ? selectedImage || avatarUrl : avatarUrl}
-                  alt="Đức Nguyễn"
-                />
+                <img src={selectedImage || avatar} />
               </div>
             </div>
 

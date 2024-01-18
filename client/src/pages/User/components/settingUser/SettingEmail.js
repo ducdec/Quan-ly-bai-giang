@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './SettingName.module.scss';
 
 const cx = classNames.bind(styles);
 
-function SettingEmail() {
-  const [fullName, setFullName] = useState('Email');
+function SettingEmail({ data }) {
+  const [fullName, setFullName] = useState(data);
+
+  useEffect(() => {
+    // Nếu đang ở trạng thái chỉnh sửa, đặt tiêu điểm vào ô input
+
+    setFullName(data);
+  }, [data]);
 
   return (
     <div className={cx('FieldWrapper_wrapper')}>

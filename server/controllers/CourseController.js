@@ -109,7 +109,7 @@ class CourseController {
     }
   }
 
-  // [PATCH] /courses/:id
+  // [PUT] /courses/:id
   async update(req, res) {
     try {
       const courseId = req.params.id;

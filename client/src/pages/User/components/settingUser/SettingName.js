@@ -1,26 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './SettingName.module.scss';
 
 const cx = classNames.bind(styles);
 
-function SettingName() {
+function SettingName({ updateData, data }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [fullName, setFullName] = useState('Đức Nguyễn');
+  const [fullName, setFullName] = useState(data);
+  console.log(data, 'name', fullName);
+  // Tạo ref cho input
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    // Nếu đang ở trạng thái chỉnh sửa, đặt tiêu điểm vào ô input
+    if (isEditing) {
+      inputRef.current.focus();
+    }
+    setFullName(data);
+  }, [isEditing, data]);
 
   const startEditing = () => {
     setIsEditing(true);
   };
 
   const cancelEditing = () => {
+    // Nếu muốn hủy các thay đổi khi nhấn nút "Hủy", bạn có thể khôi phục giá trị ban đầu ở đây
+    setFullName(data);
     setIsEditing(false);
   };
 
   const saveChanges = () => {
-    // Thêm logic để xử lý khi nhấn nút "Lưu"
-    // Có thể gọi API hoặc thực hiện các công việc cần thiết ở đây
-    // Ở đây mình chỉ cập nhật trạng thái, bạn cần thay đổi thành gọi API hoặc thực hiện các công việc khác tương ứng
     setIsEditing(false);
+    updateData(fullName);
   };
   return (
     <div className={cx('FieldWrapper_wrapper')}>
@@ -33,6 +44,7 @@ function SettingName() {
             })}
           >
             <input
+              ref={inputRef}
               type="text"
               name="full_name"
               className={cx('fieldContentInput')}

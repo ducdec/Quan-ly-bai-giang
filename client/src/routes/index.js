@@ -32,6 +32,8 @@ import UpdateUsers from '~/pages/User/components/edit';
 import GeneralSettings from '~/pages/User/components/Setting';
 //
 import HeaderProfile from '~/layouts/HeaderProfile';
+import HeaderUser from '~/layouts/components/Header/HeaderUser';
+import HeaderUsers from '~/layouts/HeaderUser';
 
 //Public routes
 const adminRoutes = [
@@ -79,7 +81,7 @@ const adminRoutes = [
     component: TrashCourse,
     layout: HeaderOnly,
   },
-  { path: config.routes.lecture, component: Course, layout: HeaderOnly },
+  { path: config.routes.lecture, component: Course, layout: HeaderUsers },
 
   //Lectures
   {
@@ -93,7 +95,7 @@ const adminRoutes = [
     layout: HeaderOnly,
   },
   //learning
-  { path: config.routes.learning, component: learning, layout: HeaderOnly },
+  { path: config.routes.learning, component: learning, layout: HeaderUsers },
 
   //instructors
   {
@@ -129,7 +131,7 @@ const adminRoutes = [
   {
     path: config.routes.setting,
     component: GeneralSettings,
-    layout: HeaderOnly,
+    layout: HeaderProfile,
   },
 ];
 
@@ -162,13 +164,20 @@ const userRoutes = [
   },
 
   //courses
-  { path: config.routes.lecture, component: Course, layout: HeaderOnly },
+  { path: config.routes.lecture, component: Course, layout: HeaderUsers },
 
   //learning
-  { path: config.routes.learning, component: learning, layout: HeaderOnly },
+  { path: config.routes.learning, component: learning, layout: HeaderUsers },
 
   //Profiles
   { path: config.routes.profile, component: Profile, layout: HeaderProfile },
+
+  //setting
+  {
+    path: config.routes.setting,
+    component: GeneralSettings,
+    layout: HeaderProfile,
+  },
 ];
 
 //public routes
@@ -198,10 +207,10 @@ const publicRoutes = [
   },
 
   //courses
-  { path: config.routes.lecture, component: Course, layout: HeaderOnly },
+  { path: config.routes.lecture, component: Course, layout: HeaderUsers },
 
   //learning
-  { path: config.routes.learning, component: learning, layout: HeaderOnly },
+  { path: config.routes.learning, component: learning, layout: HeaderUsers },
 ];
 
 export { publicRoutes, userRoutes, adminRoutes };
