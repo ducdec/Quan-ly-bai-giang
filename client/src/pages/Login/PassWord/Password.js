@@ -8,6 +8,7 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import Button from '~/components/Button';
 import userService from '~/services/userServices';
 import { Link } from 'react-router-dom';
+import config from '~/config';
 
 const cx = classNames.bind(styles);
 
@@ -41,7 +42,7 @@ function ForgotPassToken() {
         try {
           // Gửi yêu cầu mã xác nhận đến server
           const response = await userService.forgotPassToken(values);
-
+          navigator(config.routes.signIn);
           if (response.success) {
             console.log('Mã xác nhận đã được gửi thành công');
           } else {

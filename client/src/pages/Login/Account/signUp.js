@@ -13,6 +13,7 @@ import validationFunctions from './LoginValidation';
 import Button from '~/components/Button';
 import userService from '~/services/userServices';
 import { Link, useNavigate } from 'react-router-dom';
+import config from '~/config';
 
 const cx = classNames.bind(styles);
 
@@ -112,7 +113,7 @@ function SignUp() {
                   checked={rememberPassword}
                   onChange={handleRememberPassword}
                 />
-                Nhớ <a href="/">Lấy lại mật khẩu</a>
+                Nhớ <Link to={config.routes.passWord}>Lấy lại mật khẩu</Link>
               </label>
             </div>
             <Button type="submit" btnLogin>

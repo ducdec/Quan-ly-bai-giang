@@ -115,7 +115,7 @@ class LoginController {
       // Hash the password
       const hashedPassword = await bcrypt.hash(newUserData.password, 10);
       newUserData.password = hashedPassword;
-      const usernow = { role: 'user', ...newUserData };
+      const usernow = { role: 'User', ...newUserData };
       const newUser = new User(usernow);
 
       const savedUser = await newUser.save();
@@ -192,25 +192,28 @@ class LoginController {
     }
   }
 
-  // [POST] login/forgotPassword/:token
+  // [POST] login/password/:token
   async forgotPassToken(req, res) {
     const { token } = req.params;
-    const { newPassword } = req.body;
+    const { password } = req.body;
 
     try {
       // Tìm người dùng với mã xác nhận
       const user = await User.findOne({ resetToken: token });
+      console.log(password);
 
       if (!user) {
         return res.status(404).json({ error: 'Invalid or expired token' });
       }
-
+      if (typeof password !== 'string') {
+        return res.status(400).json({ error: 'Invalid password data' });
+      }
       // Hash mật khẩu mới
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Lưu mật khẩu mới vào cơ sở dữ liệu hoặc mảng (trong môi trường thực tế, bạn sẽ lưu vào cơ sở dữ liệu)
+      // Lưu mật khẩu mới vào cơ sở dữ liệu
       user.password = hashedPassword;
-
+      //console.log(user.password);
       // Xóa mã xác nhận sau khi mật khẩu đã được đặt lại
       user.resetToken = null;
       await user.save();

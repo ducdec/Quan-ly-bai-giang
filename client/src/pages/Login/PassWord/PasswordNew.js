@@ -13,12 +13,12 @@ import config from '~/config';
 const cx = classNames.bind(styles);
 
 function ForgotPass() {
-  const { token } = useParams;
+  const { token } = useParams();
   const [values, setValues] = useState({
     password: '',
     againPass: '',
   });
-
+  console.log('token ne:', token);
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -39,7 +39,8 @@ function ForgotPass() {
         // Kiểm tra nếu đăng nhập thành công
         if (User) {
           console.log(User); // Optional: log the user data
-          navigate(config.routes.home);
+          alert('Đổi mật khẩu thành công');
+          navigate(config.routes.signIn);
         } else {
           console.log('Khong duoc');
         }

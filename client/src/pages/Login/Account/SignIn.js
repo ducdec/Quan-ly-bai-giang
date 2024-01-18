@@ -109,7 +109,7 @@ function SignIn() {
             <div className={cx('forget')}>
               <label className={cx('label')} htmlFor="">
                 <input type="checkbox" />
-                Nhớ <a href="/login/password">Lấy lại mật khẩu</a>
+                Nhớ <Link to={config.routes.passWord}>Lấy lại mật khẩu</Link>
               </label>
             </div>
             <Button type="submit" btnLogin>
