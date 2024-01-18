@@ -19,8 +19,8 @@ function LecturePanel() {
         // const result = await lectureService.courseSlug(id);
 
         const result = await courseService.courseSlug(slug);
-        console.log('Line 34 ', result.instructors);
-        console.log('Data from API:', result);
+        // console.log('Line 34 ', result.instructors);
+        // console.log('Data from API:', result);
         setLectures(result.lectures);
         setInstructors(result.instructors);
       } catch (error) {
@@ -31,7 +31,6 @@ function LecturePanel() {
     fetchData();
   }, [slug]);
   const countVides = lectures.length;
-  console.log(lectures);
   return (
     <div className={cx('wrapper')}>
       <div className={cx('panel')}>

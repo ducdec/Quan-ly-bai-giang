@@ -16,7 +16,7 @@ function Learning() {
   const id = searchParams.get('id');
   const { slug } = useParams();
 
-  console.log('12:', id, 'slug:', slug);
+  //console.log('12:', id, 'slug:', slug);
 
   //const [instructors, setInstructors] = useState([]);
   const [dataLectures, setDataLectures] = useState([]);
@@ -28,15 +28,6 @@ function Learning() {
       try {
         const result = await learningService.courseInfo(slug, id);
 
-        //console.log('Line 34 ', result.lectures);
-        // console.log(
-        //   'Data from API:',
-        //   result.lecture,
-        //   ' : ',
-        //   result.course.lectures,
-        // );
-
-        //setInstructors(result.instructors);
         setLectureAlone(result.lecture);
         setDataLectures(result.course.lectures);
         setCourse(result.course);
@@ -48,7 +39,7 @@ function Learning() {
     fetchData();
   }, [slug, id]);
 
-  console.log('1:', dataLectures, '2:', lectureAlone, '3:', course);
+  //console.log('1:', dataLectures, '2:', lectureAlone, '3:', course);
   return (
     <div className={cx('wrapper')}>
       <div className={cx('tracks_wrapper')}>

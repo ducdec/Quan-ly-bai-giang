@@ -1,5 +1,6 @@
 import { User } from '../models/User.js';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 class UserController {
   constructor() {}
 
@@ -34,22 +35,6 @@ class UserController {
   //[PUT] /users/setting/:id
   async setting(req, res, next) {
     try {
-      // let token = req.header('Authorization');
-      // token = token && token.split(' ')[1];
-      // if (token == null) return res.sendStatus(401);
-
-      // const jwtSecretKey = process.env.JWT_SECRET_KEY;
-      // const verified = jwt.verify(token, jwtSecretKey);
-
-      // // Kiểm tra thời gian hiệu lực của token
-      // const currentTimestamp = Math.floor(Date.now() / 1000);
-      // if (verified.exp !== undefined && verified.exp < currentTimestamp) {
-      //   return res.status(401).json({ error: 'Token has expired' });
-      // }
-
-      // const id = verified.userId
-      //   ? mongoose.Types.ObjectId(verified.userId)
-      //   : null;
       const id = req.params.id;
       // Lấy dữ liệu mới từ yêu cầu
       const { username, image, password } = req.body;

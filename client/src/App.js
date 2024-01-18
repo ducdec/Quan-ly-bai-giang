@@ -7,9 +7,6 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from '~/store/userSlice';
 import userService from '~/services/userServices';
-import config from './config';
-import SignIn from './pages/Login/Account/SignIn';
-import Home from './pages/Home';
 
 function App() {
   const dispatch = useDispatch();
@@ -19,23 +16,19 @@ function App() {
     setRoleUser(role); // Cập nhật state trước khi cập nhật bên UI
   };
   useEffect(() => {
-    console.log('useEffect đã được kích hoạt');
     const fetchUserFromToken = async () => {
       // Lấy token từ Local Storage
       const storedToken = localStorage.getItem('token');
       // Kiểm tra xem có token hay không
       if (storedToken) {
         try {
-          // Gửi token lên server để xác thực
+          // eslint-disable-next-line
           const { role, ...user } = await userService.getUserFromToken();
-          console.log('Dữ liệu người dùng nhận được:', role, user);
-          // Nếu xác thực thành công, cập nhật state của ứng dụng
-          // dispatch(setUser(user));
-          // setRoleUser(dispatch(setUser(role)).payload);
+
           // console.log(dispatch(setUser(role)));
           updateRoleUser(role);
-          const action = dispatch(setUser(role));
-          console.log('Dispatch result:', action);
+          dispatch(setUser(role));
+          //console.log('Dispatch result:', user);
         } catch (error) {
           console.error('Error while fetching user:', error);
           // Xử lý lỗi (ví dụ: xóa token nếu không hợp lệ)
@@ -133,7 +126,7 @@ function App() {
       </>
     );
   };
-  console.log('roleUser', roleUser);
+  //console.log('roleUser', roleUser);
 
   const renderRoutes = () => {
     // Kiểm tra xem có token hay không

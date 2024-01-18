@@ -33,8 +33,8 @@ function CreateLecture() {
     const fetchData = async () => {
       try {
         const result = await lectureService.courseSlug(id);
-        console.log('Line 34 ', result.lectures);
-        console.log('Data from API:', result);
+        // console.log('Line 34 ', result.lectures);
+        // console.log('Data from API:', result);
         setInstructors(result.instructors);
         setlectures(result.lectures);
         setCourse(result.courseInfo);
@@ -96,7 +96,6 @@ function CreateLecture() {
     // });
   };
 
-  console.log('107:', newLecture);
   const instructorOptions = instructors.map((ins) => ({
     value: ins._id,
     label: ins.name,

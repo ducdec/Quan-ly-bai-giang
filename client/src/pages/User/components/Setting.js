@@ -6,7 +6,7 @@ import SettingAvatar from './settingUser/SettingAvatar';
 import SettingEmail from './settingUser/SettingEmail';
 import SettingPassword from './settingUser/SettingPass';
 import userService from '~/services/userServices';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUser } from '~/actions/actions';
 
 const cx = classNames.bind(styles);
@@ -16,27 +16,22 @@ function GeneralSettings() {
   const [dataName, setDataName] = useState('');
   const [dataAvatar, setDataAvatar] = useState('');
   const [dataEmail, setDataEmail] = useState('');
-  const [dataPass, setDataPass] = useState('');
 
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('useEffect đã được kích hoạt');
     const fetchUserFromToken = async () => {
-      // Lấy token từ Local Storage
       const storedToken = localStorage.getItem('token');
       // Kiểm tra xem có token hay không
       if (storedToken) {
         try {
-          // Gửi token lên server để xác thực
           const user = await userService.getUserFromToken();
-          console.log('Dữ liệu người dùng nhận được:', user);
-          // Nếu xác thực thành công, cập nhật state của ứng dụng
+
           setDataName(user.username);
           setDataEmail(user.email);
           setDataAvatar(user.image);
           setId(user._id);
-          const action = dispatch(setUser(user));
-          console.log('Dispatch result:', action);
+          dispatch(setUser(user));
+          //console.log('Dispatch result:', action);
         } catch (error) {
           console.error('Error while fetching user:', error);
           // Xử lý lỗi (ví dụ: xóa token nếu không hợp lệ)
@@ -61,7 +56,6 @@ function GeneralSettings() {
   };
 
   const updateDataPass = (newData) => {
-    setDataPass(newData);
     // Gửi cập nhật lên server
     sendUpdateToServer({ password: newData });
   };
@@ -80,7 +74,6 @@ function GeneralSettings() {
       });
   };
 
-  console.log(dataAvatar);
   return (
     <div className={cx('Setting_pageWrapper')}>
       <section className={cx('row')}>

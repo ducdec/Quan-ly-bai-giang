@@ -24,7 +24,8 @@ function SettingEmail({ data }) {
               name="full_name"
               className={cx('fieldContentInput')}
               maxLength="50"
-              placeholder="Thêm tên của bạn"
+              placeholder="Email"
+              disabled
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />

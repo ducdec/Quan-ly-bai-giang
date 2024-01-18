@@ -28,7 +28,7 @@ function StoredUsers() {
       try {
         const result = await userService.storedUser();
         setUserResult(result);
-        console.log('result', result);
+        //console.log('result', result);
       } catch (error) {
         console.error('API:', error);
       } finally {

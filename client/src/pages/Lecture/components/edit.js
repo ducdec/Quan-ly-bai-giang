@@ -37,8 +37,8 @@ function UpdateLecture() {
         // const result = await lectureService.courseSlug(id);
 
         const result = await lectureService.editLec(slug, id);
-        console.log('Line 34 ', result.lecture.instructor);
-        console.log('Data from API:', result);
+        // console.log('Line 34 ', result.lecture.instructor);
+        // console.log('Data from API:', result);
 
         setInstructors(result.instructors);
         setLectures(result.lecturesCourse);

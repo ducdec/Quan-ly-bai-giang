@@ -31,7 +31,7 @@ function CreateCourse() {
     const fetchData = async () => {
       try {
         const result = await courseService.storedIns();
-        console.log('Line 34 ', result);
+        //console.log('Line 34 ', result);
         setInstructors(result);
       } catch (error) {
         console.error('API:', error);
@@ -58,8 +58,6 @@ function CreateCourse() {
       ...prevCourse,
       instructors: value,
     }));
-
-    // console.log('Line 56 : ', selectedInstructors);
   };
 
   const handleSelectChange = (e) => {
@@ -109,7 +107,6 @@ function CreateCourse() {
     label: ins.name,
   }));
 
-  console.log('asd', instructorOptions);
   return (
     <div className={cx('form-container')}>
       <div className={cx('mt-5')}>

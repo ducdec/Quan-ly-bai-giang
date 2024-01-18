@@ -28,7 +28,7 @@ function UpdateUsers() {
     const fetchData = async () => {
       try {
         const result = await userService.userId(id);
-        console.log('Line 34 ', result);
+        //console.log('Line 34 ', result);
         setFormData(result);
         setSelectedRole(result.role);
         //const dataUser = await userService.storedUser();

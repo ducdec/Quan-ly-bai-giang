@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './SettingName.module.scss';
 import { CamIcon } from '~/components/Icons';
-import Image from '~/components/Image';
 
 const cx = classNames.bind(styles);
 
@@ -10,7 +9,6 @@ function SettingAvatar({ updateData, data }) {
   const [isEditing, setIsEditing] = useState(false);
   const [avatar, setAvatar] = useState(data);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [base64Image, setBase64Image] = useState(null);
 
   useEffect(() => {
     setAvatar(data);
@@ -41,7 +39,6 @@ function SettingAvatar({ updateData, data }) {
     console.log('Current Avatar:', avatar);
     setIsEditing(false);
     setAvatar(selectedImage || avatar);
-    setBase64Image(selectedImage || avatar);
     updateData(selectedImage || avatar);
   };
 
@@ -52,7 +49,7 @@ function SettingAvatar({ updateData, data }) {
 
         <div className={cx('fieldContentEdit')}>
           <div className={cx('contentBody')}>
-            Nên là ảnh vuông, chấp nhận các tệp: JPG, PNG hoặc GIF.
+            Nên là ảnh vuông &lt; 1Mb, chấp nhận các tệp: JPG, PNG hoặc GIF.
           </div>
 
           <div className={cx('contentImage')}>
@@ -61,7 +58,7 @@ function SettingAvatar({ updateData, data }) {
                 className={cx('FallbackAvatar_avatar')}
                 style={{ '--font-size': '8.9px' }}
               >
-                <img src={selectedImage || avatar} />
+                <img src={selectedImage || avatar} alt="#" />
               </div>
             </div>
 

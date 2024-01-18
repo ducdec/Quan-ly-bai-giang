@@ -7,7 +7,6 @@ const cx = classNames.bind(styles);
 function SettingName({ updateData, data }) {
   const [isEditing, setIsEditing] = useState(false);
   const [fullName, setFullName] = useState(data);
-  console.log(data, 'name', fullName);
   // Tạo ref cho input
   const inputRef = useRef(null);
 

@@ -4,9 +4,11 @@ import styles from './SettingName.module.scss';
 
 const cx = classNames.bind(styles);
 
-function SettingPassword() {
+function SettingPassword({ updateData }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [fullName, setFullName] = useState('Mật khẩu');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
 
   const startEditing = () => {
     setIsEditing(true);
@@ -14,11 +16,28 @@ function SettingPassword() {
 
   const cancelEditing = () => {
     setIsEditing(false);
+    setError('');
+    clearPasswords();
   };
 
   const saveChanges = () => {
-    setIsEditing(false);
+    if (password === confirmPassword) {
+      // Mật khẩu và xác nhận mật khẩu giống nhau
+      setIsEditing(false);
+      setError('');
+      clearPasswords();
+      updateData(password);
+    } else {
+      // Hiển thị thông báo lỗi nếu mật khẩu và xác nhận mật khẩu không khớp
+      setError('Mật khẩu và xác nhận mật khẩu không khớp.');
+    }
   };
+
+  const clearPasswords = () => {
+    setPassword('');
+    setConfirmPassword('');
+  };
+
   return (
     <div className={cx('FieldWrapper_wrapper')}>
       <div className={cx('fieldContent')}>
@@ -31,15 +50,27 @@ function SettingPassword() {
           >
             <input
               type={isEditing ? 'text' : 'password'}
-              name="full_name"
+              name="password"
               className={cx('fieldContentInput')}
               maxLength="50"
-              placeholder="Thêm tên của bạn"
+              placeholder="Mật khẩu"
               disabled={!isEditing}
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
+            {isEditing && (
+              <input
+                type="password"
+                name="confirm_password"
+                className={cx('fieldContentInput')}
+                maxLength="50"
+                placeholder="Xác nhận mật khẩu"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            )}
           </div>
+          {error && <p className={cx('errorText')}>{error}</p>}
         </div>
       </div>
       <div className={cx('fieldBtn')}>

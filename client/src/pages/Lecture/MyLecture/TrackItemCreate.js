@@ -29,7 +29,6 @@ function TrackItemCreate({ lectures, nameCourse, index, id, slug }) {
     setDeleteLectureId(id);
     setIsDelete(true);
   };
-  console.log('30', deleteLectureId);
   const deleteCourse = async () => {
     console.log(deleteLectureId);
 
@@ -51,7 +50,6 @@ function TrackItemCreate({ lectures, nameCourse, index, id, slug }) {
       }
     }
   };
-  console.log('52:', updatedLectures);
   //useEffect để re-render khi updatedLectures thay đổi
   useEffect(() => {
     const filteredLectures = lectures.filter((lec) => lec !== undefined);

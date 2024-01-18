@@ -13,14 +13,13 @@ import Button from '~/components/Button';
 import userService from '~/services/userServices';
 import { Link, useNavigate } from 'react-router-dom';
 import config from '~/config';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUser } from '~/store/userSlice';
 
 const cx = classNames.bind(styles);
 
 function SignIn() {
   const dispatch = useDispatch();
-  const userState = useSelector((state) => state.data);
 
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
   const [values, setValues] = useState({
@@ -39,18 +38,6 @@ function SignIn() {
 
     return () => clearTimeout(timeoutId);
   }, []);
-
-  // useEffect(() => {
-  //   // Lưu trữ dữ liệu vào localStorage khi component unmounted
-  //   return () => {
-  //     localStorage.setItem('userStore', JSON.stringify(userState));
-  //   };
-  // }, [userState]);
-
-  // useEffect(() => {
-  //   // Kiểm tra lỗi mỗi khi giá trị thay đổi
-  //   setErrors(validation(values, users));
-  // }, [values, users]);
 
   const handleInput = (e) => {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
