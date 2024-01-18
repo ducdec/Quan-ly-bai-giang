@@ -50,7 +50,7 @@ function Header() {
     {
       icon: <FontAwesomeIcon icon={faGear} />,
       title: 'Cài đặt',
-      to: `/users/:id/setting`,
+      to: `/users/setting`,
     },
     {
       icon: <FontAwesomeIcon icon={faSignOut} />,
