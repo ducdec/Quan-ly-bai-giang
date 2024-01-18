@@ -35,8 +35,6 @@ function SettingAvatar({ updateData, data }) {
   };
 
   const saveChanges = () => {
-    console.log('Selected Image.:', selectedImage);
-    console.log('Current Avatar:', avatar);
     setIsEditing(false);
     setAvatar(selectedImage || avatar);
     updateData(selectedImage || avatar);

@@ -1,37 +1,16 @@
-//import { LeftIcon, RightIcon } from '~/components/Icons';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 
 import styles from './content.module.scss';
 import FormatDate from '~/components/FormatTime/FormatDate';
-// import { getVideoDurationInSeconds } from 'get-video-duration';
+
 const cx = classNames.bind(styles);
 
 function Content({ lecture }) {
   // Sử dụng useState để lưu trạng thái của video
   const [showVideo, setShowVideo] = useState(false);
-  //const [currentLecture, setCurrentLecture] = useState(1);
-
-  //chuyen bai
-  // const handlePreviousClick = () => {
-  //   if (currentLecture > 1) {
-  //     setCurrentLecture(currentLecture - 1);
-  //   }
-  // };
-
-  // const handleNextClick = () => {
-  //   // Thay bằng số lượng bài giảng tối đa của khóa học
-  //   if (currentLecture < lecture.length) {
-  //     setCurrentLecture(currentLecture + 1);
-  //   }
-  // };
-  // const isPreviousDisabled = currentLecture === 1;
-  // const isNextDisabled = currentLecture === lecture.length;
-
-  // console.log(currentLecture, currentLecture);
   //video
   const handlePlayClick = () => {
-    // Khi icon được ấn, chuyển trạng thái của video sang true
     setShowVideo(true);
   };
 
@@ -126,48 +105,6 @@ function Content({ lecture }) {
           <p>{lecture.description}</p>
         </div>
       </div>
-
-      {/* <div className={cx('ActionBar_wrapper')}>
-        <button
-          className={cx('ActionBar_btn', {
-            ActionBar_disabled: isPreviousDisabled,
-          })}
-          onClick={handlePreviousClick}
-          disabled={isPreviousDisabled}
-        >
-          <LeftIcon />
-          <span>BÀI TRƯỚC</span>
-        </button>
-        <button
-          className={cx('ActionBar_btn', 'ActionBar_primary', {
-            ActionBar_disabled: isNextDisabled,
-          })}
-          onClick={handleNextClick}
-          disabled={isNextDisabled}
-        >
-          <span>BÀI TIẾP THEO</span>
-          <RightIcon />
-        </button>
-        <div className={cx('ActionBar_toggle-wrap')}>
-          <button className={cx('ActionBar_toggle-btn')}>
-            <svg
-              aria-hidden="true"
-              focusable="false"
-              data-prefix="fas"
-              data-icon="bars"
-              className={cx('svg-inline--fa', 'fa-bars')}
-              role="img"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 448 512"
-            >
-              <path
-                fill="currentColor"
-                d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"
-              ></path>
-            </svg>
-          </button>
-        </div>
-      </div> */}
     </>
   );
 }

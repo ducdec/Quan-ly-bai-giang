@@ -2,11 +2,11 @@ import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 
-//import { XIcon } from '~/components/Icons';
 import styles from './Lecture.module.scss';
 import TrackItem from './MyLecture/TrackItem';
 import Content from './MyLecture/content';
 import learningService from '~/services/learningServices';
+//import { LeftIcon, RightIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -16,9 +16,6 @@ function Learning() {
   const id = searchParams.get('id');
   const { slug } = useParams();
 
-  //console.log('12:', id, 'slug:', slug);
-
-  //const [instructors, setInstructors] = useState([]);
   const [dataLectures, setDataLectures] = useState([]);
   const [lectureAlone, setLectureAlone] = useState({});
   const [course, setCourse] = useState({});
@@ -39,6 +36,28 @@ function Learning() {
     fetchData();
   }, [slug, id]);
 
+  // const [currentLecture, setCurrentLecture] = useState(1);
+  // const [lectureIndex, setLectureIndex] = useState(0);
+
+  //chuyen bai
+  // const handleChangeLecture = (newIndex) => {
+  //   setLectureIndex(newIndex);
+  //   setCurrentLecture(newIndex + 1);
+  // };
+  // const handlePreviousClick = () => {
+  //   if (lectureIndex > 0) {
+  //     setLectureIndex(lectureIndex - 1);
+  //   }
+  // };
+
+  // const handleNextClick = () => {
+  //   // Logic khi chuyển bài (cập nhật state, ...)
+  //   // Ví dụ: Cập nhật state currentLecture
+  //   setCurrentLecture((prev) => prev + 1);
+  // };
+
+  // const isPreviousDisabled = currentLecture === 1;
+  // const isNextDisabled = currentLecture === dataLectures.length;
   //console.log('1:', dataLectures, '2:', lectureAlone, '3:', course);
   return (
     <div className={cx('wrapper')}>
@@ -66,7 +85,28 @@ function Learning() {
         <Content lecture={lectureAlone} />
       </div>
 
-      <div className={cx('actionBar_wrapper')}></div>
+      {/* <div className={cx('ActionBar_wrapper')}>
+        <button
+          className={cx('ActionBar_btn', {
+            ActionBar_disabled: isPreviousDisabled,
+          })}
+          onClick={handlePreviousClick}
+          disabled={isPreviousDisabled}
+        >
+          <LeftIcon />
+          <span>BÀI TRƯỚC</span>
+        </button>
+        <button
+          className={cx('ActionBar_btn', 'ActionBar_primary', {
+            ActionBar_disabled: isNextDisabled,
+          })}
+          onClick={handleNextClick}
+          disabled={isNextDisabled}
+        >
+          <span>BÀI TIẾP THEO</span>
+          <RightIcon />
+        </button>
+      </div> */}
     </div>
   );
 }
