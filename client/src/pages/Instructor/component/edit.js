@@ -62,7 +62,7 @@ function UpdateInstructor() {
         <div className={cx('back')}>
           <Back to={`/instructor/stored`} />
         </div>
-        <h3>Sửa Khóa Học</h3>
+        <h3>Sửa Giảng Viên</h3>
 
         <form onSubmit={handleUpdate}>
           <div className={cx('form-group')}>
