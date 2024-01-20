@@ -30,7 +30,6 @@ function LecturePanel() {
 
     fetchData();
   }, [slug]);
-  const countVides = lectures.length;
   //console.log(countVides);
   return (
     <div className={cx('wrapper')}>
@@ -44,7 +43,7 @@ function LecturePanel() {
                 </strong>
               </span>
               <span className={cx('floatRight')}>
-                Số bài học: {countVides}{' '}
+                Số bài học: {lectures?.length ? lectures.length : 0}{' '}
               </span>
             </div>
           </h5>

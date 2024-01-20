@@ -29,7 +29,6 @@ function ListLecture() {
     fetchData();
   }, [slug]);
 
-  const countLec = lecture.length;
   //console.log(countLec);
   return (
     <div className={cx('Content')}>
@@ -51,7 +50,8 @@ function ListLecture() {
                     </li>
                     <li className={cx('dot')}>•</li> */}
                     <li>
-                      <strong>{countLec} </strong> bài học
+                      <strong>{lecture?.length ? lecture.length : 0} </strong>{' '}
+                      bài học
                     </li>
                     <li className={cx('dot')}>•</li>
                     {/* <li>
@@ -93,7 +93,9 @@ function ListLecture() {
                 </li>
                 <li>
                   <span>
-                    Tổng số <strong>{countLec}</strong> bài học
+                    Tổng số{' '}
+                    <strong>{lecture?.length ? lecture.length : 0}</strong> bài
+                    học
                   </span>
                 </li>
                 {/* <li>
