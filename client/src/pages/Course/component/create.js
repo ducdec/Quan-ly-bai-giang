@@ -15,7 +15,6 @@ function CreateCourse() {
   const [newCourse, setNewCourse] = useState({
     name: '',
     description: '',
-    imageFile: '',
     imageUrl: '',
     status: '',
     instructors: [],
@@ -70,17 +69,12 @@ function CreateCourse() {
     console.log('Handle create course is triggered');
     setErrorFields([]);
 
-    const requiredFields = [
-      'name',
-      //selectedInstructors.length > 0 ? 'instructor' : null,
-      selectedOption === 'URL' ? 'imageUrl' : 'imageFile',
-      'status',
-    ];
+    const requiredFields = ['name', 'imageUrl', 'status'];
     const missingFields = requiredFields.filter((field) => {
       return !newCourse[field];
     });
 
-    //console.log('Missing fields:', missingFields);
+    console.log('Missing fields:', missingFields);
     if (missingFields.length > 0) {
       setErrorFields(missingFields);
       return;
@@ -193,14 +187,14 @@ function CreateCourse() {
                     value={selectedOption}
                     onChange={handleSelectChange}
                     required
+                    disabled
                   >
-                    <option>File</option>
                     <option>URL</option>
                   </select>
                 </div>
               </div>
 
-              {selectedOption === 'File' && (
+              {/* {selectedOption === 'File' && (
                 <div className={cx('form-group')}>
                   <label htmlFor="imageFile">Chọn File</label>
                   <input
@@ -218,7 +212,7 @@ function CreateCourse() {
                     </div>
                   )}
                 </div>
-              )}
+              )} */}
 
               {selectedOption === 'URL' && (
                 <div className={cx('form-group')}>

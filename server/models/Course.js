@@ -13,9 +13,9 @@ const schema = new mongoose.Schema(
     description: {
       type: String,
     },
-    imageFile: {
-      type: String,
-    },
+    // imageFile: {
+    //   type: String,
+    // },
     imageUrl: {
       type: String,
     },

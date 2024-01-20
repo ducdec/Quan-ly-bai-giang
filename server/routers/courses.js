@@ -23,7 +23,7 @@ const IsAuthenticated = async (req, res, next) => {
     return next(error);
   }
 };
-router.post('/store', IsAuthenticated, CourseController.store); //create
+router.post('/store', CourseController.store); //create
 router.get('/store', CourseController.storeInstructor);
 
 router.get('/:id/edit', CourseController.edit);

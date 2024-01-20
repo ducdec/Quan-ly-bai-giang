@@ -17,7 +17,6 @@ function UpdateCourse() {
     name: '',
     description: '',
     instructors: [],
-    imageFile: '',
     imageUrl: '',
     status: '',
   });
@@ -221,14 +220,14 @@ function UpdateCourse() {
                   value={selectedOption}
                   onChange={handleSelectChange}
                   required
+                  disabled
                 >
-                  <option>File</option>
                   <option>URL</option>
                 </select>
               </div>
             </div>
 
-            {selectedOption === 'File' && (
+            {/* {selectedOption === 'File' && (
               <div className={cx('form-group')}>
                 <label htmlFor="imageFile">Chọn File</label>
                 <input
@@ -244,7 +243,7 @@ function UpdateCourse() {
                   </div>
                 )}
               </div>
-            )}
+            )} */}
 
             {selectedOption === 'URL' && (
               <div className={cx('form-group')}>

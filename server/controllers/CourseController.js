@@ -53,7 +53,6 @@ class CourseController {
           const instructor = await Instructor.findOne({
             _id: instructorId,
             courses: createdCourse._id,
-            ádasdas,
           });
 
           if (!instructor) {

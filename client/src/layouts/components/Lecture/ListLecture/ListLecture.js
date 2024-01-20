@@ -30,6 +30,7 @@ function ListLecture() {
   }, [slug]);
 
   const countLec = lecture.length;
+  //console.log(countLec);
   return (
     <div className={cx('Content')}>
       <section className={cx('grip')} style={{ maxWidth: '1920px' }}>

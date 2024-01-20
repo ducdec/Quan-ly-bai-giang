@@ -24,7 +24,7 @@ function ScollList({ status, courses }) {
                 key={course._id}
                 name={course.name}
                 link={course.slug}
-                image={course.imageFile || course.imageUrl}
+                image={course.imageUrl}
               />
             ))}
         </section>

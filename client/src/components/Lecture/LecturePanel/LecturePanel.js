@@ -31,6 +31,7 @@ function LecturePanel() {
     fetchData();
   }, [slug]);
   const countVides = lectures.length;
+  //console.log(countVides);
   return (
     <div className={cx('wrapper')}>
       <div className={cx('panel')}>
