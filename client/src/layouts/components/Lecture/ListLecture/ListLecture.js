@@ -82,11 +82,14 @@ function ListLecture() {
               </div>
               <h5>Miễn phí</h5>
               <Button
-                to={`/learning/${slug}?id=${lecture[0]?._id}`}
+                to={`/learning/${slug}?id=${
+                  lecture && lecture[0] ? lecture[0]._id : ''
+                }`}
                 className={cx('Button_btn')}
               >
                 HỌC NGAY
               </Button>
+
               <ul>
                 <li>
                   <span>Trình độ cơ bản</span>

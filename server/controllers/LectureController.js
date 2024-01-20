@@ -19,7 +19,7 @@ class LectureController {
 
       // Truy cập newLectureData từ req.body
       const { instructor, ...newLectureData } = req.body;
-
+      console.log('instructor', instructor);
       // Tạo bài giảng với thông tin từ req.body và khóa học đã lấy
       const lecture = new Lecture({
         ...newLectureData,

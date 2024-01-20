@@ -81,7 +81,7 @@ const Profile = () => {
           </div>
           <div className={cx('info')}>
             <h1>{userData.username}</h1>
-            <p>Lập trình viên / Nhà thiết kế web</p>
+            <p>{userData.role === 'Admin' ? 'Quản trị viên' : 'Thành viên'}</p>
           </div>
         </div>
 

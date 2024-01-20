@@ -43,7 +43,7 @@ function LecturePanel() {
                 </strong>
               </span>
               <span className={cx('floatRight')}>
-                Số bài học: {lectures?.length ? lectures.length : 0}{' '}
+                Số bài học: {lectures?.length ? lectures.length : 0}
               </span>
             </div>
           </h5>
@@ -51,7 +51,7 @@ function LecturePanel() {
 
         <div className={cx('collapse')}>
           <div className={cx('panel-body')}>
-            {lectures.map((lec) => (
+            {lectures?.map((lec) => (
               <LectureItem key={lec._id} lecture={lec} slug={slug} />
             ))}
           </div>

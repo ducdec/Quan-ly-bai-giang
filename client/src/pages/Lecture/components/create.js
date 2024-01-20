@@ -85,7 +85,6 @@ function CreateLecture() {
     // Cập nhật trạng thái newLecture để làm mới các trường trong form
     setNewLecture({
       name: '',
-      instructor: '',
       description: '',
       videoID: '',
     });
@@ -101,7 +100,7 @@ function CreateLecture() {
     label: ins.name,
     key: ins._id,
   }));
-  const first = instructors[0] ? instructors[0].name : 'Chọn người hướng dẫn';
+  //const first = instructors[0] ? instructors[0].name : 'Chọn người hướng dẫn';
 
   return (
     <>
@@ -161,7 +160,7 @@ function CreateLecture() {
                     </label>
                     <div className={cx('col-md-4')}>
                       <Select
-                        defaultValue={first}
+                        //defaultValue={first}
                         placeholder="Chọn người hướng dẫn"
                         style={{ width: '100%' }}
                         onChange={handleInstructorChange}
