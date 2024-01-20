@@ -39,7 +39,7 @@ function LecturePanel() {
             <div className={cx('headline')}>
               <span className={cx('floatLeft')}>
                 <strong>
-                  Giảng viên: {instructors.map((ins) => ins.name).join(', ')}
+                  Giảng viên: {instructors?.map((ins) => ins.name).join(', ')}
                 </strong>
               </span>
               <span className={cx('floatRight')}>

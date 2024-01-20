@@ -37,7 +37,7 @@ function CreateInstructor() {
     e.preventDefault();
 
     // Kiểm tra xem có trường nào chưa được nhập không
-    const requiredFields = ['name', 'email'];
+    const requiredFields = ['name'];
     const missingFields = requiredFields.filter(
       (field) => !newInstructor[field],
     );
@@ -99,9 +99,7 @@ function CreateInstructor() {
                     onChange={handleInputChange}
                     value={newInstructor.email}
                     type="text"
-                    className={cx('form-control', {
-                      'is-invalid': errorFields.includes('email'),
-                    })}
+                    className={cx('form-control')}
                     id="email"
                     name="email"
                   />

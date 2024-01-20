@@ -179,6 +179,45 @@ class CourseController {
       // Find and restore the course
       const restoredCourse = await Course.restore({ _id: courseId });
 
+      const courses = await Course.find({ _id: courseId });
+      //console.log(courses);
+      if (!courses || !courses.length) {
+        console.error('No courses found for the given ID:', courseId);
+        // Handle the error or return an appropriate response
+        return res
+          .status(404)
+          .json({ success: false, message: 'Course not found' });
+      }
+
+      const idInstructors = courses[0].instructors.map((ins) =>
+        ins._id.toString(),
+      );
+      const idcourse = courses[0]._id.toString();
+      //console.log(idcourse);
+      // Kiểm tra xem khóa học đã tồn tại cho giảng viên hay chưa
+      const instructorUpdatePromises = idInstructors.map(
+        async (instructorId) => {
+          const instructor = await Instructor.findOne({
+            _id: instructorId,
+            courses: idcourse,
+          });
+
+          if (!instructor) {
+            // Nếu khóa học chưa tồn tại, thực hiện cập nhật
+            return Instructor.updateOne(
+              { _id: instructorId },
+              { $addToSet: { courses: idcourse } },
+            );
+          }
+
+          // Nếu khóa học đã tồn tại, không cần thực hiện cập nhật
+          return Promise.resolve();
+        },
+      );
+
+      // Chờ tất cả các promises hoàn thành trước khi trả về response
+      await Promise.all(instructorUpdatePromises);
+
       console.log('Khôi phục thành công!!!');
       res.json({
         success: true,
