@@ -26,7 +26,6 @@ class LectureController {
         course: course._id, // Gán ID của khóa học vào bài giảng
       });
 
-      console.log('instructor', lecture);
       //console.log(instructor, 'vaf', lecture);
       const savedLecture = await lecture.save();
 
@@ -45,6 +44,7 @@ class LectureController {
         }
       }
 
+      //console.log('lecture', savedLecture);
       res.status(201).json(savedLecture);
     } catch (error) {
       console.error(error);

@@ -88,8 +88,10 @@ function CreateLecture() {
 
     // Cập nhật trạng thái newLecture để làm mới các trường trong form
     setNewLecture((prevLec) => ({
-      ...prevLec,
+      name: '',
       instructor: '',
+      description: '',
+      videoID: '',
     }));
     navigate(`/lecture/${id}/create`);
     //  }
