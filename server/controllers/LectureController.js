@@ -19,7 +19,6 @@ class LectureController {
 
       // Truy cập newLectureData từ req.body
       const { instructor, ...newLectureData } = req.body;
-      console.log('instructor', instructor);
       // Tạo bài giảng với thông tin từ req.body và khóa học đã lấy
       const lecture = new Lecture({
         ...newLectureData,
@@ -27,6 +26,7 @@ class LectureController {
         course: course._id, // Gán ID của khóa học vào bài giảng
       });
 
+      console.log('instructor', lecture);
       //console.log(instructor, 'vaf', lecture);
       const savedLecture = await lecture.save();
 
@@ -234,7 +234,7 @@ class LectureController {
 
       res.json({
         success: true,
-        message: 'Tiết học và thông tin khóa học đã được cập nhật',
+        message: 'Tiết học đã được xoa',
       });
     } catch (error) {
       console.error('Lỗi khi xóa và cập nhật tiết học:', error);

@@ -82,12 +82,15 @@ function CreateLecture() {
     // Cập nhật danh sách bài giảng để hiển thị bài giảng mới
     setlectures((prevLectures) => [...prevLectures, data]);
 
+    // Làm mới danh sách người hướng dẫn
+    const updatedInstructors = await lectureService.courseSlug(id);
+    setInstructors(updatedInstructors.instructors);
+
     // Cập nhật trạng thái newLecture để làm mới các trường trong form
-    setNewLecture({
-      name: '',
-      description: '',
-      videoID: '',
-    });
+    setNewLecture((prevLec) => ({
+      ...prevLec,
+      instructor: '',
+    }));
     navigate(`/lecture/${id}/create`);
     //  }
     // catch((error) => {
@@ -100,7 +103,7 @@ function CreateLecture() {
     label: ins.name,
     key: ins._id,
   }));
-  //const first = instructors[0] ? instructors[0].name : 'Chọn người hướng dẫn';
+  //const first = 'Chọn người hướng dẫn';
 
   return (
     <>

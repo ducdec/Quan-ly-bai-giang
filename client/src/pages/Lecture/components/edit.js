@@ -53,6 +53,7 @@ function UpdateLecture() {
     fetchData();
   }, [slug, id]);
 
+  console.log('56', selectedInstructors);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 

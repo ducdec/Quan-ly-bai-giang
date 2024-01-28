@@ -102,7 +102,7 @@ function Content({ lecture }) {
           className={cx('MarkdownParser_wrapper')}
           style={{ '--font-size': '1.6rem', '--line-height': '2' }}
         >
-          <p>{lecture.description}</p>
+          <p className={cx('lecture-description')}>{lecture.description}</p>
         </div>
       </div>
     </>

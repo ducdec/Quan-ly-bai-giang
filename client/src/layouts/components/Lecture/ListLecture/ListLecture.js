@@ -36,7 +36,9 @@ function ListLecture() {
         <section className={cx('row', 'Course_wrapper')}>
           <section className={cx('col2', 'c-12', 'm-12', 'c-1-8')}>
             <h1 className={cx('course_name')}>{dataCourse.name}</h1>
-            <div className={cx('text_content')}>{dataCourse.description}</div>
+            <div className={cx('text_content', 'lecture-description')}>
+              {dataCourse.description}
+            </div>
 
             <div className={cx('CurriculumOfCourse')}>
               <div className={cx('headerSticky')}>
