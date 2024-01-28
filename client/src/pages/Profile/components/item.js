@@ -19,7 +19,7 @@ function ItemCourse() {
     <div>
       {viewedCourses.map((course) => (
         <div key={course.slug} className={cx('Profile_inner')}>
-          <a className={cx('Profile_thumb')} href="/courses/nodejs">
+          <a className={cx('Profile_thumb')} href={`/courses/${course.slug}`}>
             <Image
               src={course.image}
               className={cx('Profile_thumb-image')}
