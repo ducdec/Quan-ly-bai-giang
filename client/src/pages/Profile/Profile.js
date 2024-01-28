@@ -8,6 +8,7 @@ import Image from '~/components/Image';
 import { ProfileIcon } from '~/components/Icons';
 import { setUser } from '~/store/userSlice';
 import userService from '~/services/userServices';
+import ItemCourse from './components/item';
 
 const cx = classNames.bind(styles);
 
@@ -43,14 +44,14 @@ const Profile = () => {
   }, [dispatch]);
 
   //console.log(userData);
-  // Thời điểm bạn tạo tài khoản
+
+  // Time
   const accountCreationTime = new Date(userData.createdAt);
 
   // Thời điểm hiện tại
   const currentTime = new Date();
 
   //console.log(accountCreationTime, currentTime);
-  // Tính khoảng thời gian
   const timeDifference = currentTime.getTime() - accountCreationTime.getTime();
 
   const secondsDifference = timeDifference / 1000;
@@ -118,47 +119,7 @@ const Profile = () => {
           <section className={cx('col', 'col_right')}>
             <div className={cx('Box_wrapper')}>
               <h4 className={cx('Box_title')}>Các khóa học đã xem</h4>
-              <div>
-                <div className={cx('Profile_inner')}>
-                  <a className={cx('Profile_thumb')} href="/courses/nodejs">
-                    <img
-                      src="https://files.fullstack.edu.vn/f8-prod/courses/6.png"
-                      className={cx('Profile_thumb-image')}
-                      alt="Node &amp; ExpressJS"
-                    />
-                  </a>
-                  <div className={cx('info')}>
-                    <h3 className={cx('Profile_info-title')}>
-                      <a href="/courses/nodejs">Node &amp; ExpressJS</a>
-                    </h3>
-                    <p className={cx('Profile_info-desc')}>
-                      Học Back-end với Node &amp; ExpressJS framework, hiểu các
-                      khái niệm khi làm Back-end và xây dựng RESTful API cho
-                      trang web.
-                    </p>
-                  </div>
-                </div>
-
-                <div className={cx('Profile_inner')}>
-                  <a className={cx('Profile_thumb')} href="/courses/nodejs">
-                    <img
-                      src="https://files.fullstack.edu.vn/f8-prod/courses/6.png"
-                      className={cx('Profile_thumb-image')}
-                      alt="Node &amp; ExpressJS"
-                    />
-                  </a>
-                  <div className={cx('info')}>
-                    <h3 className={cx('Profile_info-title')}>
-                      <a href="/courses/nodejs">Node &amp; ExpressJS</a>
-                    </h3>
-                    <p className={cx('Profile_info-desc')}>
-                      Học Back-end với Node &amp; ExpressJS framework, hiểu các
-                      khái niệm khi làm Back-end và xây dựng RESTful API cho
-                      trang web.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <ItemCourse />
             </div>
           </section>
         </section>

@@ -57,7 +57,7 @@ class LoginController {
 
       // Kiểm tra xem người dùng có tồn tại trong cơ sở dữ liệu không
       const existingUser = await User.findOne({ email });
-      console.log(existingUser);
+      //console.log(existingUser);
 
       if (!existingUser) {
         return res
@@ -82,7 +82,7 @@ class LoginController {
       // Tạo và trả về token JWT
       const secretKey = process.env.JWT_SECRET_KEY || 'your-default-secret-key';
       const token = jwt.sign({ userId: existingUser._id }, secretKey, {
-        expiresIn: '1h', // Thời gian sống của token
+        expiresIn: '3h', // Thời gian sống của token
       });
 
       res.status(200).json({ token, user: existingUser });
@@ -122,7 +122,7 @@ class LoginController {
 
       // Generate a JWT token
       const token = jwt.sign({ userId: savedUser._id }, 'your-secret-key', {
-        expiresIn: '1h',
+        expiresIn: '3h',
       });
 
       // Return the token and user data

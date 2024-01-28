@@ -5,6 +5,26 @@ import CourseItem from './CourseItem';
 const cx = classNames.bind(styles);
 
 function ScollList({ status, courses }) {
+  const handleCourseClick = (course) => {
+    let clickedCourses =
+      JSON.parse(localStorage.getItem('clickedCourses')) || [];
+
+    const clickedCourse = {
+      slug: course.slug,
+      image: course.imageUrl,
+      name: course.name,
+      description: course.description,
+    };
+
+    const isCourseClicked = clickedCourses.some(
+      (item) => item.slug === course.slug,
+    );
+
+    if (!isCourseClicked) {
+      clickedCourses.push(clickedCourse);
+      localStorage.setItem('clickedCourses', JSON.stringify(clickedCourses));
+    }
+  };
   //console.log('8', courses);
   return (
     <div className={cx('ScollList')}>
@@ -25,6 +45,7 @@ function ScollList({ status, courses }) {
                 name={course.name}
                 link={course.slug}
                 image={course.imageUrl}
+                onClick={() => handleCourseClick(course)}
               />
             ))}
         </section>
