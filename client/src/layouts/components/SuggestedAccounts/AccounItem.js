@@ -7,7 +7,6 @@ import { useState, useEffect } from 'react';
 
 import styles from './SuggestedAccounts.module.scss';
 import Image from '~/components/Image';
-import images from '~/assets/images';
 import AccountPreview from './AccountPreview';
 
 const cx = classNames.bind(styles);

@@ -1,7 +1,5 @@
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
 import { Link } from 'react-router-dom';
 import 'tippy.js/dist/tippy.css';

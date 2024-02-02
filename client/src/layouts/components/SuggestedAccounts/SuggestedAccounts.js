@@ -6,7 +6,7 @@ import styles from './SuggestedAccounts.module.scss';
 import AccountItem from './AccounItem';
 
 const cx = classNames.bind(styles);
-
+// eslint-disable-next-line
 function SuggestedAccounts({ data, label }) {
   const itemsToShowInitially = 3;
   const itemsToShowIncrement = 5;

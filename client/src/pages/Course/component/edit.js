@@ -69,12 +69,12 @@ function UpdateCourse() {
   }, [selectedInstructors]);
 
   // handleFileChange
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile && selectedOption === 'File') {
-      setFile(selectedFile);
-    }
-  };
+  // const handleFileChange = (e) => {
+  //   const selectedFile = e.target.files[0];
+  //   if (selectedFile && selectedOption === 'File') {
+  //     setFile(selectedFile);
+  //   }
+  // };
 
   // handleSelectChange
   const handleSelectChange = (e) => {

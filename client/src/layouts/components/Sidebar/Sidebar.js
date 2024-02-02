@@ -7,8 +7,8 @@ import SuggestedAccounts from '../SuggestedAccounts';
 import { useEffect, useState } from 'react';
 import siteService from '~/services/siteServices';
 import courseService from '~/services/courseServices';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSwatchbook } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faSwatchbook } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -26,8 +26,8 @@ function Sidebar() {
         );
         setValuesRandom(randomOrderValues);
         //console.log('Line 24 ', randomOrderValues, result.storedCourses);
-        if (coursesByStatus && coursesByStatus.hot) {
-          setValuesHot(coursesByStatus.hot);
+        if (coursesByStatus && coursesByStatus.Hot) {
+          setValuesHot(coursesByStatus.Hot);
         } else {
           console.error('API returned invalid data:', coursesByStatus);
         }

@@ -8,23 +8,28 @@ import siteService from '~/services/siteServices';
 const cx = classNames.bind(styles);
 
 function Home() {
-  //const user = useSelector((state) => state.data);
-  //console.log('Line 14 user : ', user);
   const [coursesByStatus, setCoursesByStatus] = useState({});
+  const [sortedStatuses, setSortedStatuses] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await siteService.home();
-
         const filteredCoursesByStatus = Object.fromEntries(
           Object.entries(res.coursesByStatus).filter(
             ([status, courses]) => courses.length > 0,
           ),
         );
-
-        // Cập nhật state với dữ liệu từ API
         setCoursesByStatus(filteredCoursesByStatus);
+        const statuses = Object.keys(filteredCoursesByStatus);
+        const sortedStatuses = statuses.sort((a, b) => {
+          if (a === 'hot') return -1;
+          if (b === 'hot') return 1;
+          if (a === 'new') return -1;
+          if (b === 'new') return 1;
+          return 0;
+        });
+        setSortedStatuses(sortedStatuses);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -32,13 +37,14 @@ function Home() {
 
     fetchData();
   }, []);
+
   return (
     <section className={cx('grid', 'fullWidth')} style={{ maxWidth: '1920px' }}>
       <div className={cx('home-wrapper')}>
         {/* Lặp qua danh sách các status và render mỗi ScollList */}
-        {Object.keys(coursesByStatus).map((status) => (
+        {sortedStatuses.map((status) => (
           <ScollList
-            key={status} // Sử dụng status làm key vì mỗi status là duy nhất
+            key={status}
             status={status}
             courses={coursesByStatus[status]}
           />
