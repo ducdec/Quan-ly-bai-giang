@@ -21,7 +21,7 @@ https://imgur.com/a/GhLd6kO
 ## 🔧 Cài đặt  
 1. Clone repo:  
    ```bash  
-   git clone https://github.com/ducdec/[tên-repo].git  
+   git clone https://github.com/ducdec/Quan-ly-bai-giang.git  
    ```  
 2. Cài đặt dependencies:  
    ```bash  
